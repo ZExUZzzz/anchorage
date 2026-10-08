@@ -193,6 +193,18 @@ mkdir -p "$WORK/tree/usr/bin"
 cat > "$WORK/tree/usr/bin/anchorage" <<'EOF'
 #!/bin/sh
 unset LD_LIBRARY_PATH QT_PLUGIN_PATH
+# The bundled Qt has only the gtk3 and xdgdesktopportal platform themes. Without one of them
+# (Plasma's "kde" theme cannot load here) Qt ignores the desktop's dark preference.
+case "${QT_QPA_PLATFORMTHEME:-}" in
+    gtk3|xdgdesktopportal) ;;
+    *)
+        case "${XDG_CURRENT_DESKTOP:-}" in
+            *GNOME*|*Unity*|*Cinnamon*|*MATE*|*XFCE*|*Pantheon*|*Budgie*) QT_QPA_PLATFORMTHEME=gtk3 ;;
+            *) QT_QPA_PLATFORMTHEME=xdgdesktopportal ;;
+        esac
+        export QT_QPA_PLATFORMTHEME
+        ;;
+esac
 exec /opt/anchorage/bin/python3 -I -B -m anchorage "$@"
 EOF
 chmod 755 "$WORK/tree/usr/bin/anchorage"
@@ -243,6 +255,18 @@ cat > "$APPDIR/AppRun" <<'EOF'
 #!/bin/sh
 HERE=$(dirname "$(readlink -f "$0")")
 unset LD_LIBRARY_PATH QT_PLUGIN_PATH
+# The bundled Qt has only the gtk3 and xdgdesktopportal platform themes. Without one of them
+# (Plasma's "kde" theme cannot load here) Qt ignores the desktop's dark preference.
+case "${QT_QPA_PLATFORMTHEME:-}" in
+    gtk3|xdgdesktopportal) ;;
+    *)
+        case "${XDG_CURRENT_DESKTOP:-}" in
+            *GNOME*|*Unity*|*Cinnamon*|*MATE*|*XFCE*|*Pantheon*|*Budgie*) QT_QPA_PLATFORMTHEME=gtk3 ;;
+            *) QT_QPA_PLATFORMTHEME=xdgdesktopportal ;;
+        esac
+        export QT_QPA_PLATFORMTHEME
+        ;;
+esac
 exec "$HERE/opt/anchorage/bin/python3" -I -B -m anchorage "$@"
 EOF
 chmod 755 "$APPDIR/AppRun"
