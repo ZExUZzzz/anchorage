@@ -1,6 +1,7 @@
 from PySide6.QtCore import QSettings, QSize
 
 from anchorage.core.engine import EngineState
+from anchorage.core.settings import Resolved
 from anchorage.core.terminal import Launch
 from anchorage.docker.errors import Conflict, EngineUnavailable, PermissionDenied
 from anchorage.docker.models import LogLine
@@ -54,6 +55,32 @@ def test_engine_error_shows_empty_states(qtbot, context: AppContext, engine: Fak
     window.containers_page.empty.button.click()
     assert context.engine.state is EngineState.CONNECTED
     assert window.containers_page.stack.currentWidget() is window.containers_page.tree
+
+
+def test_unreachable_saved_socket_is_named_in_the_empty_state(
+    qtbot, context: AppContext, engine: FakeEngine
+) -> None:
+    engine.errors["ping"] = EngineUnavailable("refused")
+    resolved = Resolved("stream", "native", "/saved/docker.sock", "")
+    window = MainWindow(context, resolved=resolved)
+    qtbot.addWidget(window)
+    context.engine.start()
+    title = window.containers_page.empty.title.text()
+    message = window.containers_page.empty.message.text()
+    assert "not running" not in title
+    assert "The socket set in Settings (/saved/docker.sock) is not available." in message
+    assert "clear it to find the daemon automatically" in message
+
+
+def test_socket_from_a_flag_keeps_the_daemon_empty_state(
+    qtbot, context: AppContext, engine: FakeEngine
+) -> None:
+    engine.errors["ping"] = EngineUnavailable("refused")
+    resolved = Resolved("stream", "native", "/x.sock", "", {"socket": "--socket"})
+    window = MainWindow(context, resolved=resolved)
+    qtbot.addWidget(window)
+    context.engine.start()
+    assert "not running" in window.containers_page.empty.title.text()
 
 
 def test_open_container_and_back(qtbot, context: AppContext, engine: FakeEngine) -> None:

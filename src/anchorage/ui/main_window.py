@@ -394,9 +394,17 @@ class MainWindow(QMainWindow):
                     text, color = "Docker Engine is not running", level_color("error", palette)
                 else:
                     text, color = "Not connected", state_color("dead", palette)
-                title = "Docker Engine is not running"
                 detail = error.message if error else ""
-                message = f"Start the docker service and retry.\n{detail}".strip()
+                saved_socket = self.resolved.socket
+                if saved_socket and "socket" not in self.resolved.locked:
+                    title = "Docker socket not available"
+                    message = (
+                        f"The socket set in Settings ({saved_socket}) is not available. "
+                        "Change it in Settings or clear it to find the daemon automatically."
+                    )
+                else:
+                    title = "Docker Engine is not running"
+                    message = f"Start the docker service and retry.\n{detail}".strip()
             action = None if state is EngineState.CONNECTING else "Retry"
             for page in (
                 self.containers_page,
