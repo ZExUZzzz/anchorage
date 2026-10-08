@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+export PYBUILD_NAME = anchorage
+export PYBUILD_DESTDIR = debian/anchorage
+export PYBUILD_TEST_ARGS = -W error {dir}/tests
+export QT_QPA_PLATFORM = offscreen
+export HOME = $(CURDIR)/debian/tmp-home
+APP_ID = io.github.zexuzzzz.Anchorage
+
+%:
+	dh $@ --with python3 --buildsystem=pybuild
+
+override_dh_auto_test:
+	mkdir -p $(HOME)
+	dh_auto_test
+
+override_dh_python3:
+	dh_python3 --no-guessing-deps
+
+override_dh_auto_install:
+	dh_auto_install
+	install -Dm644 data/$(APP_ID).desktop debian/anchorage/usr/share/applications/$(APP_ID).desktop
+	install -Dm644 data/$(APP_ID).metainfo.xml debian/anchorage/usr/share/metainfo/$(APP_ID).metainfo.xml
+	install -Dm644 src/anchorage/data/icon.svg debian/anchorage/usr/share/icons/hicolor/scalable/apps/$(APP_ID).svg

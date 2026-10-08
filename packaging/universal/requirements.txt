@@ -1,0 +1,6 @@
+# Hashes of the manylinux_2_28 x86_64 wheels, from the digests.sha256 field of
+# https://pypi.org/pypi/<name>/6.9.3/json. Keep the versions in step with PYSIDE_VERSION in pins.sh.
+pyside6-essentials==6.9.3 \
+    --hash=sha256:c70d5544e892b201a677b615156fab6a0fef865e7fc287f55a0eae00a682e83f
+shiboken6==6.9.3 \
+    --hash=sha256:f3f5337a3a8fc660ba1462265bd9a2bdda9588f8d90fbc3d5ac4ce3134c11e59

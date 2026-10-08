@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "anchorage-docker"
+version = "0.1.0"
+description = "Native Linux desktop client for Docker Engine"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Pavel Makhnychev", email = "pmakhnychev@gmail.com" }]
+keywords = ["docker", "containers", "qt", "pyside6", "linux"]
+requires-python = ">=3.11"
+dependencies = ["PySide6>=6.6"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: X11 Applications :: Qt",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Systems Administration",
+]
+
+[project.scripts]
+anchorage = "anchorage.__main__:main"
+
+[project.optional-dependencies]
+# The docker-py backend relies on the private APIClient members _get, _url, _raise_for_status and
+# _delete, hence the upper bound.
+dockerpy = ["docker>=7,<8"]
+
+[project.urls]
+Homepage = "https://github.com/zexuzzzz/anchorage"
+Issues = "https://github.com/zexuzzzz/anchorage/issues"
+Changelog = "https://github.com/zexuzzzz/anchorage/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-qt>=4.4",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "docker>=7,<8",  # private members used: _get, _url, _raise_for_status, _delete
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/anchorage"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["docs/superpowers", ".superpowers", ".github"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+extend-exclude = ["docs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF", "N"]
+ignore = ["N818", "UP017"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/anchorage/ui/**" = ["N802"]
+"src/anchorage/ui/theme.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+mypy_path = "src"
+packages = ["anchorage"]
+
+[[tool.mypy.overrides]]
+module = "anchorage.ui.*"
+strict = false
+
+[[tool.mypy.overrides]]
+module = "docker.*"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+qt_api = "pyside6"
+markers = ["integration: needs a reachable Docker daemon"]
+addopts = "-m 'not integration'"

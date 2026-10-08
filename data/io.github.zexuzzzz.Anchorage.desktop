@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Anchorage
+GenericName=Docker Client
+Comment=Manage containers, images, volumes and networks of a local Docker Engine
+Exec=anchorage
+Icon=io.github.zexuzzzz.Anchorage
+Terminal=false
+Categories=Development;
+Keywords=docker;container;compose;engine;
+StartupNotify=true
+StartupWMClass=Anchorage

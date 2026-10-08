@@ -1,0 +1,37 @@
+Source: anchorage
+Section: utils
+Priority: optional
+Maintainer: Pavel Makhnychev <pmakhnychev@gmail.com>
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               pybuild-plugin-pyproject,
+               python3-all,
+               python3-hatchling,
+               python3-pytest,
+               python3-pytestqt,
+               python3-pyside6.qtsvg,
+               python3-pyside6.qttest,
+               qt6-svg-plugins,
+               desktop-file-utils
+Standards-Version: 4.7.0
+Homepage: https://github.com/zexuzzzz/anchorage
+Rules-Requires-Root: no
+
+Package: anchorage
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         python3-pyside6.qtcore,
+         python3-pyside6.qtgui,
+         python3-pyside6.qtwidgets,
+         python3-pyside6.qtsvg,
+         qt6-svg-plugins,
+         hicolor-icon-theme
+Recommends: qt6-wayland, docker.io | docker-ce
+Description: Native desktop client for Docker Engine
+ Anchorage talks to a local Docker Engine over its UNIX socket. It shows
+ containers grouped by Compose project with live state, logs, resource
+ charts and inspect details, manages images, volumes and networks, and
+ opens a shell in a container in your terminal emulator. It is a plain Qt
+ application that follows the desktop theme: no virtual machine, no web
+ view.
