@@ -98,6 +98,8 @@ checksum match; the checks of a target run in parallel, `ANCHORAGE_PACKAGING_JOB
 
 Integration tests against a real daemon: `uv run pytest -m integration`.
 
+See `CONTRIBUTING.md` for the checks a change has to pass.
+
 The repository layout: `anchorage.docker` is a pure-Python Docker Engine API client over
 `AF_UNIX`, `anchorage.core` holds the Qt models, workers and stores, `anchorage.ui` the
 widgets and `anchorage.app` the entry point. `data/` holds the desktop entry and AppStream

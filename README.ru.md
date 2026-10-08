@@ -99,6 +99,8 @@ Debian/Ubuntu/Fedora). В самодостаточные пакеты он не 
 
 Интеграционные тесты с реальным демоном: `uv run pytest -m integration`.
 
+Какие проверки должно пройти изменение, описано в `CONTRIBUTING.md`.
+
 Структура репозитория: в `anchorage.docker` лежит клиент Docker Engine API на чистом Python
 поверх `AF_UNIX`, в `anchorage.core` Qt-модели, воркеры и хранилища, в `anchorage.ui` виджеты,
 в `anchorage.app` точка входа. В `data/` лежат desktop-файл и метаданные AppStream,

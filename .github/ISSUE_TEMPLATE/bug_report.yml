@@ -1,0 +1,60 @@
+name: Bug report
+description: Something does not work as described
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Anchorage version
+      description: Output of `anchorage --version`
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installation method
+      options:
+        - Self-contained deb
+        - Self-contained rpm
+        - AppImage
+        - Arch package
+        - Debian 13 / Ubuntu 25.04+ deb
+        - Fedora rpm
+        - pipx / pip
+        - From source
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Distribution and desktop
+      placeholder: Ubuntu 24.04, GNOME on Wayland
+    validations:
+      required: true
+  - type: input
+    id: docker
+    attributes:
+      label: Docker Engine version
+      description: Output of `docker version --format '{{.Server.Version}}'`
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log output
+      description: Run `anchorage --verbose` from a terminal and paste the output
+      render: text
