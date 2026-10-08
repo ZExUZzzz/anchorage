@@ -378,7 +378,7 @@
     </message>
     <message>
         <source>Follow</source>
-        <translation>Следить</translation>
+        <translation>Следование</translation>
     </message>
     <message>
         <source>Timestamps</source>
@@ -931,7 +931,7 @@
     </message>
     <message>
         <source>BLOCK I/O  read / write</source>
-        <translation>БЛОЧНЫЙ ВВОД-ВЫВОД  чтение / запись</translation>
+        <translation>ДИСК  чтение / запись</translation>
     </message>
 </context>
 <context>
