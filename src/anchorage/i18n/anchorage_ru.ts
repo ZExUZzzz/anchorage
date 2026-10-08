@@ -79,7 +79,7 @@
     </message>
     <message>
         <source>Logs</source>
-        <translation>Журнал</translation>
+        <translation>Логи</translation>
     </message>
     <message>
         <source>Stats</source>
@@ -133,7 +133,7 @@
     <name>ContainerStore</name>
     <message>
         <source>Standalone</source>
-        <translation>Отдельные</translation>
+        <translation>Без проекта</translation>
     </message>
 </context>
 <context>
@@ -347,7 +347,7 @@
     <name>LogView</name>
     <message>
         <source>Search logs… (Enter next, Shift+Enter previous)</source>
-        <translation>Поиск в журнале… (Enter — далее, Shift+Enter — назад)</translation>
+        <translation>Поиск в логах… (Enter — далее, Shift+Enter — назад)</translation>
     </message>
     <message>
         <source>Prev</source>
@@ -828,7 +828,7 @@
     </message>
     <message>
         <source>Log colours</source>
-        <translation>Цвета журнала</translation>
+        <translation>Цвета логов</translation>
     </message>
     <message>
         <source>Backend</source>
