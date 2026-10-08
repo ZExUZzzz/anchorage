@@ -400,8 +400,9 @@ class MainWindow(QMainWindow):
                     title = "Docker socket not available"
                     message = (
                         f"The socket set in Settings ({saved_socket}) is not available. "
-                        "Change it in Settings or clear it to find the daemon automatically."
-                    )
+                        "Start the docker service, or change the socket in Settings or clear "
+                        f"it to find the daemon automatically.\n{detail}"
+                    ).strip()
                 else:
                     title = "Docker Engine is not running"
                     message = f"Start the docker service and retry.\n{detail}".strip()

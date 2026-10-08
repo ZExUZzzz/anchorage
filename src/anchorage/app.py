@@ -116,8 +116,9 @@ def create_api_or_fall_back(
             raise BackendUnavailable(f"{exc} (requested by {usage})") from None
         resolved = dataclasses.replace(resolved, backend="native")
         settings.backend = "native"
-        api, _ = create_api(resolved.socket or None, "native")
-        return api, resolved, "docker-py is not installed; using the native backend"
+        api, native_warning = create_api(resolved.socket or None, "native")
+        message = "docker-py is not installed; using the native backend"
+        return api, resolved, f"{message}. {native_warning}" if native_warning else message
     return api, resolved, warning
 
 
