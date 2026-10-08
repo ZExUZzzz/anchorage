@@ -208,3 +208,29 @@ def test_nav_rows_have_a_fixed_height(qtbot) -> None:
     assert sidebar.nav.uniformItemSizes()
     heights = [sidebar.nav.item(row).sizeHint().height() for row in range(sidebar.nav.count())]
     assert heights == [32] * sidebar.nav.count()
+
+
+def test_shell_uses_the_saved_terminal_override(
+    qtbot, context: AppContext, tmp_path, monkeypatch
+) -> None:  # type: ignore[no-untyped-def]
+    from PySide6.QtCore import QSettings
+
+    from anchorage.core import terminal
+    from anchorage.core.settings import AppSettings, Resolved
+
+    calls: list[tuple[str, str]] = []
+
+    def fake_open_shell(container_id: str, *, command: str = "") -> terminal.Launch:
+        calls.append((container_id, command))
+        return terminal.Launch(("docker",), ("x",), None)
+
+    monkeypatch.setattr(terminal, "open_shell", fake_open_shell)
+    store = QSettings(str(tmp_path / "s.ini"), QSettings.Format.IniFormat)
+    settings = AppSettings(store)
+    window = MainWindow(context, app_settings=settings, resolved=Resolved.defaults())
+    qtbot.addWidget(window)
+    settings.terminal = "kitty -e"
+    window._launch_shell("abc")
+    settings.terminal = ""
+    window._launch_shell("def")
+    assert calls == [("abc", "kitty -e"), ("def", "")]

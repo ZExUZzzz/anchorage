@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
 
 from anchorage.core import terminal
 from anchorage.core.engine import EngineState
+from anchorage.core.settings import AppSettings, Resolved
 from anchorage.core.terminal import Launch
 from anchorage.core.units import format_bytes
 from anchorage.docker.errors import DockerError, EngineUnavailable, PermissionDenied
@@ -59,13 +60,17 @@ class MainWindow(QMainWindow):
         confirm: Confirm | None = None,
         launch_shell: LaunchShell | None = None,
         settings: QSettings | None = None,
+        app_settings: AppSettings | None = None,
+        resolved: Resolved | None = None,
         parent: QWidget | None = None,
     ) -> None:
         super().__init__(parent)
         self.context = context
         self._origin = self.PAGE_CONTAINERS
         self.confirm: Confirm = confirm or self._ask
-        self._launch_shell: LaunchShell = launch_shell or terminal.open_shell
+        self.app_settings = app_settings
+        self.resolved = resolved or Resolved.defaults()
+        self._launch_shell: LaunchShell = launch_shell or self._open_shell
         self.setWindowTitle("Anchorage")
         self.resize(1180, 720)
         self._settings = settings
@@ -220,6 +225,10 @@ class MainWindow(QMainWindow):
                     f"{launch.reason}. Run this command in a terminal:\n\n{command}",
                     ["OK"],
                 )
+
+    def _open_shell(self, container_id: str) -> Launch:
+        command = self.app_settings.terminal if self.app_settings is not None else ""
+        return terminal.open_shell(container_id, command=command)
 
     def _pull(self, repository: str, tag: str) -> None:
         job = self.context.images.pull(repository, tag)

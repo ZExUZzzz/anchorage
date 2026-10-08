@@ -67,3 +67,54 @@ def test_open_shell_without_docker_or_terminal() -> None:
     )
     assert not result.ok
     assert result.terminal == ("foot",)
+
+
+def test_open_shell_custom_command_is_split_with_quotes() -> None:
+    launched: list[list[str]] = []
+    launch = open_shell(
+        "abc",
+        command='"/opt/My Term/term" --single-instance -e',
+        which=which_from("docker", "/opt/My Term/term", "konsole"),
+        launcher=lambda argv: launched.append(argv) or True,
+    )
+    assert launch.ok
+    assert launch.terminal == ("/opt/My Term/term", "--single-instance", "-e")
+    assert launched == [
+        ["/opt/My Term/term", "--single-instance", "-e", *exec_command("abc", "/usr/bin/docker")]
+    ]
+
+
+def test_open_shell_whitespace_command_keeps_auto_detection() -> None:
+    launched: list[list[str]] = []
+    launch = open_shell(
+        "abc",
+        command="   ",
+        environ={},
+        which=which_from("docker", "konsole"),
+        launcher=lambda argv: launched.append(argv) or True,
+    )
+    assert launch.terminal == ("konsole", "-e")
+    assert launched[0][0] == "konsole"
+
+
+def test_open_shell_custom_command_with_unbalanced_quote_reports_reason() -> None:
+    launch = open_shell(
+        "abc", command='kitty "oops', which=which_from("docker"), launcher=lambda argv: True
+    )
+    assert not launch.ok
+    assert launch.reason and "terminal command" in launch.reason
+
+
+def test_open_shell_custom_command_not_found_reports_reason() -> None:
+    launch = open_shell(
+        "abc", command="nope -e", which=which_from("docker"), launcher=lambda argv: True
+    )
+    assert not launch.ok
+    assert launch.reason and "nope" in launch.reason
+
+
+def test_detected_terminal_joins_the_auto_command_or_is_empty() -> None:
+    from anchorage.core.terminal import detected_terminal
+
+    assert detected_terminal({}, which_from("konsole")) == "konsole -e"
+    assert detected_terminal({}, which_from()) == ""

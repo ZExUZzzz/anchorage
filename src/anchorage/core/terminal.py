@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import shlex
 import shutil
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
@@ -61,20 +62,37 @@ def _start_detached(argv: list[str]) -> bool:
     return bool(started)
 
 
+def detected_terminal(environ: Mapping[str, str] | None = None, which: Which = shutil.which) -> str:
+    """The automatically chosen terminal command line, or an empty string when none is found."""
+    found = find_terminal(environ, which)
+    return shlex.join(found) if found else ""
+
+
 def open_shell(
     container_id: str,
     *,
+    command: str = "",
     environ: Mapping[str, str] | None = None,
     which: Which = shutil.which,
     launcher: Callable[[list[str]], bool] | None = None,
 ) -> Launch:
+    """Open a shell; a non-blank ``command`` replaces the automatic terminal detection."""
     docker = which("docker")
     if not docker:
         return Launch(exec_command(container_id), None, "docker CLI not found in PATH")
-    command = exec_command(container_id, docker)
-    terminal = find_terminal(environ, which)
-    if terminal is None:
-        return Launch(command, None, "no terminal emulator found")
-    argv = [*terminal, *command]
+    exec_argv = exec_command(container_id, docker)
+    terminal: tuple[str, ...] | None
+    if command.strip():
+        try:
+            terminal = tuple(shlex.split(command))
+        except ValueError as exc:
+            return Launch(exec_argv, None, f"invalid terminal command ({exc})")
+        if not which(terminal[0]):
+            return Launch(exec_argv, None, f"terminal command {terminal[0]!r} not found")
+    else:
+        terminal = find_terminal(environ, which)
+        if terminal is None:
+            return Launch(exec_argv, None, "no terminal emulator found")
+    argv = [*terminal, *exec_argv]
     started = (launcher or _start_detached)(argv)
-    return Launch(command, terminal, None if started else "failed to start the terminal")
+    return Launch(exec_argv, terminal, None if started else "failed to start the terminal")

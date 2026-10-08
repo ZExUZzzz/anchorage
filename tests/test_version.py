@@ -5,6 +5,13 @@ from pathlib import Path
 import pytest
 
 import anchorage
+from anchorage.core.settings import AppSettings
+
+
+def tmp_settings(tmp_path: Path) -> AppSettings:
+    from PySide6.QtCore import QSettings
+
+    return AppSettings(QSettings(str(tmp_path / "s.ini"), QSettings.Format.IniFormat))
 
 
 def test_version_matches_pyproject() -> None:
@@ -45,22 +52,21 @@ def test_app_id_is_shared() -> None:
     assert APP_ID == APP_ID_FROM_APP == "io.github.zexuzzzz.Anchorage"
 
 
-def test_parse_args_backend_default_and_env(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+def test_parse_args_leaves_unset_options_as_none() -> None:
     from anchorage.app import parse_args
 
-    monkeypatch.delenv("ANCHORAGE_BACKEND", raising=False)
-    assert parse_args(["anchorage"]).backend == "native"
-    monkeypatch.setenv("ANCHORAGE_BACKEND", "dockerpy")
-    assert parse_args(["anchorage"]).backend == "dockerpy"
-    assert parse_args(["anchorage", "--backend", "native"]).backend == "native"
+    args = parse_args(["anchorage"])
+    assert (args.socket, args.backend, args.log_colors) == (None, None, None)
+    args = parse_args(["anchorage", "--backend", "native", "--log-colors", "level"])
+    assert (args.backend, args.log_colors) == ("native", "level")
 
 
-def test_invalid_backend_env_is_rejected(monkeypatch) -> None:  # type: ignore[no-untyped-def]
-    from anchorage.app import parse_args
+def test_invalid_backend_env_is_rejected(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    from anchorage.app import resolve_or_exit
 
     monkeypatch.setenv("ANCHORAGE_BACKEND", "bogus")
     with pytest.raises(SystemExit):
-        parse_args(["anchorage"])
+        resolve_or_exit(["anchorage"], tmp_settings(tmp_path))
 
 
 def test_create_api_dockerpy_backend() -> None:
@@ -91,14 +97,25 @@ def test_create_api_dockerpy_missing(monkeypatch) -> None:  # type: ignore[no-un
         create_api("/tmp/x.sock", "dockerpy")
 
 
-def test_parse_args_log_colors_default_env_and_validation(monkeypatch) -> None:  # type: ignore[no-untyped-def]
-    from anchorage.app import parse_args
+def test_invalid_log_colors_env_is_rejected(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    from anchorage.app import resolve_or_exit
 
-    monkeypatch.delenv("ANCHORAGE_LOG_COLORS", raising=False)
-    assert parse_args(["anchorage"]).log_colors == "stream"
-    assert parse_args(["anchorage", "--log-colors", "level"]).log_colors == "level"
-    monkeypatch.setenv("ANCHORAGE_LOG_COLORS", "level")
-    assert parse_args(["anchorage"]).log_colors == "level"
     monkeypatch.setenv("ANCHORAGE_LOG_COLORS", "rainbow")
     with pytest.raises(SystemExit):
-        parse_args(["anchorage"])
+        resolve_or_exit(["anchorage"], tmp_settings(tmp_path))
+
+
+def test_resolve_or_exit_applies_flag_env_saved_precedence(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    from anchorage.app import resolve_or_exit
+
+    for name in ("ANCHORAGE_BACKEND", "ANCHORAGE_LOG_COLORS", "DOCKER_HOST"):
+        monkeypatch.delenv(name, raising=False)
+    settings = tmp_settings(tmp_path)
+    settings.log_colors = "level"
+    _, resolved = resolve_or_exit(["anchorage"], settings)
+    assert resolved.log_colors == "level"
+    monkeypatch.setenv("ANCHORAGE_LOG_COLORS", "stream")
+    _, resolved = resolve_or_exit(["anchorage"], settings)
+    assert resolved.log_colors == "stream"
+    _, resolved = resolve_or_exit(["anchorage", "--log-colors", "level"], settings)
+    assert resolved.log_colors == "level"
