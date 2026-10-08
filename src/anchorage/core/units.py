@@ -11,7 +11,9 @@ _UNITS = ("B", "KB", "MB", "GB", "TB", "PB")
 
 def format_decimal(value: float) -> str:
     """One decimal place with the decimal separator of the interface language."""
-    return QLocale().toString(value, "f", 1)
+    locale = QLocale()
+    locale.setNumberOptions(QLocale.NumberOption.OmitGroupSeparator)
+    return locale.toString(value, "f", 1)
 
 
 def format_bytes(value: int | float) -> str:
