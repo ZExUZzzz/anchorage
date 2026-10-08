@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background Canvas Palette -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#24272c"/>
+      <stop offset="100%" stop-color="#1a1c1f"/>
+    </linearGradient>
+
+    <!-- Subtle container glow -->
+    <linearGradient id="cubeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+
+    <!-- Chrome/Steel Anchor Gradient -->
+    <linearGradient id="steelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+
+    <!-- Soft drop shadow for desktop dock/panel -->
+    <filter id="softShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base conforming to modern Linux desktop standards (KDE / GNOME HIG) -->
+  <rect x="18" y="18" width="220" height="220" rx="48" fill="url(#bgGrad)" stroke="#3a3f47" stroke-width="1.5"/>
+
+  <!-- Icon Artwork -->
+  <g filter="url(#softShadow)">
+    <!-- 1. The Container Cube (Anchored payload) -->
+    <!-- Top Face -->
+    <polygon points="128,66 172,90 128,114 84,90" fill="#1e2229" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Left Face -->
+    <polygon points="84,90 128,114 128,162 84,138" fill="#15181d" stroke="#0284c7" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Right Face -->
+    <polygon points="128,114 172,90 172,138 128,162" fill="#1b1e24" stroke="#0284c7" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Inner Container Grid Line Accent -->
+    <line x1="84" y1="114" x2="128" y2="138" stroke="#0284c7" stroke-width="1.5" stroke-opacity="0.4"/>
+    <line x1="128" y1="138" x2="172" y2="114" stroke="#0284c7" stroke-width="1.5" stroke-opacity="0.4"/>
+
+    <!-- 2. The Anchor Structure (Forged Steel & Cyan Pivot) -->
+    <!-- Shackle / Top Ring -->
+    <circle cx="128" cy="50" r="13" fill="none" stroke="url(#steelGrad)" stroke-width="6"/>
+
+    <!-- Crossbar (Stock) -->
+    <rect x="96" y="68" width="64" height="8" rx="4" fill="url(#steelGrad)"/>
+
+    <!-- Vertical Shank -->
+    <rect x="124" y="62" width="8" height="114" rx="4" fill="url(#steelGrad)"/>
+
+    <!-- The Crown and Arms (Sweeping Flukes) -->
+    <path d="M 58,138 C 58,198 198,198 198,138" 
+          fill="none" 
+          stroke="url(#steelGrad)" 
+          stroke-width="9" 
+          stroke-linecap="round"/>
+
+    <!-- Sharp modern flukes (arrowheads) -->
+    <path d="M 58,124 L 46,144 L 70,144 Z" fill="url(#steelGrad)"/>
+    <path d="M 198,124 L 186,144 L 210,144 Z" fill="url(#steelGrad)"/>
+
+    <!-- Cyan Center Point -->
+    <circle cx="128" cy="182" r="5" fill="#38bdf8"/>
+  </g>
+</svg>

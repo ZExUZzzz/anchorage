@@ -1,0 +1,36 @@
+# Maintainer: Pavel Makhnychev <pmakhnychev@gmail.com>
+pkgname=anchorage
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Native desktop client for Docker Engine"
+arch=('any')
+url="https://github.com/zexuzzzz/anchorage"
+license=('MIT')
+depends=('python' 'pyside6' 'qt6-svg' 'hicolor-icon-theme')
+makedepends=('python-build' 'python-installer' 'python-hatchling')
+# python-typing_extensions works around python-pytest-qt not declaring it.
+checkdepends=('python-pytest' 'python-pytest-qt' 'python-typing_extensions')
+optdepends=('docker: the engine this client manages and the docker CLI for "Open shell"'
+            'qt6-wayland: native Wayland window')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+_appid=io.github.zexuzzzz.Anchorage
+
+build() {
+    cd "$pkgname-$pkgver"
+    python -m build --wheel --no-isolation
+}
+
+check() {
+    cd "$pkgname-$pkgver"
+    QT_QPA_PLATFORM=offscreen PYTHONPATH=src python -m pytest -q
+}
+
+package() {
+    cd "$pkgname-$pkgver"
+    python -m installer --destdir="$pkgdir" dist/*.whl
+    install -Dm644 "data/$_appid.desktop" -t "$pkgdir/usr/share/applications"
+    install -Dm644 "data/$_appid.metainfo.xml" -t "$pkgdir/usr/share/metainfo"
+    install -Dm644 src/anchorage/data/icon.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/$_appid.svg"
+    install -Dm644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname"
+}

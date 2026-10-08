@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.zexuzzzz.Anchorage</id>
+  <name>Anchorage</name>
+  <summary>Native desktop client for Docker Engine</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="io.github.zexuzzzz">
+    <name>Pavel Makhnychev</name>
+  </developer>
+  <description>
+    <p>
+      Anchorage talks to a local Docker Engine over its UNIX socket. It shows containers grouped
+      by Compose project with live state, logs, resource charts and details, lets you start, stop,
+      restart and remove them, pull and prune images, and inspect volumes and networks together
+      with the containers that use them. There is no virtual machine and no web view: it is a
+      plain Qt application that follows the desktop theme.
+    </p>
+    <ul>
+      <li>Containers grouped by Compose project, with logs, stats and inspect details</li>
+      <li>Images with pull progress and prune</li>
+      <li>Volumes and networks with their users</li>
+      <li>Open a shell in a container in your terminal emulator</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.zexuzzzz.Anchorage.desktop</launchable>
+  <provides>
+    <binary>anchorage</binary>
+  </provides>
+  <url type="homepage">https://github.com/zexuzzzz/anchorage</url>
+  <url type="bugtracker">https://github.com/zexuzzzz/anchorage/issues</url>
+  <categories>
+    <category>Development</category>
+    <category>System</category>
+  </categories>
+  <keywords>
+    <keyword>docker</keyword>
+    <keyword>container</keyword>
+    <keyword>compose</keyword>
+  </keywords>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.1.0" date="2026-10-08"/>
+  </releases>
+</component>
