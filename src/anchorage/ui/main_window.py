@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 from collections.abc import Callable
 from typing import ClassVar
 
@@ -32,6 +33,7 @@ from anchorage.ui.context import AppContext
 from anchorage.ui.images.page import ImagesPage
 from anchorage.ui.resources.networks import NetworksPage
 from anchorage.ui.resources.volumes import VolumesPage
+from anchorage.ui.settings_dialog import SettingsDialog
 from anchorage.ui.theme import level_color, state_color
 from anchorage.ui.widgets.sidebar import Sidebar
 from anchorage.ui.widgets.toast import Toast
@@ -86,6 +88,8 @@ class MainWindow(QMainWindow):
         row.setSpacing(0)
         self.sidebar = Sidebar()
         self.sidebar.section_changed.connect(self._on_section)
+        self.sidebar.settings_requested.connect(self.open_settings)
+        self.settings_dialog: SettingsDialog | None = None
         row.addWidget(self.sidebar)
 
         content = QWidget()
@@ -225,6 +229,38 @@ class MainWindow(QMainWindow):
                     f"{launch.reason}. Run this command in a terminal:\n\n{command}",
                     ["OK"],
                 )
+
+    def open_settings(self) -> None:
+        if self.app_settings is None:
+            return
+        if self.settings_dialog is not None:
+            self.settings_dialog.raise_()
+            return
+        dialog = SettingsDialog(
+            self.app_settings,
+            self.resolved,
+            discovered_socket=self.context.engine.socket_path,
+            parent=self,
+        )
+        self.settings_dialog = dialog
+        dialog.accepted.connect(lambda: self._on_settings_accepted(dialog))
+        dialog.finished.connect(self._on_settings_closed)
+        dialog.open()
+
+    def _on_settings_closed(self) -> None:
+        self.settings_dialog = None
+
+    def _on_settings_accepted(self, dialog: SettingsDialog) -> None:
+        changed = dialog.save()
+        store = self.app_settings
+        if store is None or not changed:
+            return
+        values = {key: getattr(store, key) for key in changed}
+        self.resolved = dataclasses.replace(self.resolved, **values)
+        if "log_colors" in changed:
+            self.detail_page.log_view.set_color_mode(self.resolved.log_colors)
+        if changed & {"socket", "backend"}:
+            self.toast.show_message("Socket and backend changes apply after a restart")
 
     def _open_shell(self, container_id: str) -> Launch:
         command = self.app_settings.terminal if self.app_settings is not None else ""

@@ -68,7 +68,7 @@ class AppSettings:
 
     @property
     def socket(self) -> str:
-        return self._text("socket") or ""
+        return (self._text("socket") or "").strip()
 
     @socket.setter
     def socket(self, value: str) -> None:
@@ -90,6 +90,8 @@ class Resolved:
     ``socket`` is the path to hand to the client; empty means automatic discovery, which
     also covers ``DOCKER_HOST`` (the client reads it itself). ``locked`` maps a key fixed by
     a flag or variable to the reason, for example ``"--socket"``; the dialog must not save it.
+    An empty ``socket`` is ambiguous, so the dialog reads ``locked["socket"]`` to tell
+    ``DOCKER_HOST`` from automatic discovery.
     """
 
     log_colors: str = DEFAULT_LOG_COLORS

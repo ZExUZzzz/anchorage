@@ -22,6 +22,8 @@ web view.
 - Images with pull progress, remove and prune.
 - Volumes and networks with the containers that use them.
 - Reconnects on its own when the daemon restarts.
+- A Settings button in the sidebar sets the log colours, the Docker client backend, the socket
+  path and the terminal command; socket and backend apply after a restart.
 
 ## Requirements
 
@@ -73,6 +75,9 @@ do not include it.
 default, paints lines written to stderr red, which mirrors `docker logs`; `level` ignores the
 stream and colours lines by the severity marker found near their start (`[ERROR]`,
 `level=warning`, `WARN[0000]`, `FATAL:` and similar): errors red, warnings yellow.
+
+Flags and environment variables override the values saved in Settings for that run, and the
+dialog shows such a setting as fixed and leaves its saved value unchanged.
 
 ## Building packages
 

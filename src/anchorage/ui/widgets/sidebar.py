@@ -4,7 +4,15 @@ from __future__ import annotations
 
 from PySide6.QtCore import QSize, Qt, Signal
 from PySide6.QtGui import QColor, QMouseEvent
-from PySide6.QtWidgets import QLabel, QListWidget, QListWidgetItem, QStyle, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QPushButton,
+    QStyle,
+    QVBoxLayout,
+    QWidget,
+)
 
 from anchorage.ui.theme import icon
 
@@ -36,6 +44,7 @@ class _Nav(QListWidget):
 
 class Sidebar(QWidget):
     section_changed = Signal(str)
+    settings_requested = Signal()
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -63,6 +72,14 @@ class Sidebar(QWidget):
         self.nav.itemClicked.connect(self._on_clicked)
         layout.addWidget(self.nav)
         layout.addStretch()
+        self.settings_button = QPushButton(
+            icon("configure", QStyle.StandardPixmap.SP_FileDialogDetailedView), "Settings"
+        )
+        self.settings_button.setObjectName("settingsButton")
+        self.settings_button.setFlat(True)
+        self.settings_button.setStyleSheet("text-align: left;")
+        self.settings_button.clicked.connect(self.settings_requested)
+        layout.addWidget(self.settings_button)
         self.engine_label = QLabel("Engine: not connected")
         layout.addWidget(self.engine_label)
         self.socket_label = QLabel("")

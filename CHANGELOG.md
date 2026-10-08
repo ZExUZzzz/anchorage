@@ -4,6 +4,8 @@
 
 - The self-contained packages follow the desktop's dark or light preference on KDE.
 - Stats charts scale to the container's own usage, so idle noise no longer fills them.
+- A Settings dialog for log colours, backend, socket and terminal; flags and environment
+  variables still override saved values.
 - Screenshots in the README and the AppStream metadata.
 
 ## 0.1.0 - 2026-10-08
