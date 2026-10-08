@@ -1,6 +1,6 @@
 pkgbase = anchorage
 	pkgdesc = Native desktop client for Docker Engine
-	pkgver = 0.1.0
+	pkgver = 0.2.0
 	pkgrel = 1
 	url = https://github.com/zexuzzzz/anchorage
 	arch = any
@@ -18,7 +18,7 @@ pkgbase = anchorage
 	optdepends = docker: the engine this client manages and the docker CLI for "Open shell"
 	optdepends = qt6-wayland: native Wayland window
 	optdepends = qt6-translations: translated Qt dialogs
-	source = anchorage-0.1.0.tar.gz::https://github.com/zexuzzzz/anchorage/archive/refs/tags/v0.1.0.tar.gz
+	source = anchorage-0.2.0.tar.gz::https://github.com/zexuzzzz/anchorage/archive/refs/tags/v0.2.0.tar.gz
 	sha256sums = SKIP
 
 pkgname = anchorage

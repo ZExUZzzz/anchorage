@@ -1,5 +1,5 @@
 Name:           anchorage
-Version:        0.1.0
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        Native desktop client for Docker Engine
 License:        MIT
@@ -60,5 +60,8 @@ QT_QPA_PLATFORM=offscreen HOME=%{_builddir} %pytest -W error
 %{_datadir}/icons/hicolor/scalable/apps/%{appid}.svg
 
 %changelog
+* Thu Oct 08 2026 Pavel Makhnychev <pmakhnychev@gmail.com> - 0.2.0-1
+- Update to 0.2.0
+
 * Thu Oct 08 2026 Pavel Makhnychev <pmakhnychev@gmail.com> - 0.1.0-1
 - Initial package

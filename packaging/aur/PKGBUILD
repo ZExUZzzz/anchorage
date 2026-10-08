@@ -1,6 +1,6 @@
 # Maintainer: Pavel Makhnychev <pmakhnychev@gmail.com>
 pkgname=anchorage
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=1
 pkgdesc="Native desktop client for Docker Engine"
 arch=('any')

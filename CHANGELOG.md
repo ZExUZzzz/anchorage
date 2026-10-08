@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0 - 2026-10-08
 
 - The interface is translated into Russian, German, Spanish, French and Simplified Chinese;
   choose the language in Settings, with `--language` or `ANCHORAGE_LANGUAGE`.
