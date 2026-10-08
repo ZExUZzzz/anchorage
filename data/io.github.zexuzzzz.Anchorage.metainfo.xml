@@ -23,6 +23,24 @@
       <li>Open a shell in a container in your terminal emulator</li>
     </ul>
   </description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Containers grouped by Compose project</caption>
+      <image>https://raw.githubusercontent.com/zexuzzzz/anchorage/main/docs/screenshots/containers.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Logs of a container</caption>
+      <image>https://raw.githubusercontent.com/zexuzzzz/anchorage/main/docs/screenshots/container-logs.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Resource charts of a container</caption>
+      <image>https://raw.githubusercontent.com/zexuzzzz/anchorage/main/docs/screenshots/container-stats.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>A network with its containers</caption>
+      <image>https://raw.githubusercontent.com/zexuzzzz/anchorage/main/docs/screenshots/networks.png</image>
+    </screenshot>
+  </screenshots>
   <launchable type="desktop-id">io.github.zexuzzzz.Anchorage.desktop</launchable>
   <provides>
     <binary>anchorage</binary>

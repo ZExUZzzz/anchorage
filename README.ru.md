@@ -6,6 +6,13 @@
 представляет собой обычное Qt-приложение, которое следует теме рабочего стола. Виртуальной
 машины и веб-вью нет.
 
+![Список контейнеров по проектам Compose](docs/screenshots/containers.png)
+
+| | |
+|---|---|
+| ![Логи контейнера](docs/screenshots/container-logs.png) | ![Графики ресурсов контейнера](docs/screenshots/container-stats.png) |
+| ![Сеть и подключённые контейнеры](docs/screenshots/networks.png) | ![Тома](docs/screenshots/volumes.png) |
+
 ## Возможности
 
 - Контейнеры, сгруппированные по проектам Compose, с живым состоянием; запуск, остановка,

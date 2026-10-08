@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- The self-contained packages follow the desktop's dark or light preference on KDE.
+- Stats charts scale to the container's own usage, so idle noise no longer fills them.
+- Screenshots in the README and the AppStream metadata.
+
 ## 0.1.0 - 2026-10-08
 
 First release.

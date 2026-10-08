@@ -47,7 +47,7 @@ dev = [
 packages = ["src/anchorage"]
 
 [tool.hatch.build.targets.sdist]
-exclude = ["docs/superpowers", ".superpowers", ".github"]
+exclude = ["docs/superpowers", "docs/screenshots", ".superpowers", ".github"]
 
 [tool.ruff]
 line-length = 100

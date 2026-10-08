@@ -6,6 +6,13 @@ Native Linux desktop client for Docker Engine. It talks to the daemon over the U
 is a plain Qt application that follows your desktop theme. There is no virtual machine and no
 web view.
 
+![Container list grouped by Compose project](docs/screenshots/containers.png)
+
+| | |
+|---|---|
+| ![Container logs](docs/screenshots/container-logs.png) | ![Container resource charts](docs/screenshots/container-stats.png) |
+| ![Network with its containers](docs/screenshots/networks.png) | ![Volumes](docs/screenshots/volumes.png) |
+
 ## Features
 
 - Containers grouped by Compose project with live state; start, stop, restart, remove.
