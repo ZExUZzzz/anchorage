@@ -22,6 +22,7 @@ def make(qtbot, store: AppSettings, **locked: str) -> SettingsDialog:
         backend=store.backend,
         socket=store.socket,
         terminal=store.terminal,
+        language=store.language,
         locked=dict(locked),
     )
     dialog = SettingsDialog(store, resolved, discovered_socket="/run/docker.sock")
@@ -151,3 +152,52 @@ def test_terminal_tooltip_explains_the_run_option(qtbot, store: AppSettings) -> 
     tip = dialog.terminal.toolTip()
     assert "docker exec -it <container> sh" in tip
     assert "konsole -e" in tip
+
+
+def test_language_combo_lists_system_default_and_native_names(qtbot, store: AppSettings) -> None:
+    dialog = make(qtbot, store)
+    items = [(dialog.language.itemData(i), dialog.language.itemText(i)) for i in range(7)]
+    assert items == [
+        ("", "System default"),
+        ("en", "English"),
+        ("ru", "Русский"),
+        ("de", "Deutsch"),
+        ("es", "Español"),
+        ("fr", "Français"),
+        ("zh_CN", "简体中文"),
+    ]
+    assert dialog.language.currentData() == ""
+
+
+def test_language_is_saved_and_noted_as_needing_a_restart(qtbot, store: AppSettings) -> None:
+    store.language = "de"
+    dialog = make(qtbot, store)
+    assert dialog.language.currentData() == "de"
+    dialog.language.setCurrentIndex(dialog.language.findData("ru"))
+    assert dialog.save() == {"language"}
+    assert store.language == "ru"
+    texts = [label.text() for label in dialog.findChildren(QLabel)]
+    assert texts.count("Applies after a restart") == 3  # backend, socket, language
+
+
+def test_locked_language_is_not_saved(qtbot, store: AppSettings) -> None:
+    store.language = "fr"
+    dialog = make(qtbot, store, language="--language")
+    assert not dialog.language.isEnabled()
+    assert "--language" in dialog.language.toolTip()
+    dialog.language.setCurrentIndex(dialog.language.findData("ru"))
+    assert dialog.save() == set()
+    assert store.language == "fr"
+
+
+def test_window_announces_a_restart_after_a_language_change(
+    qtbot, context: AppContext, store: AppSettings
+) -> None:
+    window = MainWindow(context, app_settings=store)
+    qtbot.addWidget(window)
+    window.open_settings()
+    assert window.settings_dialog is not None
+    window.settings_dialog.language.setCurrentIndex(window.settings_dialog.language.findData("es"))
+    window.settings_dialog.accept()
+    assert store.language == "es"
+    assert "after a restart" in window.toast.label.text()

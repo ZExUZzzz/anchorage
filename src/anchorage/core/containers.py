@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from PySide6.QtCore import QObject, Qt, QTimer, Signal
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication, QObject, Qt, QTimer, Signal
 from PySide6.QtGui import QStandardItem, QStandardItemModel
 
 from anchorage.core.engine import EngineService, EngineState
@@ -20,7 +20,8 @@ GROUP_ROLE = Qt.ItemDataRole.UserRole + 3
 BUSY_ROLE = Qt.ItemDataRole.UserRole + 4
 ID_ROLE = Qt.ItemDataRole.UserRole + 5
 
-STANDALONE_GROUP = "Standalone"
+# Source text and group key; shown translated (see ``_sync_group``).
+STANDALONE_GROUP = str(QT_TRANSLATE_NOOP("ContainerStore", "Standalone"))
 
 
 @dataclass(frozen=True, slots=True)
@@ -254,7 +255,7 @@ class ContainerStore(QObject):
             if item.data(BUSY_ROLE) != busy:
                 item.setData(busy, BUSY_ROLE)
 
-        name = key or STANDALONE_GROUP
+        name = key or QCoreApplication.translate("ContainerStore", "Standalone")
         running = sum(1 for c in containers if c.state == "running")
         summary = GroupSummary(name, len(containers), running, key == "")
         if group.text() != name:

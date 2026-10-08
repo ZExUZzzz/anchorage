@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from PySide6.QtCore import QObject, Qt, QTimer, Signal
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication, QObject, Qt, QTimer, Signal
 from PySide6.QtGui import QStandardItem, QStandardItemModel
 
 from anchorage.core.containers import ContainerStore
@@ -16,7 +16,14 @@ from anchorage.docker.models import Container, Event, Network, PruneResult
 
 ROW_ROLE = Qt.ItemDataRole.UserRole + 2
 SORT_ROLE = Qt.ItemDataRole.UserRole + 3
-COLUMNS = ("Name", "Driver", "Scope", "Subnet", "Containers", "Internal")
+COLUMNS = (
+    str(QT_TRANSLATE_NOOP("NetworkStore", "Name")),
+    str(QT_TRANSLATE_NOOP("NetworkStore", "Driver")),
+    str(QT_TRANSLATE_NOOP("NetworkStore", "Scope")),
+    str(QT_TRANSLATE_NOOP("NetworkStore", "Subnet")),
+    str(QT_TRANSLATE_NOOP("NetworkStore", "Containers")),
+    str(QT_TRANSLATE_NOOP("NetworkStore", "Internal")),
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -71,7 +78,9 @@ class NetworkStore(QObject):
         self._rows: list[NetworkRow] = []
         self._generation = 0
         self.model = QStandardItemModel(0, len(COLUMNS), self)
-        self.model.setHorizontalHeaderLabels(list(COLUMNS))
+        self.model.setHorizontalHeaderLabels(
+            [QCoreApplication.translate("NetworkStore", name) for name in COLUMNS]
+        )
         self._timer = QTimer(self)
         self._timer.setSingleShot(True)
         self._timer.setInterval(coalesce_ms)
@@ -147,7 +156,7 @@ class NetworkStore(QObject):
                 QStandardItem(net.scope),
                 QStandardItem(subnet),
                 QStandardItem(str(len(row.members))),
-                QStandardItem("yes" if net.internal else "no"),
+                QStandardItem(self.tr("yes") if net.internal else self.tr("no")),
             ]
             for cell in cells:
                 cell.setEditable(False)

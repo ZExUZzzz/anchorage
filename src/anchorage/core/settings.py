@@ -10,12 +10,16 @@ from PySide6.QtCore import QSettings
 
 LOG_COLOR_MODES = ("stream", "level")
 BACKENDS = ("native", "dockerpy")
+# Interface languages; the empty string stands for "follow the system locale".
+LANGUAGE_CODES = ("en", "ru", "de", "es", "fr", "zh_CN")
 
 DEFAULT_LOG_COLORS = "stream"
 DEFAULT_BACKEND = "native"
+DEFAULT_LANGUAGE = ""
 
 ENV_LOG_COLORS = "ANCHORAGE_LOG_COLORS"
 ENV_BACKEND = "ANCHORAGE_BACKEND"
+ENV_LANGUAGE = "ANCHORAGE_LANGUAGE"
 ENV_SOCKET = "DOCKER_HOST"
 
 GROUP = "settings"
@@ -23,6 +27,21 @@ GROUP = "settings"
 
 class InvalidEnvironment(ValueError):
     """An environment variable that selects a setting holds an unusable value."""
+
+
+def normalize_language(value: str | None) -> str:
+    """The supported code for ``value`` (``ru``, ``ru_RU``, ``zh-cn``, ...), else ``""``.
+
+    ``""`` means automatic, so an unknown or unsupported value never fails.
+    """
+    if not value:
+        return DEFAULT_LANGUAGE
+    text = value.strip().replace("-", "_").split(".")[0].split("@")[0]
+    for code in LANGUAGE_CODES:
+        if text.lower() == code.lower():
+            return code
+    base = text.split("_")[0].lower()
+    return base if base in LANGUAGE_CODES and base != "zh" else DEFAULT_LANGUAGE
 
 
 class AppSettings:
@@ -67,6 +86,16 @@ class AppSettings:
         self._write("backend", value)
 
     @property
+    def language(self) -> str:
+        return normalize_language(self._text("language"))
+
+    @language.setter
+    def language(self, value: str) -> None:
+        if value and value not in LANGUAGE_CODES:
+            raise ValueError(f"unknown language {value!r}")
+        self._write("language", value)
+
+    @property
     def socket(self) -> str:
         return (self._text("socket") or "").strip()
 
@@ -99,6 +128,7 @@ class Resolved:
     socket: str = ""
     terminal: str = ""
     locked: dict[str, str] = field(default_factory=dict)
+    language: str = DEFAULT_LANGUAGE
 
     @classmethod
     def defaults(cls) -> Resolved:
@@ -145,4 +175,14 @@ def resolve(
     elif environ.get(ENV_SOCKET):
         socket = ""
         locked["socket"] = ENV_SOCKET
-    return Resolved(log_colors, backend, socket, settings.terminal, locked)
+
+    language = settings.language
+    if args.language is not None:
+        language = "" if args.language == "auto" else normalize_language(args.language)
+        locked["language"] = "--language"
+    elif environ.get(ENV_LANGUAGE):
+        language = (
+            "" if environ[ENV_LANGUAGE] == "auto" else normalize_language(environ[ENV_LANGUAGE])
+        )
+        locked["language"] = ENV_LANGUAGE
+    return Resolved(log_colors, backend, socket, settings.terminal, locked, language)

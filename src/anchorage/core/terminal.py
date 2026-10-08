@@ -8,7 +8,7 @@ import shutil
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 
-from PySide6.QtCore import QProcess
+from PySide6.QtCore import QCoreApplication, QProcess
 
 SHELL_COMMAND = "command -v bash >/dev/null 2>&1 && exec bash || exec sh"
 
@@ -79,23 +79,49 @@ def open_shell(
     """Open a shell; a non-blank ``command`` replaces the automatic terminal detection."""
     docker = which("docker")
     if not docker:
-        return Launch(exec_command(container_id), None, "docker CLI not found in PATH")
+        return Launch(
+            exec_command(container_id),
+            None,
+            QCoreApplication.translate("Terminal", "docker CLI not found in PATH"),
+        )
     exec_argv = exec_command(container_id, docker)
     terminal: tuple[str, ...] | None
     if command.strip():
         try:
             terminal = tuple(shlex.split(command))
         except ValueError as exc:
-            return Launch(exec_argv, None, f"invalid terminal command ({exc})")
+            return Launch(
+                exec_argv,
+                None,
+                QCoreApplication.translate("Terminal", "invalid terminal command ({error})").format(
+                    error=exc
+                ),
+            )
         if not terminal or not terminal[0]:
-            return Launch(exec_argv, None, "empty terminal command")
+            return Launch(
+                exec_argv, None, QCoreApplication.translate("Terminal", "empty terminal command")
+            )
         terminal = (os.path.expanduser(terminal[0]), *terminal[1:])
         if not which(terminal[0]):
-            return Launch(exec_argv, None, f"terminal command {terminal[0]!r} not found")
+            return Launch(
+                exec_argv,
+                None,
+                QCoreApplication.translate(
+                    "Terminal", "terminal command {command} not found"
+                ).format(command=repr(terminal[0])),
+            )
     else:
         terminal = find_terminal(environ, which)
         if terminal is None:
-            return Launch(exec_argv, None, "no terminal emulator found")
+            return Launch(
+                exec_argv,
+                None,
+                QCoreApplication.translate("Terminal", "no terminal emulator found"),
+            )
     argv = [*terminal, *exec_argv]
     started = (launcher or _start_detached)(argv)
-    return Launch(exec_argv, terminal, None if started else "failed to start the terminal")
+    return Launch(
+        exec_argv,
+        terminal,
+        None if started else QCoreApplication.translate("Terminal", "failed to start the terminal"),
+    )

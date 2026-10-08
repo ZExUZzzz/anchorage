@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from PySide6.QtCore import QObject, Qt, QTimer, Signal
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication, QObject, Qt, QTimer, Signal
 from PySide6.QtGui import QStandardItem, QStandardItemModel
 
 from anchorage.core.containers import ContainerStore
 from anchorage.core.engine import EngineService, EngineState
+from anchorage.core.units import english_plural
 from anchorage.core.workers import TaskRunner
 from anchorage.docker.client import EngineAPI
 from anchorage.docker.errors import DockerError
@@ -16,7 +17,13 @@ from anchorage.docker.models import Container, Event, PruneResult, Volume
 
 ROW_ROLE = Qt.ItemDataRole.UserRole + 2
 SORT_ROLE = Qt.ItemDataRole.UserRole + 3
-COLUMNS = ("Name", "Driver", "Compose project", "Used by", "Created")
+COLUMNS = (
+    str(QT_TRANSLATE_NOOP("VolumeStore", "Name")),
+    str(QT_TRANSLATE_NOOP("VolumeStore", "Driver")),
+    str(QT_TRANSLATE_NOOP("VolumeStore", "Compose project")),
+    str(QT_TRANSLATE_NOOP("VolumeStore", "Used by")),
+    str(QT_TRANSLATE_NOOP("VolumeStore", "Created")),
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -52,12 +59,6 @@ def uses_by_volume(containers: list[Container]) -> dict[str, list[VolumeUse]]:
     return uses
 
 
-def _used_by(count: int) -> str:
-    if count == 0:
-        return "unused"
-    return f"{count} container" + ("s" if count != 1 else "")
-
-
 class VolumeStore(QObject):
     refreshed = Signal()
     refresh_failed = Signal(object)
@@ -82,7 +83,9 @@ class VolumeStore(QObject):
         self._rows: list[VolumeRow] = []
         self._generation = 0
         self.model = QStandardItemModel(0, len(COLUMNS), self)
-        self.model.setHorizontalHeaderLabels(list(COLUMNS))
+        self.model.setHorizontalHeaderLabels(
+            [QCoreApplication.translate("VolumeStore", name) for name in COLUMNS]
+        )
         self._timer = QTimer(self)
         self._timer.setSingleShot(True)
         self._timer.setInterval(coalesce_ms)
@@ -92,6 +95,11 @@ class VolumeStore(QObject):
             engine.event_received.connect(self.handle_event)
         if containers is not None:
             containers.refreshed.connect(self._rebuild)
+
+    def _used_by(self, count: int) -> str:
+        if count == 0:
+            return self.tr("unused")
+        return english_plural(self.tr("%n container(s)", "", count), count)
 
     def refresh(self) -> None:
         self._generation += 1
@@ -160,7 +168,7 @@ class VolumeStore(QObject):
                 QStandardItem(row.name),
                 QStandardItem(row.volume.driver),
                 QStandardItem(project),
-                QStandardItem(_used_by(len({u.container_id for u in row.users}))),
+                QStandardItem(self._used_by(len({u.container_id for u in row.users}))),
                 QStandardItem(created),
             ]
             for cell in cells:

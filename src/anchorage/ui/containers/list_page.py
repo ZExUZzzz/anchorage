@@ -5,6 +5,8 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from PySide6.QtCore import (
+    QT_TRANSLATE_NOOP,
+    QCoreApplication,
     QEvent,
     QModelIndex,
     QObject,
@@ -35,11 +37,11 @@ from anchorage.ui.theme import icon
 from anchorage.ui.widgets.empty_state import EmptyState
 
 ACTIONS: tuple[tuple[str, str], ...] = (
-    ("start", "Start"),
-    ("stop", "Stop"),
-    ("restart", "Restart"),
-    ("remove", "Remove"),
-    ("shell", "Open shell"),
+    ("start", str(QT_TRANSLATE_NOOP("ContainersPage", "Start"))),
+    ("stop", str(QT_TRANSLATE_NOOP("ContainersPage", "Stop"))),
+    ("restart", str(QT_TRANSLATE_NOOP("ContainersPage", "Restart"))),
+    ("remove", str(QT_TRANSLATE_NOOP("ContainersPage", "Remove"))),
+    ("shell", str(QT_TRANSLATE_NOOP("ContainersPage", "Open shell"))),
 )
 
 
@@ -82,20 +84,20 @@ class ContainersPage(QWidget):
 
         header = QHBoxLayout()
         header.setSpacing(10)
-        title = QLabel("Containers")
+        title = QLabel(self.tr("Containers"))
         title.setObjectName("pageTitle")
         header.addWidget(title)
         header.addStretch()
         self.filter_edit = QLineEdit()
         self.filter_edit.setObjectName("filter")
-        self.filter_edit.setPlaceholderText("Filter by name, image, project…")
+        self.filter_edit.setPlaceholderText(self.tr("Filter by name, image, project…"))
         self.filter_edit.setClearButtonEnabled(True)
         self.filter_edit.setFixedWidth(260)
         header.addWidget(self.filter_edit)
-        self.running_only = QPushButton("Running only")
+        self.running_only = QPushButton(self.tr("Running only"))
         self.running_only.setCheckable(True)
         header.addWidget(self.running_only)
-        self.refresh_button = QPushButton("Refresh")
+        self.refresh_button = QPushButton(self.tr("Refresh"))
         self.refresh_button.setIcon(icon("view-refresh", QStyle.StandardPixmap.SP_BrowserReload))
         self.refresh_button.clicked.connect(self.refresh_requested.emit)
         header.addWidget(self.refresh_button)
@@ -218,7 +220,7 @@ class ContainersPage(QWidget):
         state = container.state if container else ""
         allowed = enabled_actions(state, self._store.is_busy(container_id))
         for key, text in ACTIONS:
-            action = QAction(text, menu)
+            action = QAction(QCoreApplication.translate("ContainersPage", text), menu)
             action.setEnabled(key in allowed)
             action.triggered.connect(
                 lambda _=False, k=key, cid=container_id: self.action_requested.emit(k, cid)

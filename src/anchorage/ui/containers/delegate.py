@@ -27,6 +27,7 @@ from PySide6.QtGui import (
 from PySide6.QtWidgets import QStyle, QStyledItemDelegate, QStyleOptionViewItem
 
 from anchorage.core.containers import BUSY_ROLE, CONTAINER_ROLE, GROUP_ROLE, KIND_ROLE, GroupSummary
+from anchorage.core.units import english_plural
 from anchorage.docker.models import Container, PortBinding
 from anchorage.ui.theme import state_color
 
@@ -163,8 +164,14 @@ class ContainerDelegate(QStyledItemDelegate):
         width = painter.fontMetrics().horizontalAdvance(summary.name)
         painter.setFont(small)
         painter.setPen(pal.color(QPalette.ColorRole.PlaceholderText))
-        count = f"{summary.total} container" + ("s" if summary.total != 1 else "")
-        text = count if summary.standalone else f"{count} · {summary.running} running"
+        count = english_plural(self.tr("%n container(s)", "", summary.total), summary.total)
+        text = (
+            count
+            if summary.standalone
+            else self.tr("{count} · {running}").format(
+                count=count, running=self.tr("%n running", "", summary.running)
+            )
+        )
         painter.drawText(
             QRect(x + width + 12, r.top(), 400, r.height()), Qt.AlignmentFlag.AlignVCenter, text
         )
@@ -217,7 +224,7 @@ class ContainerDelegate(QStyledItemDelegate):
         painter.setPen(muted)
         parts = [container.image, container.status]
         if container.compose_service:
-            parts.append(f"service: {container.compose_service}")
+            parts.append(self.tr("service: {name}").format(name=container.compose_service))
         line2 = painter.fontMetrics().elidedText(
             "  ·  ".join(parts), Qt.TextElideMode.ElideRight, text_width
         )

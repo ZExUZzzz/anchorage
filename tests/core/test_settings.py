@@ -18,7 +18,12 @@ def settings(store: QSettings) -> AppSettings:
 
 
 def args(**given: str | None) -> argparse.Namespace:
-    values: dict[str, str | None] = {"socket": None, "backend": None, "log_colors": None}
+    values: dict[str, str | None] = {
+        "socket": None,
+        "backend": None,
+        "log_colors": None,
+        "language": None,
+    }
     values.update(given)
     return argparse.Namespace(**values)
 
@@ -143,3 +148,62 @@ def test_invalid_environment_values_are_errors(settings: AppSettings) -> None:
 def test_flag_overrides_an_invalid_environment_value(settings: AppSettings) -> None:
     resolved = resolve(args(backend="native"), {"ANCHORAGE_BACKEND": "bogus"}, settings)
     assert resolved.backend == "native"
+
+
+def test_language_defaults_to_automatic(settings: AppSettings) -> None:
+    assert settings.language == ""
+    resolved = resolve(args(), {}, settings)
+    assert resolved.language == ""
+    assert "language" not in resolved.locked
+
+
+def test_language_setter_writes_the_settings_key(store: QSettings, settings: AppSettings) -> None:
+    settings.language = "de"
+    assert store.value("settings/language") == "de"
+    settings.language = "zh_CN"
+    assert AppSettings(store).language == "zh_CN"
+    settings.language = ""
+    assert settings.language == ""
+    with pytest.raises(ValueError):
+        settings.language = "klingon"
+
+
+@pytest.mark.parametrize("saved", ["klingon", "xx_YY", "zh", 42, ["ru", "de"]])
+def test_invalid_saved_language_reads_as_automatic(
+    store: QSettings, settings: AppSettings, saved: object
+) -> None:
+    store.setValue("settings/language", saved)
+    assert settings.language == ""
+
+
+@pytest.mark.parametrize(
+    ("given", "code"),
+    [("ru", "ru"), ("RU", "ru"), ("ru_RU.UTF-8", "ru"), ("zh-cn", "zh_CN"), ("zh_CN", "zh_CN")],
+)
+def test_language_values_are_normalised(given: str, code: str) -> None:
+    from anchorage.core.settings import normalize_language
+
+    assert normalize_language(given) == code
+
+
+def test_precedence_for_language(settings: AppSettings) -> None:
+    settings.language = "fr"
+    resolved = resolve(args(), {}, settings)
+    assert (resolved.language, "language" in resolved.locked) == ("fr", False)
+    resolved = resolve(args(), {"ANCHORAGE_LANGUAGE": "es"}, settings)
+    assert resolved.language == "es"
+    assert resolved.locked["language"] == "ANCHORAGE_LANGUAGE"
+    resolved = resolve(args(language="de"), {"ANCHORAGE_LANGUAGE": "es"}, settings)
+    assert resolved.language == "de"
+    assert resolved.locked["language"] == "--language"
+    resolved = resolve(args(language="auto"), {"ANCHORAGE_LANGUAGE": "es"}, settings)
+    assert resolved.language == ""
+    assert resolved.locked["language"] == "--language"
+
+
+def test_unusable_language_environment_means_automatic(settings: AppSettings) -> None:
+    settings.language = "fr"
+    resolved = resolve(args(), {"ANCHORAGE_LANGUAGE": "klingon"}, settings)
+    assert resolved.language == ""
+    assert resolved.locked["language"] == "ANCHORAGE_LANGUAGE"
+    assert resolve(args(), {"ANCHORAGE_LANGUAGE": ""}, settings).language == "fr"

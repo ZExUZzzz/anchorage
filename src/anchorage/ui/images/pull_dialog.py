@@ -10,9 +10,9 @@ from anchorage.docker.models import split_reference
 class PullDialog(QDialog):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setWindowTitle("Pull image")
+        self.setWindowTitle(self.tr("Pull image"))
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel("Image reference (repository[:tag]):"))
+        layout.addWidget(QLabel(self.tr("Image reference (repository[:tag]):")))
         self.edit = QLineEdit()
         self.edit.setPlaceholderText("nginx:alpine")
         layout.addWidget(self.edit)

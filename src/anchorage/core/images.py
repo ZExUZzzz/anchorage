@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from PySide6.QtCore import QObject, Qt, QTimer, Signal
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication, QObject, Qt, QTimer, Signal
 from PySide6.QtGui import QStandardItem, QStandardItemModel
 
 from anchorage.core.engine import EngineService, EngineState
@@ -19,7 +19,13 @@ IMAGE_ROLE = Qt.ItemDataRole.UserRole + 1
 ROW_ROLE = Qt.ItemDataRole.UserRole + 2
 SORT_ROLE = Qt.ItemDataRole.UserRole + 3
 
-COLUMNS = ("Repository", "Tag", "ID", "Size", "Created")
+COLUMNS = (
+    str(QT_TRANSLATE_NOOP("ImageStore", "Repository")),
+    str(QT_TRANSLATE_NOOP("ImageStore", "Tag")),
+    str(QT_TRANSLATE_NOOP("ImageStore", "ID")),
+    str(QT_TRANSLATE_NOOP("ImageStore", "Size")),
+    str(QT_TRANSLATE_NOOP("ImageStore", "Created")),
+)
 _NONE = "<none>"
 
 
@@ -133,7 +139,9 @@ class ImageStore(QObject):
         self._jobs: list[PullJob] = []
         self._generation = 0
         self.model = QStandardItemModel(0, len(COLUMNS), self)
-        self.model.setHorizontalHeaderLabels(list(COLUMNS))
+        self.model.setHorizontalHeaderLabels(
+            [QCoreApplication.translate("ImageStore", name) for name in COLUMNS]
+        )
         self._timer = QTimer(self)
         self._timer.setSingleShot(True)
         self._timer.setInterval(coalesce_ms)

@@ -24,7 +24,7 @@ from anchorage.core import terminal
 from anchorage.core.engine import EngineState
 from anchorage.core.settings import AppSettings, Resolved
 from anchorage.core.terminal import Launch
-from anchorage.core.units import format_bytes
+from anchorage.core.units import english_plural, format_bytes
 from anchorage.docker.errors import DockerError, EngineUnavailable, PermissionDenied
 from anchorage.docker.models import PruneResult, VersionInfo
 from anchorage.ui.containers.detail_page import ContainerDetailPage
@@ -212,10 +212,11 @@ class MainWindow(QMainWindow):
         elif action == "remove":
             running = bool(container and container.state in ("running", "paused", "restarting"))
             buttons = ["Force remove", "Cancel"] if running else ["Remove", "Cancel"]
-            text = f"Remove container {name}?" + (
-                " It is running and will be killed." if running else ""
-            )
-            choice = self.confirm("Remove container", text, buttons)
+            if running:
+                text = self.tr("Remove container {name}? It is running and will be killed.")
+            else:
+                text = self.tr("Remove container {name}?")
+            choice = self.confirm(self.tr("Remove container"), text.format(name=name), buttons)
             if choice == "Force remove":
                 store.remove(container_id, force=True)
             elif choice == "Remove":
@@ -225,8 +226,10 @@ class MainWindow(QMainWindow):
             if not launch.ok:
                 command = " ".join(launch.command)
                 self.confirm(
-                    "Cannot open a terminal",
-                    f"{launch.reason}. Run this command in a terminal:\n\n{command}",
+                    self.tr("Cannot open a terminal"),
+                    self.tr("{reason}. Run this command in a terminal:\n\n{command}").format(
+                        reason=launch.reason, command=command
+                    ),
                     ["OK"],
                 )
 
@@ -260,8 +263,10 @@ class MainWindow(QMainWindow):
         self.resolved = dataclasses.replace(self.resolved, **values)
         if "log_colors" in changed:
             self.detail_page.log_view.set_color_mode(self.resolved.log_colors)
-        if changed & {"socket", "backend"}:
-            self.toast.show_message("Socket and backend changes apply after a restart")
+        if changed & {"socket", "backend", "language"}:
+            self.toast.show_message(
+                self.tr("Socket, backend and language changes apply after a restart")
+            )
 
     def _open_shell(self, container_id: str) -> Launch:
         command = self.app_settings.terminal if self.app_settings is not None else ""
@@ -274,7 +279,9 @@ class MainWindow(QMainWindow):
 
     def _remove_image(self, reference: str) -> None:
         choice = self.confirm(
-            "Remove image", f"Remove image {reference}?", ["Remove", "Force remove", "Cancel"]
+            self.tr("Remove image"),
+            self.tr("Remove image {reference}?").format(reference=reference),
+            ["Remove", "Force remove", "Cancel"],
         )
         if choice == "Remove":
             self.context.images.remove(reference)
@@ -282,73 +289,98 @@ class MainWindow(QMainWindow):
             self.context.images.remove(reference, force=True)
 
     def _prune(self) -> None:
-        choice = self.confirm("Prune images", "Remove all dangling images?", ["Prune", "Cancel"])
+        choice = self.confirm(
+            self.tr("Prune images"), self.tr("Remove all dangling images?"), ["Prune", "Cancel"]
+        )
         if choice == "Prune":
             self.context.images.prune()
 
     def _on_pruned(self, result: PruneResult) -> None:
+        count = len(result.deleted)
+        message = self.tr("Pruned %n image(s), reclaimed {size}", "", count)
         self.toast.show_message(
-            f"Pruned {len(result.deleted)} images, reclaimed {format_bytes(result.space_reclaimed)}"
+            english_plural(message, count).format(size=format_bytes(result.space_reclaimed))
         )
 
     def _remove_volume(self, name: str) -> None:
-        choice = self.confirm("Remove volume", f"Remove volume {name}?", ["Remove", "Cancel"])
+        choice = self.confirm(
+            self.tr("Remove volume"),
+            self.tr("Remove volume {name}?").format(name=name),
+            ["Remove", "Cancel"],
+        )
         if choice == "Remove":
             self.context.volumes.remove(name)
 
     def _prune_volumes(self) -> None:
         choice = self.confirm(
-            "Prune volumes",
-            "Remove all volumes not used by any container? Named volumes are included "
-            "and data in them is lost. This cannot be undone.",
+            self.tr("Prune volumes"),
+            self.tr(
+                "Remove all volumes not used by any container? Named volumes are included "
+                "and data in them is lost. This cannot be undone."
+            ),
             ["Prune", "Cancel"],
         )
         if choice == "Prune":
             self.context.volumes.prune()
 
     def _on_volumes_pruned(self, result: PruneResult) -> None:
-        reclaimed = format_bytes(result.space_reclaimed)
-        self.toast.show_message(f"Pruned {len(result.deleted)} volumes, reclaimed {reclaimed}")
+        count = len(result.deleted)
+        message = self.tr("Pruned %n volume(s), reclaimed {size}", "", count)
+        self.toast.show_message(
+            english_plural(message, count).format(size=format_bytes(result.space_reclaimed))
+        )
 
     def _remove_network(self, name: str) -> None:
         row = self.context.networks.row(name)
         if row is None:
             return
-        choice = self.confirm("Remove network", f"Remove network {name}?", ["Remove", "Cancel"])
+        choice = self.confirm(
+            self.tr("Remove network"),
+            self.tr("Remove network {name}?").format(name=name),
+            ["Remove", "Cancel"],
+        )
         if choice == "Remove":
             self.context.networks.remove(row.network.id)
 
     def _prune_networks(self) -> None:
         choice = self.confirm(
-            "Prune networks", "Remove all networks not used by any container?", ["Prune", "Cancel"]
+            self.tr("Prune networks"),
+            self.tr("Remove all networks not used by any container?"),
+            ["Prune", "Cancel"],
         )
         if choice == "Prune":
             self.context.networks.prune()
 
     def _on_networks_pruned(self, result: PruneResult) -> None:
-        self.toast.show_message(f"Pruned {len(result.deleted)} networks")
+        count = len(result.deleted)
+        self.toast.show_message(english_plural(self.tr("Pruned %n network(s)", "", count), count))
 
     def _on_action_failed(self, target: str, error: DockerError) -> None:
         self.toast.show_message(error.message)
 
     def _on_refresh_failed(self, error: DockerError) -> None:
-        self.toast.show_message(f"Refresh failed: {error.message}")
+        self.toast.show_message(self.tr("Refresh failed: {message}").format(message=error.message))
 
     def _update_counts(self) -> None:
         containers = self.context.containers.containers()
         running = sum(1 for c in containers if c.state == "running")
         images = len({r.image.id for r in self.context.images.rows()})
         projects = len({c.compose_project for c in containers if c.compose_project})
-        parts = [
-            f"{len(containers)} containers, {running} running",
-            f"{images} image" + ("s" if images != 1 else ""),
-        ]
         volumes = len(self.context.volumes.rows())
         networks = len(self.context.networks.rows())
-        parts.append(f"{volumes} volume" + ("s" if volumes != 1 else ""))
-        parts.append(f"{networks} network" + ("s" if networks != 1 else ""))
+        parts = [
+            self.tr("{containers}, {running}").format(
+                containers=english_plural(
+                    self.tr("%n container(s)", "", len(containers)), len(containers)
+                ),
+                running=self.tr("%n running", "", running),
+            ),
+            english_plural(self.tr("%n image(s)", "", images), images),
+            english_plural(self.tr("%n volume(s)", "", volumes), volumes),
+            english_plural(self.tr("%n network(s)", "", networks), networks),
+        ]
         if projects:
-            parts.append(f"{projects} compose project" + ("s" if projects != 1 else ""))
+            parts.append(english_plural(self.tr("%n compose project(s)", "", projects), projects))
         self.status_counts.setText("  ·  ".join(parts))
 
     def _on_section(self, key: str) -> None:
@@ -367,46 +399,54 @@ class MainWindow(QMainWindow):
         engine = self.context.engine
         error = engine.error
         if state is EngineState.CONNECTED:
-            text, color = "Connected", state_color("running", palette)
+            text, color = self.tr("Connected"), state_color("running", palette)
             self.containers_page.clear_empty()
             self.images_page.clear_empty()
             self.volumes_page.clear_empty()
             self.networks_page.clear_empty()
         else:
             if state is EngineState.CONNECTING:
-                text, color = "Connecting…", state_color("paused", palette)
-                title, message = "Connecting to Docker Engine…", engine.socket_path
+                text, color = self.tr("Connecting…"), state_color("paused", palette)
+                title, message = self.tr("Connecting to Docker Engine…"), engine.socket_path
             elif isinstance(error, PermissionDenied):
                 text, color = (
-                    "Permission denied on the Docker socket",
+                    self.tr("Permission denied on the Docker socket"),
                     level_color("error", palette),
                 )
-                title = "Permission denied"
-                message = (
-                    f"Add your user to the docker group to use {engine.socket_path}, "
-                    "then log in again."
-                )
+                title = self.tr("Permission denied")
+                message = self.tr(
+                    "Add your user to the docker group to use {path}, then log in again."
+                ).format(path=engine.socket_path)
             elif error is not None and not isinstance(error, EngineUnavailable):
                 text, color = error.message, level_color("error", palette)
-                title, message = "Cannot reach Docker Engine", error.message
+                title, message = self.tr("Cannot reach Docker Engine"), error.message
             else:
                 if isinstance(error, EngineUnavailable):
-                    text, color = "Docker Engine is not running", level_color("error", palette)
+                    text = self.tr("Docker Engine is not running")
+                    color = level_color("error", palette)
                 else:
-                    text, color = "Not connected", state_color("dead", palette)
+                    text, color = self.tr("Not connected"), state_color("dead", palette)
                 detail = error.message if error else ""
                 saved_socket = self.resolved.socket
                 if saved_socket and "socket" not in self.resolved.locked:
-                    title = "Docker socket not available"
+                    title = self.tr("Docker socket not available")
                     message = (
-                        f"The socket set in Settings ({saved_socket}) is not available. "
-                        "Start the docker service, or change the socket in Settings or clear "
-                        f"it to find the daemon automatically.\n{detail}"
-                    ).strip()
+                        self.tr(
+                            "The socket set in Settings ({socket}) is not available. "
+                            "Start the docker service, or change the socket in Settings or clear "
+                            "it to find the daemon automatically.\n{detail}"
+                        )
+                        .format(socket=saved_socket, detail=detail)
+                        .strip()
+                    )
                 else:
-                    title = "Docker Engine is not running"
-                    message = f"Start the docker service and retry.\n{detail}".strip()
-            action = None if state is EngineState.CONNECTING else "Retry"
+                    title = self.tr("Docker Engine is not running")
+                    message = (
+                        self.tr("Start the docker service and retry.\n{detail}")
+                        .format(detail=detail)
+                        .strip()
+                    )
+            action = None if state is EngineState.CONNECTING else self.tr("Retry")
             for page in (
                 self.containers_page,
                 self.images_page,
@@ -424,9 +464,9 @@ class MainWindow(QMainWindow):
         self.status_connection.setStyleSheet(f"color: {color.name()};")
         version = engine.version
         engine_text = (
-            f"Engine {version.version}"
+            self.tr("Engine {version}").format(version=version.version)
             if version and state is EngineState.CONNECTED
-            else "Engine: not connected"
+            else self.tr("Engine: not connected")
         )
         self.sidebar.set_engine(f"●  {engine_text}", color)
         if state is not EngineState.CONNECTED:
@@ -436,7 +476,7 @@ class MainWindow(QMainWindow):
 
     def _on_version(self, version: VersionInfo) -> None:
         api = version.api_version
-        self.status_version.setText(f"API {api}" if api else "")
+        self.status_version.setText(self.tr("API {version}").format(version=api) if api else "")
 
     def _ask(self, title: str, text: str, buttons: list[str]) -> str:
         box = QMessageBox(self)
@@ -444,23 +484,37 @@ class MainWindow(QMainWindow):
         box.setText(text)
         box.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         added: dict[str, QPushButton] = {}
-        for label in buttons:
+        for key in buttons:
             role = (
                 QMessageBox.ButtonRole.RejectRole
-                if label == "Cancel"
+                if key == "Cancel"
                 else QMessageBox.ButtonRole.AcceptRole
             )
-            if label.startswith("Force") or label in ("Remove", "Prune"):
+            if key.startswith("Force") or key in ("Remove", "Prune"):
                 role = QMessageBox.ButtonRole.DestructiveRole
-            added[label] = box.addButton(label, role)
+            added[key] = box.addButton(self._button_text(key), role)
         if "Cancel" in added:
             box.setDefaultButton(added["Cancel"])
         box.exec()
         clicked = box.clickedButton()
-        for label, button in added.items():
+        for key, button in added.items():
             if button is clicked:
-                return label
+                return key
         return "Cancel"
+
+    def _button_text(self, key: str) -> str:
+        """The visible label of a confirmation button; ``key`` is what ``confirm`` returns."""
+        if key == "Remove":
+            return self.tr("Remove")
+        if key == "Force remove":
+            return self.tr("Force remove")
+        if key == "Prune":
+            return self.tr("Prune")
+        if key == "Cancel":
+            return self.tr("Cancel")
+        if key == "OK":
+            return self.tr("OK")
+        return key
 
     def closeEvent(self, event: QCloseEvent) -> None:
         if self._settings is not None:

@@ -9,12 +9,13 @@ import os
 import signal
 import sys
 
-from PySide6.QtCore import QSettings
+from PySide6.QtCore import QCoreApplication, QSettings
 from PySide6.QtWidgets import QApplication
 
 from anchorage import APP_ID, __version__
 from anchorage.core.settings import (
     BACKENDS,
+    LANGUAGE_CODES,
     LOG_COLOR_MODES,
     AppSettings,
     InvalidEnvironment,
@@ -24,6 +25,7 @@ from anchorage.core.settings import (
 from anchorage.docker.client import DockerClient, EngineAPI
 from anchorage.docker.errors import DockerError
 from anchorage.docker.transport import DEFAULT_SOCKET_PATH, Transport
+from anchorage.ui import i18n
 from anchorage.ui.context import AppContext
 from anchorage.ui.main_window import MainWindow
 from anchorage.ui.theme import STYLESHEET, app_icon
@@ -47,6 +49,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--log-colors",
         choices=LOG_COLOR_MODES,
         help="colour container logs by output stream (stderr red) or by detected level",
+    )
+    parser.add_argument(
+        "--language",
+        choices=("auto", *LANGUAGE_CODES),
+        help="interface language (default: follow the system locale)",
     )
     parser.add_argument("--verbose", action="store_true", help="debug logging to stderr")
     parser.add_argument("--version", action="version", version=f"anchorage {__version__}")
@@ -96,7 +103,9 @@ def create_api(socket_path: str | None, backend: str = "native") -> tuple[Engine
         return from_env(), None
     except DockerError as exc:
         log.warning("%s; falling back to %s", exc.message, DEFAULT_SOCKET_PATH)
-        warning = f"{exc.message}; using {DEFAULT_SOCKET_PATH}"
+        warning = QCoreApplication.translate("App", "{message}; using {path}").format(
+            message=exc.message, path=DEFAULT_SOCKET_PATH
+        )
         return make(DEFAULT_SOCKET_PATH), warning
 
 
@@ -117,8 +126,14 @@ def create_api_or_fall_back(
         resolved = dataclasses.replace(resolved, backend="native")
         settings.backend = "native"
         api, native_warning = create_api(resolved.socket or None, "native")
-        message = "docker-py is not installed; using the native backend"
-        return api, resolved, f"{message}. {native_warning}" if native_warning else message
+        message = QCoreApplication.translate(
+            "App", "docker-py is not installed; using the native backend"
+        )
+        if native_warning:
+            message = QCoreApplication.translate("App", "{message}. {warning}").format(
+                message=message, warning=native_warning
+            )
+        return api, resolved, message
     return api, resolved, warning
 
 
@@ -137,6 +152,7 @@ def run(argv: list[str]) -> int:
     args, resolved = resolve_or_exit(argv, settings)
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.WARNING)
     app = create_application(argv[:1])
+    i18n.install(app, resolved.language)
     # Qt's event loop never returns to Python, so the default Python handler cannot run;
     # restore the OS default so Ctrl+C in the launching terminal ends the process.
     signal.signal(signal.SIGINT, signal.SIG_DFL)

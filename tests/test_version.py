@@ -163,3 +163,13 @@ def test_flag_chosen_dockerpy_without_the_package_names_the_flag(monkeypatch, tm
             create_api_or_fall_back(resolved, settings)
         assert f"{reason} dockerpy" in str(info.value) or f"{reason}=dockerpy" in str(info.value)
     assert settings.backend == "native"
+
+
+def test_language_flag_accepts_codes_and_auto_only() -> None:
+    from anchorage.app import parse_args
+
+    assert parse_args(["anchorage", "--language", "zh_CN"]).language == "zh_CN"
+    assert parse_args(["anchorage", "--language", "auto"]).language == "auto"
+    assert parse_args(["anchorage"]).language is None
+    with pytest.raises(SystemExit):
+        parse_args(["anchorage", "--language", "klingon"])

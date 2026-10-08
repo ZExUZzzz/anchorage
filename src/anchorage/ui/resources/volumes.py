@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import QSettings
+from PySide6.QtCore import QCoreApplication, QSettings
 from PySide6.QtWidgets import QWidget
 
 from anchorage.core.volumes import ROW_ROLE, SORT_ROLE, VolumeRow, VolumeStore, VolumeUse
@@ -18,7 +18,7 @@ class VolumesPage(ResourcePage):
         parent: QWidget | None = None,
     ) -> None:
         super().__init__(
-            "Volumes",
+            QCoreApplication.translate("VolumesPage", "Volumes"),
             store.model,
             [360, 90, 160, 120, 150],
             ROW_ROLE,
@@ -32,14 +32,23 @@ class VolumesPage(ResourcePage):
     def details_for(self, row: VolumeRow) -> DetailsContent:
         volume = row.volume
         created = volume.created.astimezone().strftime("%Y-%m-%d %H:%M") if volume.created else ""
-        labels = "  ·  ".join(f"{k}={v}" for k, v in sorted(volume.labels.items())) or "none"
-        options = "  ·  ".join(f"{k}={v}" for k, v in sorted(volume.options.items())) or "none"
+        labels = "  ·  ".join(f"{k}={v}" for k, v in sorted(volume.labels.items())) or self.tr(
+            "none"
+        )
+        options = "  ·  ".join(f"{k}={v}" for k, v in sorted(volume.options.items())) or self.tr(
+            "none"
+        )
         fields = [
-            ("Mountpoint", volume.mountpoint),
-            ("Driver", f"{volume.driver} · scope {volume.scope}"),
-            ("Created", created),
-            ("Labels", labels),
-            ("Options", options),
+            (self.tr("Mountpoint"), volume.mountpoint),
+            (
+                self.tr("Driver"),
+                self.tr("{driver} · scope {scope}").format(
+                    driver=volume.driver, scope=volume.scope
+                ),
+            ),
+            (self.tr("Created"), created),
+            (self.tr("Labels"), labels),
+            (self.tr("Options"), options),
         ]
         by_container: dict[str, list[VolumeUse]] = {}
         for use in row.users:
@@ -48,9 +57,9 @@ class VolumesPage(ResourcePage):
             Member(
                 uses[0].container_id,
                 uses[0].container_name,
-                "mounted at " + ", ".join(u.destination for u in uses),
+                self.tr("mounted at {paths}").format(paths=", ".join(u.destination for u in uses)),
                 uses[0].state,
             )
             for uses in by_container.values()
         ]
-        return DetailsContent(volume.name, fields, "USED BY", members)
+        return DetailsContent(volume.name, fields, self.tr("USED BY"), members)

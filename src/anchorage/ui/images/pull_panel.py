@@ -39,7 +39,7 @@ class PullPanel(QFrame):
         self.title.setObjectName("section")
         head.addWidget(self.title)
         head.addStretch()
-        self.cancel_button = QPushButton("Cancel")
+        self.cancel_button = QPushButton(self.tr("Cancel"))
         self.cancel_button.clicked.connect(self._cancel)
         head.addWidget(self.cancel_button)
         layout.addLayout(head)
@@ -62,7 +62,7 @@ class PullPanel(QFrame):
             widget = item.widget() if item is not None else None
             if widget is not None:
                 widget.deleteLater()
-        self.title.setText(f"PULLING  {reference}")
+        self.title.setText(self.tr("PULLING  {reference}").format(reference=reference))
         self.cancel_button.setEnabled(True)
         self._hide_timer.stop()
         self.show()
@@ -119,12 +119,16 @@ class PullPanel(QFrame):
 
     def _finish(self, cancelled: bool, error: object) -> None:
         if cancelled:
-            self.title.setText(f"CANCELLED  {self._reference}")
+            self.title.setText(self.tr("CANCELLED  {reference}").format(reference=self._reference))
         elif error is not None:
             detail = error.message if isinstance(error, DockerError) else str(error)
-            self.title.setText(f"FAILED  {self._reference}: {detail}")
+            self.title.setText(
+                self.tr("FAILED  {reference}: {detail}").format(
+                    reference=self._reference, detail=detail
+                )
+            )
         else:
-            self.title.setText(f"COMPLETE  {self._reference}")
+            self.title.setText(self.tr("COMPLETE  {reference}").format(reference=self._reference))
         self.cancel_button.setEnabled(False)
         self._hide_timer.start(HIDE_DELAY_MS)
         self.job_finished.emit()

@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from PySide6.QtCore import QSettings, QSortFilterProxyModel, Qt, Signal
+from PySide6.QtCore import QCoreApplication, QSettings, QSortFilterProxyModel, Qt, Signal
 from PySide6.QtGui import QColor, QKeyEvent, QStandardItemModel
 from PySide6.QtWidgets import (
     QAbstractItemView,
@@ -89,18 +89,18 @@ class DetailsCard(QFrame):
         head.addStretch()
         self.members_filter = QLineEdit()
         self.members_filter.setObjectName("logsearch")
-        self.members_filter.setPlaceholderText("Filter containers…")
+        self.members_filter.setPlaceholderText(self.tr("Filter containers…"))
         self.members_filter.setClearButtonEnabled(True)
         self.members_filter.setFixedWidth(220)
         self.members_filter.textChanged.connect(self._filter_members)
         head.addWidget(self.members_filter)
         layout.addLayout(head)
-        self.members_empty = QLabel("Not used by any container")
+        self.members_empty = QLabel(self.tr("Not used by any container"))
         self.members_empty.setObjectName("muted")
         layout.addWidget(self.members_empty)
         self.members_table = MembersTable(0, 3)
         self.members_table.setObjectName("members")
-        self.members_table.setHorizontalHeaderLabels(["Container", "", "State"])
+        self.members_table.setHorizontalHeaderLabels([self.tr("Container"), "", self.tr("State")])
         self.members_table.horizontalHeader().setVisible(False)
         self.members_table.verticalHeader().setVisible(False)
         self.members_table.setShowGrid(False)
@@ -166,7 +166,7 @@ class DetailsCard(QFrame):
         for row, member in enumerate(self._members):
             name = QTableWidgetItem(member.name)
             name.setForeground(palette.color(palette.ColorRole.Link))
-            name.setToolTip("Open container")
+            name.setToolTip(self.tr("Open container"))
             extra = QTableWidgetItem(member.extra)
             extra.setForeground(palette.color(palette.ColorRole.PlaceholderText))
             state = QTableWidgetItem(member.state)
@@ -209,7 +209,7 @@ class ResourcePage(QWidget):
         row_role: int,
         sort_role: int,
         *,
-        prune_text: str = "Prune unused",
+        prune_text: str | None = None,
         settings: QSettings | None = None,
         settings_key: str = "",
         parent: QWidget | None = None,
@@ -232,19 +232,21 @@ class ResourcePage(QWidget):
         header.addStretch()
         self.filter_edit = QLineEdit()
         self.filter_edit.setObjectName("filter")
-        self.filter_edit.setPlaceholderText("Filter…")
+        self.filter_edit.setPlaceholderText(QCoreApplication.translate("ResourcePage", "Filter…"))
         self.filter_edit.setClearButtonEnabled(True)
         self.filter_edit.setFixedWidth(240)
         header.addWidget(self.filter_edit)
-        self.remove_button = QPushButton("Remove")
+        self.remove_button = QPushButton(QCoreApplication.translate("ResourcePage", "Remove"))
         self.remove_button.setIcon(icon("edit-delete", QStyle.StandardPixmap.SP_TrashIcon))
         self.remove_button.setEnabled(False)
         self.remove_button.clicked.connect(self._emit_remove)
         header.addWidget(self.remove_button)
-        self.prune_button = QPushButton(prune_text)
+        self.prune_button = QPushButton(
+            prune_text or QCoreApplication.translate("ResourcePage", "Prune unused")
+        )
         self.prune_button.clicked.connect(self.prune_requested.emit)
         header.addWidget(self.prune_button)
-        self.refresh_button = QPushButton("Refresh")
+        self.refresh_button = QPushButton(QCoreApplication.translate("ResourcePage", "Refresh"))
         self.refresh_button.setIcon(icon("view-refresh", QStyle.StandardPixmap.SP_BrowserReload))
         self.refresh_button.clicked.connect(self.refresh_requested.emit)
         header.addWidget(self.refresh_button)

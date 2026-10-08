@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication, Qt, Signal
 from PySide6.QtWidgets import (
     QApplication,
     QFrame,
@@ -29,10 +29,30 @@ from anchorage.ui.theme import icon, state_color
 from anchorage.ui.widgets.log_view import LogView
 
 BUTTONS: tuple[tuple[str, str, str, QStyle.StandardPixmap], ...] = (
-    ("start", "Start", "media-playback-start", QStyle.StandardPixmap.SP_MediaPlay),
-    ("stop", "Stop", "media-playback-stop", QStyle.StandardPixmap.SP_MediaStop),
-    ("restart", "Restart", "view-refresh", QStyle.StandardPixmap.SP_BrowserReload),
-    ("remove", "Remove", "edit-delete", QStyle.StandardPixmap.SP_TrashIcon),
+    (
+        "start",
+        str(QT_TRANSLATE_NOOP("ContainerDetailPage", "Start")),
+        "media-playback-start",
+        QStyle.StandardPixmap.SP_MediaPlay,
+    ),
+    (
+        "stop",
+        str(QT_TRANSLATE_NOOP("ContainerDetailPage", "Stop")),
+        "media-playback-stop",
+        QStyle.StandardPixmap.SP_MediaStop,
+    ),
+    (
+        "restart",
+        str(QT_TRANSLATE_NOOP("ContainerDetailPage", "Restart")),
+        "view-refresh",
+        QStyle.StandardPixmap.SP_BrowserReload,
+    ),
+    (
+        "remove",
+        str(QT_TRANSLATE_NOOP("ContainerDetailPage", "Remove")),
+        "edit-delete",
+        QStyle.StandardPixmap.SP_TrashIcon,
+    ),
 )
 
 
@@ -82,7 +102,7 @@ class ContainerDetailPage(QWidget):
         back.setIcon(icon("go-previous", QStyle.StandardPixmap.SP_ArrowBack))
         back.clicked.connect(self.back_requested.emit)
         header.addWidget(back)
-        self.crumb_root = link_button("Containers")
+        self.crumb_root = link_button(self.tr("Containers"))
         self.crumb_root.clicked.connect(self.list_requested.emit)
         header.addWidget(self.crumb_root)
         sep1 = QLabel("/")
@@ -112,8 +132,8 @@ class ContainerDetailPage(QWidget):
         self.meta_prefix.setObjectName("muted")
         status_row.addWidget(self.meta_prefix)
         self.id_button = link_button()
-        self.id_button.setToolTip("Copy full ID")
-        self.id_button.setAccessibleName("Copy container ID")
+        self.id_button.setToolTip(self.tr("Copy full ID"))
+        self.id_button.setAccessibleName(self.tr("Copy container ID"))
         self.id_button.clicked.connect(self._copy_id)
         status_row.addWidget(self.id_button)
         self.meta_label = QLabel()
@@ -125,13 +145,13 @@ class ContainerDetailPage(QWidget):
         button_row.setSpacing(6)
         self.buttons: dict[str, QPushButton] = {}
         for key, text, icon_name, fallback in BUTTONS:
-            button = QPushButton(text)
+            button = QPushButton(QCoreApplication.translate("ContainerDetailPage", text))
             button.setIcon(icon(icon_name, fallback))
             button.clicked.connect(lambda _=False, k=key: self._emit_action(k))
             self.buttons[key] = button
             button_row.addWidget(button)
         button_row.addStretch()
-        shell = QPushButton("Open shell")
+        shell = QPushButton(self.tr("Open shell"))
         shell.setObjectName("primary")
         shell.setIcon(icon("utilities-terminal", QStyle.StandardPixmap.SP_ComputerIcon))
         shell.clicked.connect(lambda _=False: self._emit_action("shell"))
@@ -144,9 +164,9 @@ class ContainerDetailPage(QWidget):
         self.log_view = LogView()
         self.stats_panel = StatsPanel()
         self.details_tree = DetailsTree()
-        self.tabs.addTab(self.log_view, "Logs")
-        self.tabs.addTab(self.stats_panel, "Stats")
-        self.tabs.addTab(self.details_tree, "Details")
+        self.tabs.addTab(self.log_view, self.tr("Logs"))
+        self.tabs.addTab(self.stats_panel, self.tr("Stats"))
+        self.tabs.addTab(self.details_tree, self.tr("Details"))
         layout.addWidget(self.tabs, 1)
 
         store.refreshed.connect(self.refresh_header)
@@ -211,7 +231,7 @@ class ContainerDetailPage(QWidget):
 
     def _copy_id(self) -> None:
         QApplication.clipboard().setText(self._full_id)
-        self.copied.emit("Container ID copied")
+        self.copied.emit(self.tr("Container ID copied"))
 
     def _on_busy_changed(self, container_id: str, busy: bool) -> None:
         if container_id == self.container_id:
@@ -232,7 +252,9 @@ class ContainerDetailPage(QWidget):
 
     def _on_details_failed(self, container_id: str, error: DockerError) -> None:
         if container_id == self.container_id:
-            self.notice.emit(f"Cannot inspect container: {error.message}")
+            self.notice.emit(
+                self.tr("Cannot inspect container: {message}").format(message=error.message)
+            )
 
     def _on_event(self, event: Event) -> None:
         if event.type != "container" or event.actor_id != self.container_id:

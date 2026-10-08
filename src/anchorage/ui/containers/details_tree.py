@@ -8,13 +8,14 @@ from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem, QWidget
 
 from anchorage.docker.models import ContainerDetails
 
+# Section keys stay English; the visible titles are translated in ``show_details``.
 _EXPANDED = {"General", "Ports", "Mounts", "Networks"}
 
 
 class DetailsTree(QTreeWidget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setHeaderLabels(["Key", "Value"])
+        self.setHeaderLabels([self.tr("Key"), self.tr("Value")])
         self.setColumnWidth(0, 260)
         self.setAlternatingRowColors(True)
 
@@ -25,17 +26,17 @@ class DetailsTree(QTreeWidget):
             details.created.astimezone().strftime("%Y-%m-%d %H:%M:%S") if details.created else ""
         )
         general = [
-            ("ID", details.short_id),
-            ("Image", details.image),
-            ("Created", created),
-            ("Command", shlex.join(details.command)),
-            ("State", state.status),
-            ("Exit code", str(state.exit_code)),
-            ("Restart policy", details.restart_policy),
-            ("TTY", "yes" if details.tty else "no"),
+            (self.tr("ID"), details.short_id),
+            (self.tr("Image"), details.image),
+            (self.tr("Created"), created),
+            (self.tr("Command"), shlex.join(details.command)),
+            (self.tr("State"), state.status),
+            (self.tr("Exit code"), str(state.exit_code)),
+            (self.tr("Restart policy"), details.restart_policy),
+            (self.tr("TTY"), self.tr("yes") if details.tty else self.tr("no")),
         ]
         if state.health:
-            general.insert(5, ("Health", state.health))
+            general.insert(5, (self.tr("Health"), state.health))
         ports = [
             (
                 f"{p.private_port}/{p.protocol}",
@@ -43,7 +44,7 @@ class DetailsTree(QTreeWidget):
             )
             for p in details.ports
             if p.public_port
-        ] or [("(none published)", "")]
+        ] or [(self.tr("(none published)"), "")]
         env = [(k, v) for k, _, v in (item.partition("=") for item in details.env)]
         mounts = [
             (
@@ -53,19 +54,25 @@ class DetailsTree(QTreeWidget):
             for m in details.mounts
         ]
         networks = [
-            (n.name, f"{n.ip_address}/{n.prefix_len}   gw {n.gateway}") for n in details.networks
+            (
+                n.name,
+                self.tr("{address}/{prefix}   gw {gateway}").format(
+                    address=n.ip_address, prefix=n.prefix_len, gateway=n.gateway
+                ),
+            )
+            for n in details.networks
         ]
         labels = sorted(details.labels.items())
-        sections: list[tuple[str, list[tuple[str, str]]]] = [
-            ("General", general),
-            ("Ports", ports),
-            ("Environment", env),
-            ("Mounts", mounts),
-            ("Networks", networks),
-            ("Labels", labels),
+        sections: list[tuple[str, str, list[tuple[str, str]]]] = [
+            ("General", self.tr("General"), general),
+            ("Ports", self.tr("Ports"), ports),
+            ("Environment", self.tr("Environment"), env),
+            ("Mounts", self.tr("Mounts"), mounts),
+            ("Networks", self.tr("Networks"), networks),
+            ("Labels", self.tr("Labels"), labels),
         ]
-        for name, rows in sections:
-            top = QTreeWidgetItem([name, ""])
+        for name, title, rows in sections:
+            top = QTreeWidgetItem([title, ""])
             font = top.font(0)
             font.setBold(True)
             top.setFont(0, font)

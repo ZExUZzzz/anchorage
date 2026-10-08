@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import QSize, Qt, Signal
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication, QSize, Qt, Signal
 from PySide6.QtGui import QColor, QMouseEvent
 from PySide6.QtWidgets import (
     QLabel,
@@ -17,10 +17,34 @@ from PySide6.QtWidgets import (
 from anchorage.ui.theme import icon
 
 SECTIONS: tuple[tuple[str, str, str, QStyle.StandardPixmap, bool], ...] = (
-    ("containers", "Containers", "package-x-generic", QStyle.StandardPixmap.SP_DirIcon, True),
-    ("images", "Images", "media-optical", QStyle.StandardPixmap.SP_DriveCDIcon, True),
-    ("volumes", "Volumes", "drive-harddisk", QStyle.StandardPixmap.SP_DriveHDIcon, True),
-    ("networks", "Networks", "network-wired", QStyle.StandardPixmap.SP_DriveNetIcon, True),
+    (
+        "containers",
+        str(QT_TRANSLATE_NOOP("Sidebar", "Containers")),
+        "package-x-generic",
+        QStyle.StandardPixmap.SP_DirIcon,
+        True,
+    ),
+    (
+        "images",
+        str(QT_TRANSLATE_NOOP("Sidebar", "Images")),
+        "media-optical",
+        QStyle.StandardPixmap.SP_DriveCDIcon,
+        True,
+    ),
+    (
+        "volumes",
+        str(QT_TRANSLATE_NOOP("Sidebar", "Volumes")),
+        "drive-harddisk",
+        QStyle.StandardPixmap.SP_DriveHDIcon,
+        True,
+    ),
+    (
+        "networks",
+        str(QT_TRANSLATE_NOOP("Sidebar", "Networks")),
+        "network-wired",
+        QStyle.StandardPixmap.SP_DriveNetIcon,
+        True,
+    ),
 )
 
 ROW_HEIGHT = 32
@@ -62,7 +86,9 @@ class Sidebar(QWidget):
         self.nav.setUniformItemSizes(True)
         self._keys: list[str] = []
         for key, text, icon_name, fallback, enabled in SECTIONS:
-            item = QListWidgetItem(icon(icon_name, fallback), text)
+            item = QListWidgetItem(
+                icon(icon_name, fallback), QCoreApplication.translate("Sidebar", text)
+            )
             item.setSizeHint(QSize(0, ROW_HEIGHT))
             if not enabled:
                 item.setFlags(Qt.ItemFlag.NoItemFlags)
@@ -73,13 +99,13 @@ class Sidebar(QWidget):
         layout.addWidget(self.nav)
         layout.addStretch()
         self.settings_button = QPushButton(
-            icon("configure", QStyle.StandardPixmap.SP_FileDialogDetailedView), "Settings"
+            icon("configure", QStyle.StandardPixmap.SP_FileDialogDetailedView), self.tr("Settings")
         )
         self.settings_button.setObjectName("settingsButton")
         self.settings_button.setFlat(True)
         self.settings_button.clicked.connect(self.settings_requested)
         layout.addWidget(self.settings_button)
-        self.engine_label = QLabel("Engine: not connected")
+        self.engine_label = QLabel(self.tr("Engine: not connected"))
         layout.addWidget(self.engine_label)
         self.socket_label = QLabel("")
         self.socket_label.setObjectName("muted")

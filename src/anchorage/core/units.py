@@ -1,5 +1,9 @@
 """Human-readable units for the UI."""
 
+import re
+
+_OPTIONAL_PLURAL = re.compile(r"\(s\)")
+
 _UNITS = ("B", "KB", "MB", "GB", "TB", "PB")
 
 
@@ -14,3 +18,12 @@ def format_bytes(value: int | float) -> str:
 
 def format_rate(bytes_per_second: float) -> str:
     return f"{format_bytes(bytes_per_second)}/s"
+
+
+def english_plural(text: str, n: int) -> str:
+    """Resolve the ``(s)`` of an untranslated ``%n thing(s)`` message.
+
+    Qt only substitutes ``%n``; a catalogue supplies real plural forms, but the English source
+    has none, so the optional ending is settled here: ``1 container``, ``2 containers``.
+    """
+    return _OPTIONAL_PLURAL.sub("" if n == 1 else "s", text)
