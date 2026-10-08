@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 import pytest
-from PySide6.QtCore import QCoreApplication, QLocale
+from PySide6.QtCore import QCoreApplication, QLocale, qVersion
 
 from anchorage.core.settings import LANGUAGE_CODES as SETTING_CODES
 from anchorage.ui import i18n
@@ -126,7 +126,10 @@ def test_unknown_language_follows_the_system(qtbot, app, value: str | None, monk
         (["zh-Hans-CN"], "zh_CN"),
         (["zh-CN"], "zh_CN"),
         (["zh-Hant-TW", "fr-FR"], "fr"),
-        (["zh-TW"], "en"),
+        (["zh-Hant-TW", "zh-TW", "zh-Hant", "zh"], "en"),
+        (["zh-Hant-HK", "zh-HK", "zh-Hant", "zh", "fr-FR", "fr"], "fr"),
+        (["zh-Hans-CN", "zh-CN", "zh-Hans", "zh"], "zh_CN"),
+        (["ru-RU", "ru"], "ru"),
         (["zh-Hans-HK"], "zh_CN"),
         (["zh-Hant-CN", "es"], "es"),
         (["xx"], "en"),
@@ -193,6 +196,9 @@ def test_catalogues_are_current_with_the_sources(tmp_path: Path) -> None:
     lupdate = tool("pyside6-lupdate")
     if lupdate is None:
         pytest.skip("pyside6-lupdate is not available")
+    version = subprocess.run([lupdate, "-version"], capture_output=True, text=True).stdout
+    if qVersion() not in version:
+        pytest.skip(f"{lupdate} does not match the installed Qt {qVersion()}")
     fresh = tmp_path / "fresh.ts"
     source = Path(i18n.__file__).resolve().parents[1]
     subprocess.run(

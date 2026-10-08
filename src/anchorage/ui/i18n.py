@@ -33,10 +33,16 @@ def catalogue_path(language: str) -> Path:
 def system_language(ui_languages: list[str] | None = None) -> str:
     """The first supported language among the system's preferred ones, else ``"en"``."""
     tags = QLocale.system().uiLanguages() if ui_languages is None else ui_languages
+    decided: set[str] = set()  # base languages whose first (most specific) tag was judged
     for tag in tags:
         parts = tag.replace("_", "-").split("-")
         base = parts[0].lower()
+        if base in decided:
+            # Qt lists ``zh-Hant-TW, zh-TW, zh-Hant, zh``: the bare ``zh`` must not undo the
+            # Traditional verdict of the first tag.
+            continue
         if base == "zh":
+            decided.add(base)
             # Only Simplified Chinese is shipped; Traditional variants fall through.
             if chinese_variant(parts[1:]):
                 return "zh_CN"
