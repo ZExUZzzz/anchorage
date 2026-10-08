@@ -76,6 +76,7 @@ class LogView(QWidget):
         self.search = _SearchEdit()
         self.search.setObjectName("logsearch")
         self.search.setPlaceholderText(self.tr("Search logs… (Enter next, Shift+Enter previous)"))
+        self.search.setToolTip(self.search.placeholderText())
         self.search.setClearButtonEnabled(True)
         self.search.returnPressed.connect(self.find_next)
         self.search.previous_requested.connect(self.find_previous)

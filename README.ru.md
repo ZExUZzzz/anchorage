@@ -61,7 +61,7 @@ GitHub показывает `~universal` как `.universal` в именах ф�
 
 ## Командная строка
 
-    anchorage [--socket PATH] [--backend {native,dockerpy}] [--log-colors {stream,level}] [--verbose] [--version]
+    anchorage [--socket PATH] [--backend {native,dockerpy}] [--log-colors {stream,level}] [--language CODE] [--verbose] [--version]
 
 `DOCKER_HOST` учитывается, если это URL вида `unix://`. Любое другое значение игнорируется
 с предупреждением, и используется `/var/run/docker.sock` по умолчанию. Если `DOCKER_HOST`
@@ -81,6 +81,16 @@ Debian/Ubuntu/Fedora). В самодостаточные пакеты он не 
 
 Флаги и переменные окружения переопределяют значения, сохранённые в Settings, на время этого
 запуска; диалог показывает такую настройку как зафиксированную и не меняет её сохранённое значение.
+
+## Языки
+
+Интерфейс доступен на английском, русском, немецком, испанском, французском и упрощённом
+китайском. По умолчанию используется язык системы; другой выбирается в Настройки → Язык, флагом
+`--language {auto,en,ru,de,es,fr,zh_CN}` или переменной `ANCHORAGE_LANGUAGE`. Переводы, кроме
+русского, не проверялись носителями языка; исправления приветствуются в виде issue или pull
+request. Каталоги лежат в `src/anchorage/i18n/anchorage_<код>.ts` (список терминов в
+`docs/translations/GLOSSARY.md`), а `tools/update_translations.sh` заново собирает их и
+скомпилированные файлы `.qm` из исходников.
 
 ## Сборка пакетов
 

@@ -22,7 +22,7 @@ class NetworksPage(ResourcePage):
         super().__init__(
             QCoreApplication.translate("NetworksPage", "Networks"),
             store.model,
-            [360, 90, 70, 180, 100, 80],
+            [240, 90, 70, 170, 100, 80],
             ROW_ROLE,
             SORT_ROLE,
             # Per page: the adjective agrees with the resource in some languages.

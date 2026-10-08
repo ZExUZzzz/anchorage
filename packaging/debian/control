@@ -27,7 +27,7 @@ Depends: ${python3:Depends},
          python3-pyside6.qtsvg,
          qt6-svg-plugins,
          hicolor-icon-theme
-Recommends: qt6-wayland, docker.io | docker-ce
+Recommends: qt6-wayland, qt6-translations-l10n, docker.io | docker-ce
 Description: Native desktop client for Docker Engine
  Anchorage talks to a local Docker Engine over its UNIX socket. It shows
  containers grouped by Compose project with live state, logs, resource

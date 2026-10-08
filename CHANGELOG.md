@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- The interface is translated into Russian, German, Spanish, French and Simplified Chinese;
+  choose the language in Settings, with `--language` or `ANCHORAGE_LANGUAGE`.
 - The self-contained packages follow the desktop's dark or light preference on KDE.
 - Stats charts scale to the container's own usage, so idle noise no longer fills them.
 - A Settings dialog for log colours, backend, socket and terminal; flags and environment

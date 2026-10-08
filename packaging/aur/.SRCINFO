@@ -17,6 +17,7 @@ pkgbase = anchorage
 	depends = hicolor-icon-theme
 	optdepends = docker: the engine this client manages and the docker CLI for "Open shell"
 	optdepends = qt6-wayland: native Wayland window
+	optdepends = qt6-translations: translated Qt dialogs
 	source = anchorage-0.1.0.tar.gz::https://github.com/zexuzzzz/anchorage/archive/refs/tags/v0.1.0.tar.gz
 	sha256sums = SKIP
 

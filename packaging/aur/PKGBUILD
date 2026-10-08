@@ -11,7 +11,8 @@ makedepends=('python-build' 'python-installer' 'python-hatchling')
 # python-typing_extensions works around python-pytest-qt not declaring it.
 checkdepends=('python-pytest' 'python-pytest-qt' 'python-typing_extensions')
 optdepends=('docker: the engine this client manages and the docker CLI for "Open shell"'
-            'qt6-wayland: native Wayland window')
+            'qt6-wayland: native Wayland window'
+            'qt6-translations: translated Qt dialogs')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 _appid=io.github.zexuzzzz.Anchorage

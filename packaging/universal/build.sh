@@ -134,11 +134,15 @@ The Qt and PySide6 libraries are shared libraries under site-packages/PySide6 an
 replaced by another build of the same version. The source of each component is available
 from the upstream locations above.
 EOF
-# Static libraries, build-time data, stubs, translations and test suites.
+# Static libraries, build-time data, stubs, most Qt translations and test suites.
 find "$TREE" -name '*.a' -delete
-rm -rf "$LIB"/config-3.12-* "$SITE"/PySide6/Qt/translations "$SITE"/PySide6/include \
+rm -rf "$LIB"/config-3.12-* "$SITE"/PySide6/include \
     "$SITE"/PySide6/typesystems "$SITE"/PySide6/glue "$SITE"/PySide6/scripts
 find "$SITE"/PySide6 "$SITE"/shiboken6 -name '*.pyi' -delete
+# Keep only the Qt dialog translations for the shipped interface languages.
+find "$SITE"/PySide6/Qt/translations -type f \
+    ! \( -name 'qtbase_ru.qm' -o -name 'qtbase_de.qm' -o -name 'qtbase_es.qm' \
+    -o -name 'qtbase_fr.qm' -o -name 'qtbase_zh_CN.qm' \) -delete
 find "$SITE" -type d \( -name test -o -name tests \) -prune -exec rm -rf {} +
 find "$TREE" -name __pycache__ -type d -prune -exec rm -rf {} +
 # Compile everything once, now that the tree is final: unchecked hash-based pycs are never

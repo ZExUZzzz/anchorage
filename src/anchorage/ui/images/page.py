@@ -52,8 +52,11 @@ class ImagesPage(QWidget):
         self.filter_edit.setObjectName("filter")
         self.filter_edit.setPlaceholderText(self.tr("Filter…"))
         self.filter_edit.setClearButtonEnabled(True)
-        self.filter_edit.setFixedWidth(240)
-        header.addWidget(self.filter_edit)
+        # Shrinks before the buttons do, so long translations fit a narrow window.
+        self.filter_edit.setMinimumWidth(130)
+        self.filter_edit.setMaximumWidth(240)
+        self.filter_edit.setToolTip(self.filter_edit.placeholderText())
+        header.addWidget(self.filter_edit, 1)
         self.pull_button = QPushButton(self.tr("Pull…"))
         self.pull_button.setObjectName("primary")
         self.pull_button.setIcon(icon("download", QStyle.StandardPixmap.SP_ArrowDown))
@@ -92,7 +95,7 @@ class ImagesPage(QWidget):
         hdr.setHighlightSections(False)
         hdr.setDefaultAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         hdr.setStretchLastSection(True)
-        for col, width in ((0, 360), (1, 140), (2, 160), (3, 100), (4, 150)):
+        for col, width in ((0, 240), (1, 120), (2, 140), (3, 100), (4, 140)):
             hdr.setSectionResizeMode(col, QHeaderView.ResizeMode.Interactive)
             self.table.setColumnWidth(col, width)
         self.table.sortByColumn(0, Qt.SortOrder.AscendingOrder)

@@ -234,8 +234,11 @@ class ResourcePage(QWidget):
         self.filter_edit.setObjectName("filter")
         self.filter_edit.setPlaceholderText(QCoreApplication.translate("ResourcePage", "Filter…"))
         self.filter_edit.setClearButtonEnabled(True)
-        self.filter_edit.setFixedWidth(240)
-        header.addWidget(self.filter_edit)
+        # Shrinks before the buttons do, so long translations fit a narrow window.
+        self.filter_edit.setMinimumWidth(130)
+        self.filter_edit.setMaximumWidth(240)
+        self.filter_edit.setToolTip(self.filter_edit.placeholderText())
+        header.addWidget(self.filter_edit, 1)
         self.remove_button = QPushButton(QCoreApplication.translate("ResourcePage", "Remove"))
         self.remove_button.setIcon(icon("edit-delete", QStyle.StandardPixmap.SP_TrashIcon))
         self.remove_button.setEnabled(False)

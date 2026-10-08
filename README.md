@@ -60,7 +60,7 @@ For a `pipx` install, take the two files from the source repository
 
 ## Command line
 
-    anchorage [--socket PATH] [--backend {native,dockerpy}] [--log-colors {stream,level}] [--verbose] [--version]
+    anchorage [--socket PATH] [--backend {native,dockerpy}] [--log-colors {stream,level}] [--language CODE] [--verbose] [--version]
 
 `DOCKER_HOST` is honoured when it is a `unix://` URL. Any other value is ignored with a warning
 and the default `/var/run/docker.sock` is used. When `DOCKER_HOST` is unset (and without
@@ -81,6 +81,16 @@ stream and colours lines by the severity marker found near their start (`[ERROR]
 
 Flags and environment variables override the values saved in Settings for that run, and the
 dialog shows such a setting as fixed and leaves its saved value unchanged.
+
+## Languages
+
+The interface is available in English, Russian, German, Spanish, French and Simplified Chinese.
+It follows the system language by default; choose another one in Settings → Language, with
+`--language {auto,en,ru,de,es,fr,zh_CN}` or with `ANCHORAGE_LANGUAGE`. Translations other than
+Russian have not been reviewed by native speakers; corrections are welcome as issues or pull
+requests. The catalogues are `src/anchorage/i18n/anchorage_<code>.ts` (the term list is in
+`docs/translations/GLOSSARY.md`), and `tools/update_translations.sh` regenerates them and the
+compiled `.qm` files from the sources.
 
 ## Building packages
 

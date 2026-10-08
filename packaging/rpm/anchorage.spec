@@ -19,6 +19,7 @@ Requires:       python3-pyside6
 Requires:       qt6-qtsvg
 Requires:       hicolor-icon-theme
 Recommends:     qt6-qtwayland
+Recommends:     qt6-qttranslations
 Recommends:     docker-cli
 
 %global appid io.github.zexuzzzz.Anchorage

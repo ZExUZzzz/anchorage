@@ -20,7 +20,7 @@ class VolumesPage(ResourcePage):
         super().__init__(
             QCoreApplication.translate("VolumesPage", "Volumes"),
             store.model,
-            [360, 90, 160, 120, 150],
+            [240, 90, 160, 120, 150],
             ROW_ROLE,
             SORT_ROLE,
             # Per page: the adjective agrees with the resource in some languages.

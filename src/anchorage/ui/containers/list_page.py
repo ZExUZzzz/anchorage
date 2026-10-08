@@ -92,8 +92,11 @@ class ContainersPage(QWidget):
         self.filter_edit.setObjectName("filter")
         self.filter_edit.setPlaceholderText(self.tr("Filter by name, image, project…"))
         self.filter_edit.setClearButtonEnabled(True)
-        self.filter_edit.setFixedWidth(260)
-        header.addWidget(self.filter_edit)
+        # Shrinks before the buttons do, so long translations fit a narrow window.
+        self.filter_edit.setMinimumWidth(130)
+        self.filter_edit.setMaximumWidth(260)
+        self.filter_edit.setToolTip(self.filter_edit.placeholderText())
+        header.addWidget(self.filter_edit, 1)
         self.running_only = QPushButton(self.tr("Running only"))
         self.running_only.setCheckable(True)
         header.addWidget(self.running_only)
