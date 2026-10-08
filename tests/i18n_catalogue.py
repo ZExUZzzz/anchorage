@@ -9,7 +9,10 @@ from pathlib import Path
 from anchorage.ui import i18n
 
 LANGUAGE_CODES = ("ru", "de", "es", "fr", "zh_CN")
-CATALOGUE_DIR = Path(i18n.CATALOGUE_DIR)
+# The .ts sources live in the source tree only (the wheel ships the compiled .qm), so read them
+# from the checkout; the .qm files are checked where the installed package keeps them.
+CATALOGUE_DIR = Path(__file__).resolve().parents[1] / "src" / "anchorage" / "i18n"
+INSTALLED_CATALOGUE_DIR = Path(i18n.CATALOGUE_DIR)
 
 
 @dataclass(frozen=True, slots=True)

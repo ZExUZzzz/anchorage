@@ -9,7 +9,7 @@ from PySide6.QtCore import QCoreApplication, QLocale, qVersion
 from anchorage.core.settings import LANGUAGE_CODES as SETTING_CODES
 from anchorage.ui import i18n
 from tests.i18n_catalogue import (
-    CATALOGUE_DIR,
+    INSTALLED_CATALOGUE_DIR,
     LANGUAGE_CODES,
     Catalogue,
     load_catalogue,
@@ -142,7 +142,7 @@ def test_system_language_picks_the_first_supported(tags: list[str], code: str) -
 
 def test_shipped_catalogues_load_for_every_language(qtbot, app) -> None:  # type: ignore[no-untyped-def]
     for code in LANGUAGE_CODES:
-        assert (CATALOGUE_DIR / f"anchorage_{code}.qm").is_file()
+        assert (INSTALLED_CATALOGUE_DIR / f"anchorage_{code}.qm").is_file()
         assert i18n.install(app, code) == code
 
 
