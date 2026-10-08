@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import logging
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 
@@ -23,6 +24,8 @@ ENV_LANGUAGE = "ANCHORAGE_LANGUAGE"
 ENV_SOCKET = "DOCKER_HOST"
 
 GROUP = "settings"
+
+log = logging.getLogger(__name__)
 
 
 class InvalidEnvironment(ValueError):
@@ -198,8 +201,11 @@ def resolve(
         language = "" if args.language == "auto" else normalize_language(args.language)
         locked["language"] = "--language"
     elif environ.get(ENV_LANGUAGE):
-        language = (
-            "" if environ[ENV_LANGUAGE] == "auto" else normalize_language(environ[ENV_LANGUAGE])
-        )
+        value = environ[ENV_LANGUAGE]
+        language = "" if value == "auto" else normalize_language(value)
+        if value != "auto" and not language:
+            log.warning(
+                "%s=%r is not a supported language; following the system", ENV_LANGUAGE, value
+            )
         locked["language"] = ENV_LANGUAGE
     return Resolved(log_colors, backend, socket, settings.terminal, locked, language)

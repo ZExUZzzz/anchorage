@@ -219,9 +219,13 @@ def test_precedence_for_language(settings: AppSettings) -> None:
     assert resolved.locked["language"] == "--language"
 
 
-def test_unusable_language_environment_means_automatic(settings: AppSettings) -> None:
+def test_unusable_language_environment_means_automatic(
+    settings: AppSettings, caplog: pytest.LogCaptureFixture
+) -> None:
     settings.language = "fr"
-    resolved = resolve(args(), {"ANCHORAGE_LANGUAGE": "klingon"}, settings)
+    with caplog.at_level("WARNING"):
+        resolved = resolve(args(), {"ANCHORAGE_LANGUAGE": "klingon"}, settings)
+    assert "klingon" in caplog.text
     assert resolved.language == ""
     assert resolved.locked["language"] == "ANCHORAGE_LANGUAGE"
     assert resolve(args(), {"ANCHORAGE_LANGUAGE": ""}, settings).language == "fr"
