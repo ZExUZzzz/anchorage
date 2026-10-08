@@ -1,7 +1,8 @@
 from pathlib import Path
 
 import pytest
-from PySide6.QtCore import QSettings
+from PySide6.QtCore import QSettings, Qt
+from PySide6.QtWidgets import QLabel
 
 from anchorage.core.settings import AppSettings, Resolved
 from anchorage.ui import settings_dialog
@@ -105,3 +106,41 @@ def test_window_warns_when_socket_or_backend_changes(
     window.settings_dialog.accept()
     assert "after a restart" in window.toast.label.text()
     assert store.socket == "/tmp/other.sock"
+
+
+def test_escape_closes_without_saving(qtbot, store: AppSettings) -> None:
+    dialog = make(qtbot, store)
+    dialog.show()
+    dialog.terminal.setText("foot")
+    qtbot.keyClick(dialog, Qt.Key.Key_Escape)
+    assert not dialog.isVisible()
+    assert dialog.result() == dialog.DialogCode.Rejected
+    assert store.terminal == ""
+
+
+def test_enter_accepts(qtbot, store: AppSettings) -> None:
+    dialog = make(qtbot, store)
+    dialog.show()
+    qtbot.keyClick(dialog.terminal, Qt.Key.Key_Return)
+    assert dialog.result() == dialog.DialogCode.Accepted
+
+
+def test_terminal_only_change_saves_without_restart_toast(
+    qtbot, context: AppContext, store: AppSettings
+) -> None:
+    window = MainWindow(context, app_settings=store)
+    qtbot.addWidget(window)
+    window.open_settings()
+    assert window.settings_dialog is not None
+    window.settings_dialog.terminal.setText("foot")
+    window.settings_dialog.accept()
+    assert store.terminal == "foot"
+    assert window.resolved.terminal == "foot"
+    assert not window.toast.isVisible()
+
+
+def test_docker_host_value_is_shown_in_note(qtbot, store: AppSettings, monkeypatch) -> None:
+    monkeypatch.setenv("DOCKER_HOST", "unix:///x/d.sock")
+    dialog = make(qtbot, store, socket="DOCKER_HOST")
+    texts = [label.text() for label in dialog.findChildren(QLabel)]
+    assert any("DOCKER_HOST=unix:///x/d.sock" in text for text in texts)

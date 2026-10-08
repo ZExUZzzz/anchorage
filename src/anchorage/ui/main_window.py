@@ -242,6 +242,7 @@ class MainWindow(QMainWindow):
             discovered_socket=self.context.engine.socket_path,
             parent=self,
         )
+        dialog.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.settings_dialog = dialog
         dialog.accepted.connect(lambda: self._on_settings_accepted(dialog))
         dialog.finished.connect(self._on_settings_closed)

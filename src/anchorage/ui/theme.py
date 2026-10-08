@@ -47,6 +47,7 @@ QPushButton { padding: 5px 12px; border-radius: 6px; border: 1px solid palette(m
 QPushButton:hover { background: palette(midlight); }
 QPushButton:pressed { background: palette(dark); }
 QPushButton:checked { background: palette(highlight); color: palette(highlighted-text); border-color: palette(highlight); }
+QPushButton#settingsButton { text-align: left; }
 QPushButton#primary { background: palette(highlight); color: palette(highlighted-text); border-color: palette(highlight); }
 QPushButton:disabled { color: palette(placeholder-text); }
 QPushButton#primary:disabled { background: palette(button); color: palette(placeholder-text); border-color: palette(mid); }

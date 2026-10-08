@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 
 from PySide6.QtWidgets import (
     QComboBox,
@@ -100,6 +101,8 @@ class SettingsDialog(QDialog):
         notes: list[str] = []
         reason = self._locked.get(key)
         if reason:
+            if reason == "DOCKER_HOST":
+                reason = f"DOCKER_HOST={os.environ.get('DOCKER_HOST', '')}"
             notes.append(f"Set by {reason} for this run")
             for field in fields:
                 field.setEnabled(False)

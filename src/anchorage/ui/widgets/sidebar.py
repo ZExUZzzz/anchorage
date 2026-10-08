@@ -77,7 +77,6 @@ class Sidebar(QWidget):
         )
         self.settings_button.setObjectName("settingsButton")
         self.settings_button.setFlat(True)
-        self.settings_button.setStyleSheet("text-align: left;")
         self.settings_button.clicked.connect(self.settings_requested)
         layout.addWidget(self.settings_button)
         self.engine_label = QLabel("Engine: not connected")
