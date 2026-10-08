@@ -45,6 +45,7 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/anchorage"]
+exclude = ["*.ts"]
 
 [tool.hatch.build.targets.sdist]
 exclude = ["docs/superpowers", "docs/screenshots", ".superpowers", ".github"]
