@@ -6,7 +6,13 @@
 - Stats charts scale to the container's own usage, so idle noise no longer fills them.
 - A Settings dialog for log colours, backend, socket and terminal; flags and environment
   variables still override saved values.
-- Member lists in volume and network details can be used from the keyboard: Tab to reach them, Enter opens the selected container.
+- Member lists in volume and network details can be used from the keyboard: Tab to reach them,
+  Enter opens the selected container.
+- A saved docker-py backend without the docker-py package falls back to the native backend and
+  says so, instead of refusing to start; a backend set by a flag or variable still exits with
+  an error that names it.
+- When the socket saved in Settings is not available, the empty state says so and points to
+  Settings.
 - A refresh that was superseded by a newer one no longer reports its failure.
 - Screenshots in the README and the AppStream metadata.
 

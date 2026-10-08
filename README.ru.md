@@ -34,6 +34,9 @@
 - Python 3.11 или новее и PySide6 6.6 или новее (ставятся пакетом).
 - Для «Open shell»: утилита `docker` и эмулятор терминала (`xdg-terminal-exec` или один из
   распространённых: konsole, gnome-terminal, kitty, alacritty, foot, xfce4-terminal).
+  К команде терминала из настроек дописывается `docker exec -it <container> sh`, поэтому в неё
+  нужно включить параметр эмулятора для запуска команды (`konsole -e`, `gnome-terminal --`,
+  `xterm -e`).
 
 ## Установка
 

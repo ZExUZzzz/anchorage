@@ -59,6 +59,10 @@ class SettingsDialog(QDialog):
         self.browse.clicked.connect(self._browse)
         self.terminal = QLineEdit()
         self.terminal.setPlaceholderText(detected_terminal() or "no terminal found")
+        self.terminal.setToolTip(
+            "Anchorage appends `docker exec -it <container> sh`, so include the option your "
+            "terminal needs to run a command (konsole -e, gnome-terminal --, xterm -e)."
+        )
 
         # A locked key shows what this run uses; an unlocked one shows what is saved.
         self._set_combo(self.log_colors, resolved.log_colors)

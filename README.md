@@ -33,6 +33,9 @@ web view.
 - Python 3.11 or newer and PySide6 6.6 or newer (installed by the package).
 - For "Open shell": the `docker` CLI and a terminal emulator (`xdg-terminal-exec`, or one of
   the common ones such as konsole, gnome-terminal, kitty, alacritty, foot, xfce4-terminal).
+  A terminal command set in Settings gets `docker exec -it <container> sh` appended, so it must
+  include the emulator's option for running a command (`konsole -e`, `gnome-terminal --`,
+  `xterm -e`).
 
 ## Install
 

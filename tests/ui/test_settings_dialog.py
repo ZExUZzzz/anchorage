@@ -144,3 +144,10 @@ def test_docker_host_value_is_shown_in_note(qtbot, store: AppSettings, monkeypat
     dialog = make(qtbot, store, socket="DOCKER_HOST")
     texts = [label.text() for label in dialog.findChildren(QLabel)]
     assert any("DOCKER_HOST=unix:///x/d.sock" in text for text in texts)
+
+
+def test_terminal_tooltip_explains_the_run_option(qtbot, store: AppSettings) -> None:
+    dialog = make(qtbot, store)
+    tip = dialog.terminal.toolTip()
+    assert "docker exec -it <container> sh" in tip
+    assert "konsole -e" in tip
