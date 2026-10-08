@@ -92,6 +92,11 @@ requests. The catalogues are `src/anchorage/i18n/anchorage_<code>.ts` (the term 
 `docs/translations/GLOSSARY.md`), and `tools/update_translations.sh` regenerates them and the
 compiled `.qm` files from the sources.
 
+Qt's own standard buttons and menus (OK/Cancel, the text field context menu) are translated by
+the distribution's Qt translations package: `qt6-translations` on Arch,
+`qt6-translations-l10n` on Debian/Ubuntu, `qt6-qttranslations` on Fedora. The self-contained
+packages include them.
+
 ## Building packages
 
 `packaging/build.sh <arch|deb|rpm|universal|all>` builds the committed tree in a Docker
