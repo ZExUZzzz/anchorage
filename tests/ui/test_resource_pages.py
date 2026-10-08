@@ -1,4 +1,5 @@
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QAbstractItemView
 
 from anchorage.ui.context import AppContext
 from anchorage.ui.resources.networks import NetworksPage
@@ -336,3 +337,41 @@ def test_row_delegate_drops_the_cell_focus_frame(qtbot) -> None:
     option.state |= QStyle.StateFlag.State_HasFocus
     delegate.initStyleOption(option, model.index(0, 0))
     assert not option.state & QStyle.StateFlag.State_HasFocus
+
+
+def members_card(qtbot, count: int = 3) -> DetailsCard:
+    card = DetailsCard()
+    qtbot.addWidget(card)
+    members = [Member(f"id{i}", f"c{i}", "x", "running") for i in range(count)]
+    card.show_content(DetailsContent("t", [("K", "V")], "MEMBERS", members))
+    card.show()
+    qtbot.waitExposed(card)
+    return card
+
+
+def test_members_table_enter_activates_current_row(qtbot) -> None:
+    card = members_card(qtbot)
+    table = card.members_table
+    assert table.focusPolicy() == Qt.FocusPolicy.StrongFocus
+    assert table.selectionBehavior() == QAbstractItemView.SelectionBehavior.SelectRows
+    assert table.selectionMode() == QAbstractItemView.SelectionMode.SingleSelection
+    activated: list[str] = []
+    card.container_activated.connect(activated.append)
+    table.setFocus()
+    table.selectRow(1)
+    qtbot.keyClick(table, Qt.Key.Key_Return)
+    qtbot.keyClick(table, Qt.Key.Key_Enter)
+    assert activated == ["id1", "id1"]
+    table.cellClicked.emit(2, 0)
+    assert activated[-1] == "id2"
+
+
+def test_members_table_is_reached_by_tab(qtbot) -> None:
+    card = members_card(qtbot, MEMBERS_FILTER_THRESHOLD + 1)
+    chain = []
+    widget = card.members_filter.nextInFocusChain()
+    while widget is not card.members_filter:
+        if widget.isVisibleTo(card) and widget.focusPolicy() & Qt.FocusPolicy.TabFocus:
+            chain.append(widget)
+        widget = widget.nextInFocusChain()
+    assert chain[:1] == [card.members_table]

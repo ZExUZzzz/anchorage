@@ -11,6 +11,7 @@ from anchorage.core.containers import ContainerStore
 from anchorage.core.engine import EngineService, EngineState
 from anchorage.core.workers import TaskRunner
 from anchorage.docker.client import EngineAPI
+from anchorage.docker.errors import DockerError
 from anchorage.docker.models import Container, Event, Network, PruneResult
 
 ROW_ROLE = Qt.ItemDataRole.UserRole + 2
@@ -87,7 +88,7 @@ class NetworkStore(QObject):
         self._runner.submit(
             self._api.list_networks,
             lambda networks: self._apply_if_current(generation, networks),
-            self.refresh_failed.emit,
+            lambda error: self._fail_if_current(generation, error),
         )
 
     def rows(self) -> list[NetworkRow]:
@@ -119,6 +120,10 @@ class NetworkStore(QObject):
     def _on_engine_state(self, state: EngineState) -> None:
         if state is EngineState.CONNECTED:
             self.refresh()
+
+    def _fail_if_current(self, generation: int, error: DockerError) -> None:
+        if generation == self._generation:
+            self.refresh_failed.emit(error)
 
     def _apply_if_current(self, generation: int, networks: list[Network]) -> None:
         if generation == self._generation:

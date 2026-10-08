@@ -6,6 +6,8 @@
 - Stats charts scale to the container's own usage, so idle noise no longer fills them.
 - A Settings dialog for log colours, backend, socket and terminal; flags and environment
   variables still override saved values.
+- Member lists in volume and network details can be used from the keyboard: Tab to reach them, Enter opens the selected container.
+- A refresh that was superseded by a newer one no longer reports its failure.
 - Screenshots in the README and the AppStream metadata.
 
 ## 0.1.0 - 2026-10-08

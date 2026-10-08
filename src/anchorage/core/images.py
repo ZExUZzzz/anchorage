@@ -148,8 +148,12 @@ class ImageStore(QObject):
         self._runner.submit(
             self._api.list_images,
             lambda images: self._apply_if_current(generation, images),
-            self.refresh_failed.emit,
+            lambda error: self._fail_if_current(generation, error),
         )
+
+    def _fail_if_current(self, generation: int, error: DockerError) -> None:
+        if generation == self._generation:
+            self.refresh_failed.emit(error)
 
     def _apply_if_current(self, generation: int, images: list[Image]) -> None:
         if generation == self._generation:

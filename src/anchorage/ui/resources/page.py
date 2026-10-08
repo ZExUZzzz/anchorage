@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from PySide6.QtCore import QSettings, QSortFilterProxyModel, Qt, Signal
-from PySide6.QtGui import QColor, QStandardItemModel
+from PySide6.QtGui import QColor, QKeyEvent, QStandardItemModel
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QFrame,
@@ -49,6 +49,18 @@ class DetailsContent:
     members: list[Member]
 
 
+class MembersTable(QTableWidget):
+    """Row-selecting table that reports Enter/Return on the current row."""
+
+    row_entered = Signal(int)
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.currentRow() >= 0:
+            self.row_entered.emit(self.currentRow())
+            return
+        super().keyPressEvent(event)
+
+
 class DetailsCard(QFrame):
     container_activated = Signal(str)
 
@@ -84,21 +96,24 @@ class DetailsCard(QFrame):
         self.members_empty = QLabel("Not used by any container")
         self.members_empty.setObjectName("muted")
         layout.addWidget(self.members_empty)
-        self.members_table = QTableWidget(0, 3)
+        self.members_table = MembersTable(0, 3)
         self.members_table.setObjectName("members")
         self.members_table.setHorizontalHeaderLabels(["Container", "", "State"])
         self.members_table.horizontalHeader().setVisible(False)
         self.members_table.verticalHeader().setVisible(False)
         self.members_table.setShowGrid(False)
-        self.members_table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
+        self.members_table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.members_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.members_table.setItemDelegate(RowDelegate(self.members_table))
         self.members_table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.members_table.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.members_table.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.members_table.verticalHeader().setDefaultSectionSize(26)
         hdr = self.members_table.horizontalHeader()
         hdr.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         hdr.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         hdr.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         self.members_table.cellClicked.connect(self._on_member_clicked)
+        self.members_table.row_entered.connect(self._on_member_row)
         layout.addWidget(self.members_table, 1)
         self.hide()
 
@@ -171,6 +186,9 @@ class DetailsCard(QFrame):
             self.members_table.setRowHidden(row, bool(needle) and needle not in member.name.lower())
 
     def _on_member_clicked(self, row: int, _column: int) -> None:
+        self._on_member_row(row)
+
+    def _on_member_row(self, row: int) -> None:
         if 0 <= row < len(self._members):
             self.container_activated.emit(self._members[row].container_id)
 
