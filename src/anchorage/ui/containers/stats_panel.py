@@ -7,7 +7,7 @@ from collections import deque
 from PySide6.QtWidgets import QGridLayout, QWidget
 
 from anchorage.core.sessions import StatsPoint
-from anchorage.core.units import format_bytes, format_rate
+from anchorage.core.units import format_bytes, format_decimal, format_rate
 from anchorage.ui.widgets.sparkline import Sparkline
 
 CPU_FLOOR = 5.0  # percent: below this, CPU noise stays near the baseline
@@ -42,7 +42,9 @@ class StatsPanel(QWidget):
         self._points.append(point)
         points = list(self._points)
         self.cpu.set_series(
-            [p.cpu_percent for p in points], f"{point.cpu_percent:.1f} %", floor=CPU_FLOOR
+            [p.cpu_percent for p in points],
+            f"{format_decimal(point.cpu_percent)} %",
+            floor=CPU_FLOOR,
         )
         # The limit is usually the whole host memory, which would flatten the line; scale to
         # the container's own usage and show the limit in the label.

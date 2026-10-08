@@ -2,18 +2,25 @@
 
 import re
 
+from PySide6.QtCore import QLocale
+
 _OPTIONAL_PLURAL = re.compile(r"\(s\)")
 
 _UNITS = ("B", "KB", "MB", "GB", "TB", "PB")
+
+
+def format_decimal(value: float) -> str:
+    """One decimal place with the decimal separator of the interface language."""
+    return QLocale().toString(value, "f", 1)
 
 
 def format_bytes(value: int | float) -> str:
     size = float(value)
     for unit in _UNITS:
         if size < 1024 or unit == _UNITS[-1]:
-            return f"{int(size)} {unit}" if unit == "B" else f"{size:.1f} {unit}"
+            return f"{int(size)} {unit}" if unit == "B" else f"{format_decimal(size)} {unit}"
         size /= 1024
-    return f"{size:.1f} {_UNITS[-1]}"
+    return f"{format_decimal(size)} {_UNITS[-1]}"
 
 
 def format_rate(bytes_per_second: float) -> str:
