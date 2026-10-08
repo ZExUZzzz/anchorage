@@ -119,3 +119,47 @@ def test_resolve_or_exit_applies_flag_env_saved_precedence(monkeypatch, tmp_path
     assert resolved.log_colors == "stream"
     _, resolved = resolve_or_exit(["anchorage", "--log-colors", "level"], settings)
     assert resolved.log_colors == "level"
+
+
+def _hide_docker_py(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    import builtins
+
+    real_import = builtins.__import__
+
+    def fake_import(name, *args, **kwargs):  # type: ignore[no-untyped-def]
+        if name == "docker" or name.startswith("docker."):
+            raise ImportError("no docker")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", fake_import)
+    monkeypatch.delitem(sys.modules, "anchorage.docker.dockerpy", raising=False)
+
+
+def test_saved_dockerpy_without_the_package_falls_back_to_native(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    from anchorage.app import create_api_or_fall_back
+    from anchorage.core.settings import Resolved
+    from anchorage.docker.client import DockerClient
+
+    _hide_docker_py(monkeypatch)
+    settings = tmp_settings(tmp_path)
+    settings.backend = "dockerpy"
+    resolved = Resolved("stream", "dockerpy", "/x.sock", "")
+    api, new, warning = create_api_or_fall_back(resolved, settings)
+    assert isinstance(api, DockerClient)
+    assert new.backend == "native"
+    assert settings.backend == "native"
+    assert warning == "docker-py is not installed; using the native backend"
+
+
+def test_flag_chosen_dockerpy_without_the_package_names_the_flag(monkeypatch, tmp_path) -> None:  # type: ignore[no-untyped-def]
+    from anchorage.app import BackendUnavailable, create_api_or_fall_back
+    from anchorage.core.settings import Resolved
+
+    _hide_docker_py(monkeypatch)
+    settings = tmp_settings(tmp_path)
+    for reason in ("--backend", "ANCHORAGE_BACKEND"):
+        resolved = Resolved("stream", "dockerpy", "", "", {"backend": reason})
+        with pytest.raises(BackendUnavailable) as info:
+            create_api_or_fall_back(resolved, settings)
+        assert f"{reason} dockerpy" in str(info.value) or f"{reason}=dockerpy" in str(info.value)
+    assert settings.backend == "native"

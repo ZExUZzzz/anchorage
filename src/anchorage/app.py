@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import logging
 import os
 import signal
@@ -99,6 +100,27 @@ def create_api(socket_path: str | None, backend: str = "native") -> tuple[Engine
         return make(DEFAULT_SOCKET_PATH), warning
 
 
+def create_api_or_fall_back(
+    resolved: Resolved, settings: AppSettings
+) -> tuple[EngineAPI, Resolved, str | None]:
+    """Create the client; a saved but unusable docker-py backend falls back to native.
+
+    A backend fixed by a flag or variable is never replaced: the error names its source.
+    """
+    try:
+        api, warning = create_api(resolved.socket or None, resolved.backend)
+    except BackendUnavailable as exc:
+        source = resolved.locked.get("backend")
+        if source is not None:
+            usage = f"{source} dockerpy" if source.startswith("--") else f"{source}=dockerpy"
+            raise BackendUnavailable(f"{exc} (requested by {usage})") from None
+        resolved = dataclasses.replace(resolved, backend="native")
+        settings.backend = "native"
+        api, _ = create_api(resolved.socket or None, "native")
+        return api, resolved, "docker-py is not installed; using the native backend"
+    return api, resolved, warning
+
+
 def create_application(argv: list[str]) -> QApplication:
     app = QApplication(argv)
     app.setApplicationName("Anchorage")
@@ -118,7 +140,7 @@ def run(argv: list[str]) -> int:
     # restore the OS default so Ctrl+C in the launching terminal ends the process.
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     try:
-        api, warning = create_api(resolved.socket or None, resolved.backend)
+        api, resolved, warning = create_api_or_fall_back(resolved, settings)
     except BackendUnavailable as exc:
         print(f"anchorage: {exc}", file=sys.stderr)
         return 2
