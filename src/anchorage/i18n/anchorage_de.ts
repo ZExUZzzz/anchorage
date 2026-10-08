@@ -97,6 +97,25 @@
     </message>
 </context>
 <context>
+    <name>ContainerHealth</name>
+    <message>
+        <source>healthy</source>
+        <translation>gesund</translation>
+    </message>
+    <message>
+        <source>unhealthy</source>
+        <translation>ungesund</translation>
+    </message>
+    <message>
+        <source>starting</source>
+        <translation>startet</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>keiner</translation>
+    </message>
+</context>
+<context>
     <name>ContainerState</name>
     <message>
         <source>created</source>
@@ -124,14 +143,14 @@
     </message>
     <message>
         <source>dead</source>
-        <translation>tot</translation>
+        <translation>defekt</translation>
     </message>
 </context>
 <context>
     <name>ContainerStore</name>
     <message>
         <source>Standalone</source>
-        <translation>Eigenständig</translation>
+        <translation>Einzelcontainer</translation>
     </message>
 </context>
 <context>
@@ -349,11 +368,11 @@
     </message>
     <message>
         <source>Prev</source>
-        <translation>Zurück</translation>
+        <translation>Vorheriges</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>Weiter</translation>
+        <translation>Nächstes</translation>
     </message>
     <message>
         <source>Follow</source>
@@ -531,7 +550,7 @@
     </message>
     <message>
         <source>Connecting…</source>
-        <translation>Verbinde…</translation>
+        <translation>Verbindung wird hergestellt…</translation>
     </message>
     <message>
         <source>Connecting to Docker Engine…</source>
@@ -599,7 +618,7 @@
     </message>
     <message>
         <source>Force remove</source>
-        <translation>Erzwungen entfernen</translation>
+        <translation>Entfernen erzwingen</translation>
     </message>
     <message>
         <source>Prune</source>
@@ -656,6 +675,10 @@
         <translation>Netzwerke</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Ungenutzte entfernen</translation>
+    </message>
+    <message>
         <source>Built-in network</source>
         <translation>Integriertes Netzwerk</translation>
     </message>
@@ -673,7 +696,7 @@
     </message>
     <message>
         <source>attachable</source>
-        <translation>anfügbar</translation>
+        <translation>verbindbar</translation>
     </message>
     <message>
         <source>ingress</source>
@@ -685,6 +708,12 @@
     </message>
     <message>
         <source>none</source>
+        <comment>no network flags</comment>
+        <translation>keine</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <comment>no labels or options</comment>
         <translation>keine</translation>
     </message>
     <message>
@@ -705,7 +734,7 @@
     </message>
     <message>
         <source>Flags</source>
-        <translation>Merkmale</translation>
+        <translation>Eigenschaften</translation>
     </message>
     <message>
         <source>Created</source>
@@ -763,10 +792,6 @@
     <message>
         <source>Remove</source>
         <translation>Entfernen</translation>
-    </message>
-    <message>
-        <source>Prune unused</source>
-        <translation>Ungenutzte entfernen</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -891,7 +916,7 @@
     </message>
     <message>
         <source>NETWORK  rx / tx</source>
-        <translation>NETZWERK  Empfang / Senden</translation>
+        <translation>NETZWERK  Empfangen / Gesendet</translation>
     </message>
     <message>
         <source>BLOCK I/O  read / write</source>
@@ -960,7 +985,7 @@
     </message>
     <message>
         <source>unused</source>
-        <translation>unbenutzt</translation>
+        <translation>ungenutzt</translation>
     </message>
     <message numerus="yes">
         <source>%n container(s)</source>
@@ -977,7 +1002,12 @@
         <translation>Volumes</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Ungenutzte entfernen</translation>
+    </message>
+    <message>
         <source>none</source>
+        <comment>no labels or options</comment>
         <translation>keine</translation>
     </message>
     <message>

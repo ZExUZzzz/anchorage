@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>Copy full ID</source>
-        <translation>Copiar el ID completo</translation>
+        <translation>Copiar ID completo</translation>
     </message>
     <message>
         <source>Copy container ID</source>
-        <translation>Copiar el ID del contenedor</translation>
+        <translation>Copiar ID del contenedor</translation>
     </message>
     <message>
         <source>Open shell</source>
@@ -94,6 +94,25 @@
     <message>
         <source>Cannot inspect container: {message}</source>
         <translation>No se puede inspeccionar el contenedor: {message}</translation>
+    </message>
+</context>
+<context>
+    <name>ContainerHealth</name>
+    <message>
+        <source>healthy</source>
+        <translation>saludable</translation>
+    </message>
+    <message>
+        <source>unhealthy</source>
+        <translation>no saludable</translation>
+    </message>
+    <message>
+        <source>starting</source>
+        <translation>iniciando</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>ninguno</translation>
     </message>
 </context>
 <context>
@@ -124,7 +143,7 @@
     </message>
     <message>
         <source>dead</source>
-        <translation>muerto</translation>
+        <translation>defectuoso</translation>
     </message>
 </context>
 <context>
@@ -181,7 +200,7 @@
     </message>
     <message>
         <source>Not used by any container</source>
-        <translation>No lo usa ningún contenedor</translation>
+        <translation>Sin contenedores</translation>
     </message>
     <message>
         <source>Container</source>
@@ -248,7 +267,7 @@
     </message>
     <message>
         <source>Health</source>
-        <translation>Salud</translation>
+        <translation>Estado de salud</translation>
     </message>
     <message>
         <source>(none published)</source>
@@ -365,7 +384,7 @@
     </message>
     <message>
         <source>Clear</source>
-        <translation>Limpiar</translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>— stream ended: {message} —</source>
@@ -425,8 +444,8 @@
     <message numerus="yes">
         <source>Pruned %n image(s), reclaimed {size}</source>
         <translation>
-            <numerusform>%n imagen eliminada, {size} liberados</numerusform>
-            <numerusform>%n imágenes eliminadas, {size} liberados</numerusform>
+            <numerusform>%n imagen eliminada; espacio liberado: {size}</numerusform>
+            <numerusform>%n imágenes eliminadas; espacio liberado: {size}</numerusform>
         </translation>
     </message>
     <message>
@@ -448,8 +467,8 @@
     <message numerus="yes">
         <source>Pruned %n volume(s), reclaimed {size}</source>
         <translation>
-            <numerusform>%n volumen eliminado, {size} liberados</numerusform>
-            <numerusform>%n volúmenes eliminados, {size} liberados</numerusform>
+            <numerusform>%n volumen eliminado; espacio liberado: {size}</numerusform>
+            <numerusform>%n volúmenes eliminados; espacio liberado: {size}</numerusform>
         </translation>
     </message>
     <message>
@@ -568,7 +587,7 @@
     <message>
         <source>The socket set in Settings ({socket}) is not available. Start the docker service, or change the socket in Settings or clear it to find the daemon automatically.
 {detail}</source>
-        <translation>El socket indicado en Configuración ({socket}) no está disponible. Inicie el servicio docker, o cambie el socket en Configuración o déjelo vacío para encontrar el daemon automáticamente.
+        <translation>El socket indicado en Configuración ({socket}) no está disponible. Inicie el servicio docker, cambie el socket en Configuración o déjelo vacío para encontrar el daemon automáticamente.
 {detail}</translation>
     </message>
     <message>
@@ -656,6 +675,10 @@
         <translation>Redes</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Eliminar no usadas</translation>
+    </message>
+    <message>
         <source>Built-in network</source>
         <translation>Red integrada</translation>
     </message>
@@ -685,7 +708,13 @@
     </message>
     <message>
         <source>none</source>
-        <translation>ninguno</translation>
+        <comment>no network flags</comment>
+        <translation>ninguna</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <comment>no labels or options</comment>
+        <translation>ninguna</translation>
     </message>
     <message>
         <source>ID</source>
@@ -765,10 +794,6 @@
         <translation>Eliminar</translation>
     </message>
     <message>
-        <source>Prune unused</source>
-        <translation>Eliminar no usados</translation>
-    </message>
-    <message>
         <source>Refresh</source>
         <translation>Actualizar</translation>
     </message>
@@ -813,7 +838,7 @@
     </message>
     <message>
         <source>System default</source>
-        <translation>Predeterminado del sistema</translation>
+        <translation>Idioma del sistema</translation>
     </message>
     <message>
         <source>Log colours</source>
@@ -977,7 +1002,12 @@
         <translation>Volúmenes</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Eliminar no usados</translation>
+    </message>
+    <message>
         <source>none</source>
+        <comment>no labels or options</comment>
         <translation>ninguna</translation>
     </message>
     <message>

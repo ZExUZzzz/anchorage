@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import shlex
 
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication
 from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem, QWidget
 
 from anchorage.docker.models import ContainerDetails
@@ -11,6 +12,19 @@ from anchorage.ui.theme import state_text
 
 # Section keys stay English; the visible titles are translated in ``show_details``.
 _EXPANDED = {"General", "Ports", "Mounts", "Networks"}
+
+# Health check states from the daemon, shown translated; an unknown one is shown raw.
+_HEALTH_NAMES = {
+    "healthy": str(QT_TRANSLATE_NOOP("ContainerHealth", "healthy")),
+    "unhealthy": str(QT_TRANSLATE_NOOP("ContainerHealth", "unhealthy")),
+    "starting": str(QT_TRANSLATE_NOOP("ContainerHealth", "starting")),
+    "none": str(QT_TRANSLATE_NOOP("ContainerHealth", "none")),
+}
+
+
+def health_text(health: str) -> str:
+    name = _HEALTH_NAMES.get(health)
+    return QCoreApplication.translate("ContainerHealth", name) if name else health
 
 
 class DetailsTree(QTreeWidget):
@@ -37,7 +51,7 @@ class DetailsTree(QTreeWidget):
             (self.tr("TTY"), self.tr("yes") if details.tty else self.tr("no")),
         ]
         if state.health:
-            general.insert(5, (self.tr("Health"), state.health))
+            general.insert(5, (self.tr("Health"), health_text(state.health)))
         ports = [
             (
                 f"{p.private_port}/{p.protocol}",

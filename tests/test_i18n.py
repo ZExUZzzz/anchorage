@@ -127,6 +127,8 @@ def test_unknown_language_follows_the_system(qtbot, app, value: str | None, monk
         (["zh-CN"], "zh_CN"),
         (["zh-Hant-TW", "fr-FR"], "fr"),
         (["zh-TW"], "en"),
+        (["zh-Hans-HK"], "zh_CN"),
+        (["zh-Hant-CN", "es"], "es"),
         (["xx"], "en"),
         ([], "en"),
     ],

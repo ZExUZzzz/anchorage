@@ -192,6 +192,8 @@ def test_invalid_saved_language_reads_as_automatic(
         ("zh_HK", ""),
         ("zh-Hant", ""),
         ("zh_Hant_TW", ""),
+        ("zh-Hans-HK", "zh_CN"),
+        ("zh-Hant-CN", ""),
         ("en_US", "en"),
         ("klingon", ""),
     ],

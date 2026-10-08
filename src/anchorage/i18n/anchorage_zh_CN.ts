@@ -91,7 +91,26 @@
     </message>
     <message>
         <source>Cannot inspect container: {message}</source>
-        <translation>无法检查容器：{message}</translation>
+        <translation>无法获取容器详细信息：{message}</translation>
+    </message>
+</context>
+<context>
+    <name>ContainerHealth</name>
+    <message>
+        <source>healthy</source>
+        <translation>健康</translation>
+    </message>
+    <message>
+        <source>unhealthy</source>
+        <translation>不健康</translation>
+    </message>
+    <message>
+        <source>starting</source>
+        <translation>启动中</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>无</translation>
     </message>
 </context>
 <context>
@@ -164,7 +183,7 @@
     </message>
     <message>
         <source>Running only</source>
-        <translation>仅运行中</translation>
+        <translation>仅显示运行中</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -289,7 +308,7 @@
     </message>
     <message>
         <source>Tag</source>
-        <translation>Tag</translation>
+        <translation>版本</translation>
     </message>
     <message>
         <source>ID</source>
@@ -332,7 +351,7 @@
     </message>
     <message>
         <source>Click a cell to copy the full ID</source>
-        <translation>单击单元格复制完整 ID</translation>
+        <translation>单击单元格即可复制完整 ID</translation>
     </message>
     <message>
         <source>Image ID copied</source>
@@ -355,7 +374,7 @@
     </message>
     <message>
         <source>Follow</source>
-        <translation>跟随</translation>
+        <translation>跟踪</translation>
     </message>
     <message>
         <source>Timestamps</source>
@@ -645,6 +664,10 @@
         <translation>网络</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>清理未使用</translation>
+    </message>
+    <message>
         <source>Built-in network</source>
         <translation>内置网络</translation>
     </message>
@@ -674,6 +697,12 @@
     </message>
     <message>
         <source>none</source>
+        <comment>no network flags</comment>
+        <translation>无</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <comment>no labels or options</comment>
         <translation>无</translation>
     </message>
     <message>
@@ -694,7 +723,7 @@
     </message>
     <message>
         <source>Flags</source>
-        <translation>标志</translation>
+        <translation>属性</translation>
     </message>
     <message>
         <source>Created</source>
@@ -717,7 +746,7 @@
     </message>
     <message>
         <source>Image reference (repository[:tag]):</source>
-        <translation>镜像引用（仓库[:标签]）：</translation>
+        <translation>镜像引用（仓库[:版本]）：</translation>
     </message>
 </context>
 <context>
@@ -752,10 +781,6 @@
     <message>
         <source>Remove</source>
         <translation>删除</translation>
-    </message>
-    <message>
-        <source>Prune unused</source>
-        <translation>清理未使用</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -941,7 +966,7 @@
     </message>
     <message>
         <source>Used by</source>
-        <translation>使用者</translation>
+        <translation>使用情况</translation>
     </message>
     <message>
         <source>Created</source>
@@ -965,7 +990,12 @@
         <translation>卷</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>清理未使用</translation>
+    </message>
+    <message>
         <source>none</source>
+        <comment>no labels or options</comment>
         <translation>无</translation>
     </message>
     <message>
@@ -998,7 +1028,7 @@
     </message>
     <message>
         <source>USED BY</source>
-        <translation>使用者</translation>
+        <translation>使用该卷的容器</translation>
     </message>
 </context>
 </TS>

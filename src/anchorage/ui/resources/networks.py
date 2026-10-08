@@ -25,6 +25,8 @@ class NetworksPage(ResourcePage):
             [360, 90, 70, 180, 100, 80],
             ROW_ROLE,
             SORT_ROLE,
+            # Per page: the adjective agrees with the resource in some languages.
+            prune_text=QCoreApplication.translate("NetworksPage", "Prune unused"),
             settings=settings,
             settings_key="networks",
             parent=parent,
@@ -57,10 +59,10 @@ class NetworksPage(ResourcePage):
                 (self.tr("ipv6"), network.ipv6),
             )
             if on
-        ) or self.tr("none")
+        ) or self.tr("none", "no network flags")
         labels = "  ·  ".join(
             f"{k}={v}" for k, v in sorted(network.labels.items()) if "config-hash" not in k
-        ) or self.tr("none")
+        ) or self.tr("none", "no labels or options")
         fields = [
             (self.tr("ID"), network.short_id),
             (

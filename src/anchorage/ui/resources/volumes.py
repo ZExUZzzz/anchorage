@@ -23,6 +23,8 @@ class VolumesPage(ResourcePage):
             [360, 90, 160, 120, 150],
             ROW_ROLE,
             SORT_ROLE,
+            # Per page: the adjective agrees with the resource in some languages.
+            prune_text=QCoreApplication.translate("VolumesPage", "Prune unused"),
             settings=settings,
             settings_key="volumes",
             parent=parent,
@@ -33,10 +35,10 @@ class VolumesPage(ResourcePage):
         volume = row.volume
         created = volume.created.astimezone().strftime("%Y-%m-%d %H:%M") if volume.created else ""
         labels = "  ·  ".join(f"{k}={v}" for k, v in sorted(volume.labels.items())) or self.tr(
-            "none"
+            "none", "no labels or options"
         )
         options = "  ·  ".join(f"{k}={v}" for k, v in sorted(volume.options.items())) or self.tr(
-            "none"
+            "none", "no labels or options"
         )
         fields = [
             (self.tr("Mountpoint"), volume.mountpoint),

@@ -234,3 +234,17 @@ def test_shell_uses_the_saved_terminal_override(
     settings.terminal = ""
     window._launch_shell("def")
     assert calls == [("abc", "kitty -e"), ("def", "")]
+
+
+def test_failed_shell_starts_the_reason_with_a_capital(qtbot, context: AppContext) -> None:  # type: ignore[no-untyped-def]
+    from anchorage.core import terminal
+
+    window = MainWindow(context)
+    qtbot.addWidget(window)
+    shown: list[str] = []
+    window._launch_shell = lambda _cid: terminal.Launch(  # type: ignore[method-assign]
+        ("docker", "exec"), None, "no terminal emulator found"
+    )
+    window.confirm = lambda _title, text, _buttons: shown.append(text) or "OK"  # type: ignore[method-assign]
+    window.perform("shell", "abc")
+    assert shown == ["No terminal emulator found. Run this command in a terminal:\n\ndocker exec"]

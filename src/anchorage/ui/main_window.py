@@ -225,10 +225,11 @@ class MainWindow(QMainWindow):
             launch = self._launch_shell(container_id)
             if not launch.ok:
                 command = " ".join(launch.command)
+                reason = launch.reason or ""
                 self.confirm(
                     self.tr("Cannot open a terminal"),
                     self.tr("{reason}. Run this command in a terminal:\n\n{command}").format(
-                        reason=launch.reason, command=command
+                        reason=reason[:1].upper() + reason[1:], command=command
                     ),
                     ["OK"],
                 )

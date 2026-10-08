@@ -97,6 +97,25 @@
     </message>
 </context>
 <context>
+    <name>ContainerHealth</name>
+    <message>
+        <source>healthy</source>
+        <translation>sain</translation>
+    </message>
+    <message>
+        <source>unhealthy</source>
+        <translation>non sain</translation>
+    </message>
+    <message>
+        <source>starting</source>
+        <translation>en démarrage</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>aucun</translation>
+    </message>
+</context>
+<context>
     <name>ContainerState</name>
     <message>
         <source>created</source>
@@ -124,7 +143,7 @@
     </message>
     <message>
         <source>dead</source>
-        <translation>mort</translation>
+        <translation>défaillant</translation>
     </message>
 </context>
 <context>
@@ -181,7 +200,7 @@
     </message>
     <message>
         <source>Not used by any container</source>
-        <translation>Utilisé par aucun conteneur</translation>
+        <translation>Aucun conteneur ne l&apos;utilise</translation>
     </message>
     <message>
         <source>Container</source>
@@ -380,7 +399,7 @@
     <name>MainWindow</name>
     <message>
         <source>Remove container {name}? It is running and will be killed.</source>
-        <translation>Supprimer le conteneur {name}&#xa0;? Il est en cours d&apos;exécution et sera tué.</translation>
+        <translation>Supprimer le conteneur {name}&#xa0;? Il est en cours d&apos;exécution et sera arrêté de force.</translation>
     </message>
     <message>
         <source>Remove container {name}?</source>
@@ -404,7 +423,7 @@
     </message>
     <message>
         <source>Socket, backend and language changes apply after a restart</source>
-        <translation>Les changements de socket, de backend et de langue s&apos;appliquent après un redémarrage</translation>
+        <translation>Les modifications du socket, du backend et de la langue prendront effet après un redémarrage</translation>
     </message>
     <message>
         <source>Remove image</source>
@@ -425,8 +444,8 @@
     <message numerus="yes">
         <source>Pruned %n image(s), reclaimed {size}</source>
         <translation>
-            <numerusform>%n image supprimée, {size} libérés</numerusform>
-            <numerusform>%n images supprimées, {size} libérés</numerusform>
+            <numerusform>%n image supprimée&#xa0;; espace libéré&#xa0;: {size}</numerusform>
+            <numerusform>%n images supprimées&#xa0;; espace libéré&#xa0;: {size}</numerusform>
         </translation>
     </message>
     <message>
@@ -443,13 +462,13 @@
     </message>
     <message>
         <source>Remove all volumes not used by any container? Named volumes are included and data in them is lost. This cannot be undone.</source>
-        <translation>Supprimer tous les volumes utilisés par aucun conteneur&#xa0;? Les volumes nommés sont inclus et leurs données seront perdues. Cette action est irréversible.</translation>
+        <translation>Supprimer tous les volumes qui ne sont utilisés par aucun conteneur&#xa0;? Les volumes nommés sont inclus et leurs données seront perdues. Cette action est irréversible.</translation>
     </message>
     <message numerus="yes">
         <source>Pruned %n volume(s), reclaimed {size}</source>
         <translation>
-            <numerusform>%n volume supprimé, {size} libérés</numerusform>
-            <numerusform>%n volumes supprimés, {size} libérés</numerusform>
+            <numerusform>%n volume supprimé&#xa0;; espace libéré&#xa0;: {size}</numerusform>
+            <numerusform>%n volumes supprimés&#xa0;; espace libéré&#xa0;: {size}</numerusform>
         </translation>
     </message>
     <message>
@@ -466,7 +485,7 @@
     </message>
     <message>
         <source>Remove all networks not used by any container?</source>
-        <translation>Supprimer tous les réseaux utilisés par aucun conteneur&#xa0;?</translation>
+        <translation>Supprimer tous les réseaux qui ne sont utilisés par aucun conteneur&#xa0;?</translation>
     </message>
     <message numerus="yes">
         <source>Pruned %n network(s)</source>
@@ -568,7 +587,7 @@
     <message>
         <source>The socket set in Settings ({socket}) is not available. Start the docker service, or change the socket in Settings or clear it to find the daemon automatically.
 {detail}</source>
-        <translation>Le socket défini dans les paramètres ({socket}) est indisponible. Démarrez le service docker, ou modifiez le socket dans les paramètres ou videz-le pour trouver le démon automatiquement.
+        <translation>Le socket défini dans les paramètres ({socket}) est indisponible. Démarrez le service docker, modifiez le socket dans les paramètres ou videz-le pour que le démon soit détecté automatiquement.
 {detail}</translation>
     </message>
     <message>
@@ -656,6 +675,10 @@
         <translation>Réseaux</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Supprimer les inutilisés</translation>
+    </message>
+    <message>
         <source>Built-in network</source>
         <translation>Réseau intégré</translation>
     </message>
@@ -685,7 +708,13 @@
     </message>
     <message>
         <source>none</source>
-        <translation>aucun</translation>
+        <comment>no network flags</comment>
+        <translation>aucune</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <comment>no labels or options</comment>
+        <translation>aucune</translation>
     </message>
     <message>
         <source>ID</source>
@@ -763,10 +792,6 @@
     <message>
         <source>Remove</source>
         <translation>Supprimer</translation>
-    </message>
-    <message>
-        <source>Prune unused</source>
-        <translation>Supprimer les inutilisés</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -977,7 +1002,12 @@
         <translation>Volumes</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Supprimer les inutilisés</translation>
+    </message>
+    <message>
         <source>none</source>
+        <comment>no labels or options</comment>
         <translation>aucune</translation>
     </message>
     <message>

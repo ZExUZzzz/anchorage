@@ -209,7 +209,7 @@ class ResourcePage(QWidget):
         row_role: int,
         sort_role: int,
         *,
-        prune_text: str | None = None,
+        prune_text: str,
         settings: QSettings | None = None,
         settings_key: str = "",
         parent: QWidget | None = None,
@@ -241,9 +241,7 @@ class ResourcePage(QWidget):
         self.remove_button.setEnabled(False)
         self.remove_button.clicked.connect(self._emit_remove)
         header.addWidget(self.remove_button)
-        self.prune_button = QPushButton(
-            prune_text or QCoreApplication.translate("ResourcePage", "Prune unused")
-        )
+        self.prune_button = QPushButton(prune_text)
         self.prune_button.clicked.connect(self.prune_requested.emit)
         header.addWidget(self.prune_button)
         self.refresh_button = QPushButton(QCoreApplication.translate("ResourcePage", "Refresh"))

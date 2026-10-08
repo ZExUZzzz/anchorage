@@ -29,6 +29,20 @@ class InvalidEnvironment(ValueError):
     """An environment variable that selects a setting holds an unusable value."""
 
 
+def chinese_variant(subtags: list[str]) -> str:
+    """``zh_CN`` for Simplified Chinese subtags (after ``zh``), else ``""``.
+
+    Only Simplified Chinese is shipped. The script subtag decides first (``Hans`` or
+    ``Hant``); without one, the Traditional regions (TW, HK, MO) mean Traditional.
+    """
+    lowered = {tag.lower() for tag in subtags}
+    if "hans" in lowered:
+        return "zh_CN"
+    if "hant" in lowered or lowered & {"tw", "hk", "mo"}:
+        return DEFAULT_LANGUAGE
+    return "zh_CN"
+
+
 def normalize_language(value: str | None) -> str:
     """The supported code for ``value`` (``ru``, ``ru_RU``, ``zh-cn``, ``zh``, ...), else ``""``.
 
@@ -42,9 +56,8 @@ def normalize_language(value: str | None) -> str:
             return code
     base, *rest = text.lower().split("_")
     if base == "zh":
-        # Only Simplified Chinese is shipped: bare ``zh`` and ``zh_Hans`` mean it, while
-        # Traditional variants stay automatic.
-        return DEFAULT_LANGUAGE if set(rest) & {"hant", "tw", "hk", "mo"} else "zh_CN"
+        # Bare ``zh`` and ``zh_Hans`` mean Simplified; Traditional variants stay automatic.
+        return chinese_variant(rest)
     return base if base in LANGUAGE_CODES else DEFAULT_LANGUAGE
 
 

@@ -99,6 +99,25 @@
     </message>
 </context>
 <context>
+    <name>ContainerHealth</name>
+    <message>
+        <source>healthy</source>
+        <translation>в норме</translation>
+    </message>
+    <message>
+        <source>unhealthy</source>
+        <translation>не в норме</translation>
+    </message>
+    <message>
+        <source>starting</source>
+        <translation>запускается</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation>нет</translation>
+    </message>
+</context>
+<context>
     <name>ContainerState</name>
     <message>
         <source>created</source>
@@ -667,6 +686,10 @@
         <translation>Сети</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Удалить неиспользуемые</translation>
+    </message>
+    <message>
         <source>Built-in network</source>
         <translation>Встроенная сеть</translation>
     </message>
@@ -696,6 +719,12 @@
     </message>
     <message>
         <source>none</source>
+        <comment>no network flags</comment>
+        <translation>нет</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <comment>no labels or options</comment>
         <translation>нет</translation>
     </message>
     <message>
@@ -774,10 +803,6 @@
     <message>
         <source>Remove</source>
         <translation>Удалить</translation>
-    </message>
-    <message>
-        <source>Prune unused</source>
-        <translation>Удалить неиспользуемые</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -989,7 +1014,12 @@
         <translation>Тома</translation>
     </message>
     <message>
+        <source>Prune unused</source>
+        <translation>Удалить неиспользуемые</translation>
+    </message>
+    <message>
         <source>none</source>
+        <comment>no labels or options</comment>
         <translation>нет</translation>
     </message>
     <message>

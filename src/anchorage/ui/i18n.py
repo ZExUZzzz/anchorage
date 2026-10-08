@@ -7,7 +7,7 @@ from pathlib import Path
 
 from PySide6.QtCore import QCoreApplication, QLibraryInfo, QLocale, QTranslator
 
-from anchorage.core.settings import LANGUAGE_CODES, normalize_language
+from anchorage.core.settings import LANGUAGE_CODES, chinese_variant, normalize_language
 
 log = logging.getLogger(__name__)
 
@@ -38,8 +38,7 @@ def system_language(ui_languages: list[str] | None = None) -> str:
         base = parts[0].lower()
         if base == "zh":
             # Only Simplified Chinese is shipped; Traditional variants fall through.
-            rest = {part.lower() for part in parts[1:]}
-            if not rest & {"hant", "tw", "hk", "mo"}:
+            if chinese_variant(parts[1:]):
                 return "zh_CN"
             continue
         if base in LANGUAGE_CODES:
