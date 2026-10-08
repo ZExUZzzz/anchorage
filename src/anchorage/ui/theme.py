@@ -1,9 +1,10 @@
-"""Palette-based stylesheet, state colours and icon lookup."""
+"""Palette-based stylesheet, state colours and names, and icon lookup."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
+from PySide6.QtCore import QT_TRANSLATE_NOOP, QCoreApplication
 from PySide6.QtGui import QColor, QIcon, QPalette
 from PySide6.QtWidgets import QApplication, QStyle
 
@@ -100,6 +101,24 @@ def state_color(state: str, palette: QPalette) -> QColor:
     if hue is None:
         return palette.color(QPalette.ColorRole.PlaceholderText)
     return _hue_color(hue, palette)
+
+
+# Docker container states as shown to the user; logic keeps comparing the raw state.
+_STATE_NAMES = {
+    "created": str(QT_TRANSLATE_NOOP("ContainerState", "created")),
+    "running": str(QT_TRANSLATE_NOOP("ContainerState", "running")),
+    "paused": str(QT_TRANSLATE_NOOP("ContainerState", "paused")),
+    "restarting": str(QT_TRANSLATE_NOOP("ContainerState", "restarting")),
+    "removing": str(QT_TRANSLATE_NOOP("ContainerState", "removing")),
+    "exited": str(QT_TRANSLATE_NOOP("ContainerState", "exited")),
+    "dead": str(QT_TRANSLATE_NOOP("ContainerState", "dead")),
+}
+
+
+def state_text(state: str) -> str:
+    """The translated name of a known Docker container state; an unknown one is shown raw."""
+    name = _STATE_NAMES.get(state)
+    return QCoreApplication.translate("ContainerState", name) if name else state
 
 
 def level_color(level: str, palette: QPalette) -> QColor:

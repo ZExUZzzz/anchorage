@@ -5,933 +5,968 @@
     <name>App</name>
     <message>
         <source>{message}; using {path}</source>
-        <translation type="unfinished"></translation>
+        <translation>{message}&#xa0;; utilisation de {path}</translation>
     </message>
     <message>
         <source>docker-py is not installed; using the native backend</source>
-        <translation type="unfinished"></translation>
+        <translation>docker-py n&apos;est pas installé&#xa0;; utilisation du backend natif</translation>
     </message>
     <message>
         <source>{message}. {warning}</source>
-        <translation type="unfinished"></translation>
+        <translation>{message}. {warning}</translation>
     </message>
 </context>
 <context>
     <name>ContainerDelegate</name>
     <message numerus="yes">
         <source>%n container(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n conteneur</numerusform>
+            <numerusform>%n conteneurs</numerusform>
         </translation>
     </message>
     <message>
         <source>{count} · {running}</source>
-        <translation type="unfinished"></translation>
+        <translation>{count} · {running}</translation>
     </message>
     <message numerus="yes">
         <source>%n running</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n actif</numerusform>
+            <numerusform>%n actifs</numerusform>
         </translation>
     </message>
     <message>
         <source>service: {name}</source>
-        <translation type="unfinished"></translation>
+        <translation>service&#xa0;: {name}</translation>
     </message>
 </context>
 <context>
     <name>ContainerDetailPage</name>
     <message>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <source>Restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrer</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Containers</source>
-        <translation type="unfinished"></translation>
+        <translation>Conteneurs</translation>
     </message>
     <message>
         <source>Copy full ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier l&apos;ID complet</translation>
     </message>
     <message>
         <source>Copy container ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier l&apos;ID du conteneur</translation>
     </message>
     <message>
         <source>Open shell</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un shell</translation>
     </message>
     <message>
         <source>Logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Journaux</translation>
     </message>
     <message>
         <source>Stats</source>
-        <translation type="unfinished"></translation>
+        <translation>Statistiques</translation>
     </message>
     <message>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Détails</translation>
     </message>
     <message>
         <source>Container ID copied</source>
-        <translation type="unfinished"></translation>
+        <translation>ID du conteneur copié</translation>
     </message>
     <message>
         <source>Cannot inspect container: {message}</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;inspecter le conteneur&#xa0;: {message}</translation>
+    </message>
+</context>
+<context>
+    <name>ContainerState</name>
+    <message>
+        <source>created</source>
+        <translation>créé</translation>
+    </message>
+    <message>
+        <source>running</source>
+        <translation>en cours d&apos;exécution</translation>
+    </message>
+    <message>
+        <source>paused</source>
+        <translation>en pause</translation>
+    </message>
+    <message>
+        <source>restarting</source>
+        <translation>en redémarrage</translation>
+    </message>
+    <message>
+        <source>removing</source>
+        <translation>en suppression</translation>
+    </message>
+    <message>
+        <source>exited</source>
+        <translation>arrêté</translation>
+    </message>
+    <message>
+        <source>dead</source>
+        <translation>mort</translation>
     </message>
 </context>
 <context>
     <name>ContainerStore</name>
     <message>
         <source>Standalone</source>
-        <translation type="unfinished"></translation>
+        <translation>Autonomes</translation>
     </message>
 </context>
 <context>
     <name>ContainersPage</name>
     <message>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <source>Restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrer</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Open shell</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir un shell</translation>
     </message>
     <message>
         <source>Containers</source>
-        <translation type="unfinished"></translation>
+        <translation>Conteneurs</translation>
     </message>
     <message>
         <source>Filter by name, image, project…</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer par nom, image, projet…</translation>
     </message>
     <message>
         <source>Running only</source>
-        <translation type="unfinished"></translation>
+        <translation>Actifs uniquement</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualiser</translation>
     </message>
 </context>
 <context>
     <name>DetailsCard</name>
     <message>
         <source>Filter containers…</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer les conteneurs…</translation>
     </message>
     <message>
         <source>Not used by any container</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisé par aucun conteneur</translation>
     </message>
     <message>
         <source>Container</source>
-        <translation type="unfinished"></translation>
+        <translation>Conteneur</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>État</translation>
     </message>
     <message>
         <source>Open container</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir le conteneur</translation>
     </message>
 </context>
 <context>
     <name>DetailsTree</name>
     <message>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Clé</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <source>Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Image</translation>
     </message>
     <message>
         <source>Created</source>
-        <translation type="unfinished"></translation>
+        <translation>Créé</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Commande</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>État</translation>
     </message>
     <message>
         <source>Exit code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code de sortie</translation>
     </message>
     <message>
         <source>Restart policy</source>
-        <translation type="unfinished"></translation>
+        <translation>Politique de redémarrage</translation>
     </message>
     <message>
         <source>TTY</source>
-        <translation type="unfinished"></translation>
+        <translation>TTY</translation>
     </message>
     <message>
         <source>yes</source>
-        <translation type="unfinished"></translation>
+        <translation>oui</translation>
     </message>
     <message>
         <source>no</source>
-        <translation type="unfinished"></translation>
+        <translation>non</translation>
     </message>
     <message>
         <source>Health</source>
-        <translation type="unfinished"></translation>
+        <translation>Santé</translation>
     </message>
     <message>
         <source>(none published)</source>
-        <translation type="unfinished"></translation>
+        <translation>(aucun publié)</translation>
     </message>
     <message>
         <source>{address}/{prefix}   gw {gateway}</source>
-        <translation type="unfinished"></translation>
+        <translation>{address}/{prefix}   passerelle {gateway}</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
     <message>
         <source>Ports</source>
-        <translation type="unfinished"></translation>
+        <translation>Ports</translation>
     </message>
     <message>
         <source>Environment</source>
-        <translation type="unfinished"></translation>
+        <translation>Environnement</translation>
     </message>
     <message>
         <source>Mounts</source>
-        <translation type="unfinished"></translation>
+        <translation>Montages</translation>
     </message>
     <message>
         <source>Networks</source>
-        <translation type="unfinished"></translation>
+        <translation>Réseaux</translation>
     </message>
     <message>
         <source>Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquettes</translation>
     </message>
 </context>
 <context>
     <name>ImageStore</name>
     <message>
         <source>Repository</source>
-        <translation type="unfinished"></translation>
+        <translation>Dépôt</translation>
     </message>
     <message>
         <source>Tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Tag</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <source>Created</source>
-        <translation type="unfinished"></translation>
+        <translation>Créée</translation>
     </message>
 </context>
 <context>
     <name>ImagesPage</name>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Images</translation>
     </message>
     <message>
         <source>Filter…</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer…</translation>
     </message>
     <message>
         <source>Pull…</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger…</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Prune unused</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer les inutilisées</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualiser</translation>
     </message>
     <message>
         <source>Click a cell to copy the full ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliquez sur une cellule pour copier l&apos;ID complet</translation>
     </message>
     <message>
         <source>Image ID copied</source>
-        <translation type="unfinished"></translation>
+        <translation>ID de l&apos;image copié</translation>
     </message>
 </context>
 <context>
     <name>LogView</name>
     <message>
         <source>Search logs… (Enter next, Shift+Enter previous)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher dans les journaux… (Entrée&#xa0;: suivant, Maj+Entrée&#xa0;: précédent)</translation>
     </message>
     <message>
         <source>Prev</source>
-        <translation type="unfinished"></translation>
+        <translation>Précédent</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>Suivant</translation>
     </message>
     <message>
         <source>Follow</source>
-        <translation type="unfinished"></translation>
+        <translation>Suivre</translation>
     </message>
     <message>
         <source>Timestamps</source>
-        <translation type="unfinished"></translation>
+        <translation>Horodatage</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer</translation>
     </message>
     <message>
         <source>— stream ended: {message} —</source>
-        <translation type="unfinished"></translation>
+        <translation>— flux terminé&#xa0;: {message} —</translation>
     </message>
     <message>
         <source>— stream ended —</source>
-        <translation type="unfinished"></translation>
+        <translation>— flux terminé —</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Remove container {name}? It is running and will be killed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le conteneur {name}&#xa0;? Il est en cours d&apos;exécution et sera tué.</translation>
     </message>
     <message>
         <source>Remove container {name}?</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le conteneur {name}&#xa0;?</translation>
     </message>
     <message>
         <source>Remove container</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le conteneur</translation>
     </message>
     <message>
         <source>Cannot open a terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible d&apos;ouvrir un terminal</translation>
     </message>
     <message>
         <source>{reason}. Run this command in a terminal:
 
 {command}</source>
-        <translation type="unfinished"></translation>
+        <translation>{reason}. Exécutez cette commande dans un terminal&#xa0;:
+
+{command}</translation>
     </message>
     <message>
         <source>Socket, backend and language changes apply after a restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Les changements de socket, de backend et de langue s&apos;appliquent après un redémarrage</translation>
     </message>
     <message>
         <source>Remove image</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer l&apos;image</translation>
     </message>
     <message>
         <source>Remove image {reference}?</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer l&apos;image {reference}&#xa0;?</translation>
     </message>
     <message>
         <source>Prune images</source>
-        <translation type="unfinished"></translation>
+        <translation>Nettoyer les images</translation>
     </message>
     <message>
         <source>Remove all dangling images?</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer toutes les images sans tag&#xa0;?</translation>
     </message>
     <message numerus="yes">
         <source>Pruned %n image(s), reclaimed {size}</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n image supprimée, {size} libérés</numerusform>
+            <numerusform>%n images supprimées, {size} libérés</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le volume</translation>
     </message>
     <message>
         <source>Remove volume {name}?</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le volume {name}&#xa0;?</translation>
     </message>
     <message>
         <source>Prune volumes</source>
-        <translation type="unfinished"></translation>
+        <translation>Nettoyer les volumes</translation>
     </message>
     <message>
         <source>Remove all volumes not used by any container? Named volumes are included and data in them is lost. This cannot be undone.</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer tous les volumes utilisés par aucun conteneur&#xa0;? Les volumes nommés sont inclus et leurs données seront perdues. Cette action est irréversible.</translation>
     </message>
     <message numerus="yes">
         <source>Pruned %n volume(s), reclaimed {size}</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n volume supprimé, {size} libérés</numerusform>
+            <numerusform>%n volumes supprimés, {size} libérés</numerusform>
         </translation>
     </message>
     <message>
         <source>Remove network</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le réseau</translation>
     </message>
     <message>
         <source>Remove network {name}?</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le réseau {name}&#xa0;?</translation>
     </message>
     <message>
         <source>Prune networks</source>
-        <translation type="unfinished"></translation>
+        <translation>Nettoyer les réseaux</translation>
     </message>
     <message>
         <source>Remove all networks not used by any container?</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer tous les réseaux utilisés par aucun conteneur&#xa0;?</translation>
     </message>
     <message numerus="yes">
         <source>Pruned %n network(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n réseau supprimé</numerusform>
+            <numerusform>%n réseaux supprimés</numerusform>
         </translation>
     </message>
     <message>
         <source>Refresh failed: {message}</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de l&apos;actualisation&#xa0;: {message}</translation>
     </message>
     <message>
         <source>{containers}, {running}</source>
-        <translation type="unfinished"></translation>
+        <translation>{containers}, {running}</translation>
     </message>
     <message numerus="yes">
         <source>%n container(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n conteneur</numerusform>
+            <numerusform>%n conteneurs</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n running</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n actif</numerusform>
+            <numerusform>%n actifs</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n image(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n image</numerusform>
+            <numerusform>%n images</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n volume(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n volume</numerusform>
+            <numerusform>%n volumes</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n network(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n réseau</numerusform>
+            <numerusform>%n réseaux</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n compose project(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n projet Compose</numerusform>
+            <numerusform>%n projets Compose</numerusform>
         </translation>
     </message>
     <message>
         <source>Connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Connecté</translation>
     </message>
     <message>
         <source>Connecting…</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion…</translation>
     </message>
     <message>
         <source>Connecting to Docker Engine…</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion à Docker Engine…</translation>
     </message>
     <message>
         <source>Permission denied on the Docker socket</source>
-        <translation type="unfinished"></translation>
+        <translation>Accès refusé au socket Docker</translation>
     </message>
     <message>
         <source>Permission denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Accès refusé</translation>
     </message>
     <message>
         <source>Add your user to the docker group to use {path}, then log in again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajoutez votre utilisateur au groupe docker pour utiliser {path}, puis reconnectez-vous.</translation>
     </message>
     <message>
         <source>Cannot reach Docker Engine</source>
-        <translation type="unfinished"></translation>
+        <translation>Docker Engine est injoignable</translation>
     </message>
     <message>
         <source>Docker Engine is not running</source>
-        <translation type="unfinished"></translation>
+        <translation>Docker Engine n&apos;est pas démarré</translation>
     </message>
     <message>
         <source>Not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Non connecté</translation>
     </message>
     <message>
         <source>Docker socket not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Socket Docker indisponible</translation>
     </message>
     <message>
         <source>The socket set in Settings ({socket}) is not available. Start the docker service, or change the socket in Settings or clear it to find the daemon automatically.
 {detail}</source>
-        <translation type="unfinished"></translation>
+        <translation>Le socket défini dans les paramètres ({socket}) est indisponible. Démarrez le service docker, ou modifiez le socket dans les paramètres ou videz-le pour trouver le démon automatiquement.
+{detail}</translation>
     </message>
     <message>
         <source>Start the docker service and retry.
 {detail}</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrez le service docker et réessayez.
+{detail}</translation>
     </message>
     <message>
         <source>Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>Réessayer</translation>
     </message>
     <message>
         <source>Engine {version}</source>
-        <translation type="unfinished"></translation>
+        <translation>Engine {version}</translation>
     </message>
     <message>
         <source>Engine: not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Engine&#xa0;: non connecté</translation>
     </message>
     <message>
         <source>API {version}</source>
-        <translation type="unfinished"></translation>
+        <translation>API {version}</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Force remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Forcer la suppression</translation>
     </message>
     <message>
         <source>Prune</source>
-        <translation type="unfinished"></translation>
+        <translation>Nettoyer</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
     <name>NetworkStore</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Driver</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilote</translation>
     </message>
     <message>
         <source>Scope</source>
-        <translation type="unfinished"></translation>
+        <translation>Portée</translation>
     </message>
     <message>
         <source>Subnet</source>
-        <translation type="unfinished"></translation>
+        <translation>Sous-réseau</translation>
     </message>
     <message>
         <source>Containers</source>
-        <translation type="unfinished"></translation>
+        <translation>Conteneurs</translation>
     </message>
     <message>
         <source>Internal</source>
-        <translation type="unfinished"></translation>
+        <translation>Interne</translation>
     </message>
     <message>
         <source>yes</source>
-        <translation type="unfinished"></translation>
+        <translation>oui</translation>
     </message>
     <message>
         <source>no</source>
-        <translation type="unfinished"></translation>
+        <translation>non</translation>
     </message>
 </context>
 <context>
     <name>NetworksPage</name>
     <message>
         <source>Networks</source>
-        <translation type="unfinished"></translation>
+        <translation>Réseaux</translation>
     </message>
     <message>
         <source>Built-in network</source>
-        <translation type="unfinished"></translation>
+        <translation>Réseau intégré</translation>
     </message>
     <message>
         <source>Network has connected containers</source>
-        <translation type="unfinished"></translation>
+        <translation>Des conteneurs sont connectés au réseau</translation>
     </message>
     <message>
         <source>{subnet}  gw {gateway}</source>
-        <translation type="unfinished"></translation>
+        <translation>{subnet}  passerelle {gateway}</translation>
     </message>
     <message>
         <source>internal</source>
-        <translation type="unfinished"></translation>
+        <translation>interne</translation>
     </message>
     <message>
         <source>attachable</source>
-        <translation type="unfinished"></translation>
+        <translation>attachable</translation>
     </message>
     <message>
         <source>ingress</source>
-        <translation type="unfinished"></translation>
+        <translation>ingress</translation>
     </message>
     <message>
         <source>ipv6</source>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <source>none</source>
-        <translation type="unfinished"></translation>
+        <translation>aucun</translation>
     </message>
     <message>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <source>Driver</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilote</translation>
     </message>
     <message>
         <source>{driver} · scope {scope}</source>
-        <translation type="unfinished"></translation>
+        <translation>{driver} · portée {scope}</translation>
     </message>
     <message>
         <source>Subnet</source>
-        <translation type="unfinished"></translation>
+        <translation>Sous-réseau</translation>
     </message>
     <message>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <source>Created</source>
-        <translation type="unfinished"></translation>
+        <translation>Créé</translation>
     </message>
     <message>
         <source>Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquettes</translation>
     </message>
     <message>
         <source>CONNECTED CONTAINERS</source>
-        <translation type="unfinished"></translation>
+        <translation>CONTENEURS CONNECTÉS</translation>
     </message>
 </context>
 <context>
     <name>PullDialog</name>
     <message>
         <source>Pull image</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger une image</translation>
     </message>
     <message>
         <source>Image reference (repository[:tag]):</source>
-        <translation type="unfinished"></translation>
+        <translation>Référence de l&apos;image (dépôt[:tag])&#xa0;:</translation>
     </message>
 </context>
 <context>
     <name>PullPanel</name>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>PULLING  {reference}</source>
-        <translation type="unfinished"></translation>
+        <translation>TÉLÉCHARGEMENT  {reference}</translation>
     </message>
     <message>
         <source>CANCELLED  {reference}</source>
-        <translation type="unfinished"></translation>
+        <translation>ANNULÉ  {reference}</translation>
     </message>
     <message>
         <source>FAILED  {reference}: {detail}</source>
-        <translation type="unfinished"></translation>
+        <translation>ÉCHEC  {reference}&#xa0;: {detail}</translation>
     </message>
     <message>
         <source>COMPLETE  {reference}</source>
-        <translation type="unfinished"></translation>
+        <translation>TERMINÉ  {reference}</translation>
     </message>
 </context>
 <context>
     <name>ResourcePage</name>
     <message>
         <source>Filter…</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer…</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>Prune unused</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer les inutilisés</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Actualiser</translation>
     </message>
 </context>
 <context>
     <name>SettingsDialog</name>
     <message>
         <source>Output stream</source>
-        <translation type="unfinished"></translation>
+        <translation>Flux de sortie</translation>
     </message>
     <message>
         <source>Detected level</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau détecté</translation>
     </message>
     <message>
         <source>Native</source>
-        <translation type="unfinished"></translation>
+        <translation>Natif</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Needs the docker-py package</source>
-        <translation type="unfinished"></translation>
+        <translation>Nécessite le paquet docker-py</translation>
     </message>
     <message>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatique</translation>
     </message>
     <message>
         <source>Browse…</source>
-        <translation type="unfinished"></translation>
+        <translation>Parcourir…</translation>
     </message>
     <message>
         <source>no terminal found</source>
-        <translation type="unfinished"></translation>
+        <translation>aucun terminal trouvé</translation>
     </message>
     <message>
         <source>Anchorage appends `docker exec -it &lt;container&gt; sh`, so include the option your terminal needs to run a command (konsole -e, gnome-terminal --, xterm -e).</source>
-        <translation type="unfinished"></translation>
+        <translation>Anchorage ajoute `docker exec -it &lt;container&gt; sh` à la fin&#xa0;: indiquez donc l&apos;option dont votre terminal a besoin pour exécuter une commande (konsole -e, gnome-terminal --, xterm -e).</translation>
     </message>
     <message>
         <source>System default</source>
-        <translation type="unfinished"></translation>
+        <translation>Langue du système</translation>
     </message>
     <message>
         <source>Log colours</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleurs du journal</translation>
     </message>
     <message>
         <source>Backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Backend</translation>
     </message>
     <message>
         <source>Socket</source>
-        <translation type="unfinished"></translation>
+        <translation>Socket</translation>
     </message>
     <message>
         <source>Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Langue</translation>
     </message>
     <message>
         <source>Set by {reason} for this run</source>
-        <translation type="unfinished"></translation>
+        <translation>Défini par {reason} pour cette exécution</translation>
     </message>
     <message>
         <source>Fixed by {reason}; the saved value is not changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposé par {reason}&#xa0;; la valeur enregistrée n&apos;est pas modifiée</translation>
     </message>
     <message>
         <source>Applies after a restart</source>
-        <translation type="unfinished"></translation>
+        <translation>S&apos;applique après un redémarrage</translation>
     </message>
     <message>
         <source>Docker socket</source>
-        <translation type="unfinished"></translation>
+        <translation>Socket Docker</translation>
     </message>
 </context>
 <context>
     <name>Sidebar</name>
     <message>
         <source>Containers</source>
-        <translation type="unfinished"></translation>
+        <translation>Conteneurs</translation>
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Images</translation>
     </message>
     <message>
         <source>Volumes</source>
-        <translation type="unfinished"></translation>
+        <translation>Volumes</translation>
     </message>
     <message>
         <source>Networks</source>
-        <translation type="unfinished"></translation>
+        <translation>Réseaux</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Engine: not connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Engine&#xa0;: non connecté</translation>
     </message>
 </context>
 <context>
     <name>StatsPanel</name>
     <message>
         <source>CPU</source>
-        <translation type="unfinished"></translation>
+        <translation>CPU</translation>
     </message>
     <message>
         <source>MEMORY</source>
-        <translation type="unfinished"></translation>
+        <translation>MÉMOIRE</translation>
     </message>
     <message>
         <source>NETWORK  rx / tx</source>
-        <translation type="unfinished"></translation>
+        <translation>RÉSEAU  réception / envoi</translation>
     </message>
     <message>
         <source>BLOCK I/O  read / write</source>
-        <translation type="unfinished"></translation>
+        <translation>E/S BLOC  lecture / écriture</translation>
     </message>
 </context>
 <context>
     <name>Terminal</name>
     <message>
         <source>docker CLI not found in PATH</source>
-        <translation type="unfinished"></translation>
+        <translation>CLI docker introuvable dans le PATH</translation>
     </message>
     <message>
         <source>invalid terminal command ({error})</source>
-        <translation type="unfinished"></translation>
+        <translation>commande de terminal non valide ({error})</translation>
     </message>
     <message>
         <source>empty terminal command</source>
-        <translation type="unfinished"></translation>
+        <translation>commande de terminal vide</translation>
     </message>
     <message>
         <source>terminal command {command} not found</source>
-        <translation type="unfinished"></translation>
+        <translation>commande de terminal {command} introuvable</translation>
     </message>
     <message>
         <source>no terminal emulator found</source>
-        <translation type="unfinished"></translation>
+        <translation>aucun émulateur de terminal trouvé</translation>
     </message>
     <message>
         <source>failed to start the terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>impossible de démarrer le terminal</translation>
     </message>
 </context>
 <context>
     <name>Toast</name>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier</translation>
     </message>
     <message>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
     <name>VolumeStore</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Driver</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilote</translation>
     </message>
     <message>
         <source>Compose project</source>
-        <translation type="unfinished"></translation>
+        <translation>Projet Compose</translation>
     </message>
     <message>
         <source>Used by</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisé par</translation>
     </message>
     <message>
         <source>Created</source>
-        <translation type="unfinished"></translation>
+        <translation>Créé</translation>
     </message>
     <message>
         <source>unused</source>
-        <translation type="unfinished"></translation>
+        <translation>inutilisé</translation>
     </message>
     <message numerus="yes">
         <source>%n container(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n conteneur</numerusform>
+            <numerusform>%n conteneurs</numerusform>
         </translation>
     </message>
 </context>
@@ -939,43 +974,43 @@
     <name>VolumesPage</name>
     <message>
         <source>Volumes</source>
-        <translation type="unfinished"></translation>
+        <translation>Volumes</translation>
     </message>
     <message>
         <source>none</source>
-        <translation type="unfinished"></translation>
+        <translation>aucune</translation>
     </message>
     <message>
         <source>Mountpoint</source>
-        <translation type="unfinished"></translation>
+        <translation>Point de montage</translation>
     </message>
     <message>
         <source>Driver</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilote</translation>
     </message>
     <message>
         <source>{driver} · scope {scope}</source>
-        <translation type="unfinished"></translation>
+        <translation>{driver} · portée {scope}</translation>
     </message>
     <message>
         <source>Created</source>
-        <translation type="unfinished"></translation>
+        <translation>Créé</translation>
     </message>
     <message>
         <source>Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquettes</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <source>mounted at {paths}</source>
-        <translation type="unfinished"></translation>
+        <translation>monté sur {paths}</translation>
     </message>
     <message>
         <source>USED BY</source>
-        <translation type="unfinished"></translation>
+        <translation>UTILISÉ PAR</translation>
     </message>
 </context>
 </TS>

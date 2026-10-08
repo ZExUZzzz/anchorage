@@ -25,7 +25,7 @@ from anchorage.docker.models import Container, ContainerDetails, Event
 from anchorage.ui.containers.details_tree import DetailsTree
 from anchorage.ui.containers.list_page import enabled_actions
 from anchorage.ui.containers.stats_panel import StatsPanel
-from anchorage.ui.theme import icon, state_color
+from anchorage.ui.theme import icon, state_color, state_text
 from anchorage.ui.widgets.log_view import LogView
 
 BUTTONS: tuple[tuple[str, str, str, QStyle.StandardPixmap], ...] = (
@@ -209,7 +209,7 @@ class ContainerDetailPage(QWidget):
         self.crumb_project.setVisible(bool(project))
         self.crumb_sep2.setVisible(bool(project))
         color = state_color(container.state, palette)
-        self.state_label.setText(f"●  {container.state}")
+        self.state_label.setText(f"●  {state_text(container.state)}")
         self.state_label.setStyleSheet(f"color: {color.name()}; font-weight: 600;")
         ports = ", ".join(
             f"{p.host_ip or '0.0.0.0'}:{p.public_port}→{p.private_port}/{p.protocol}"

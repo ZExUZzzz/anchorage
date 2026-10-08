@@ -168,7 +168,7 @@ def test_language_setter_writes_the_settings_key(store: QSettings, settings: App
         settings.language = "klingon"
 
 
-@pytest.mark.parametrize("saved", ["klingon", "xx_YY", "zh", 42, ["ru", "de"]])
+@pytest.mark.parametrize("saved", ["klingon", "xx_YY", "zh_TW", 42, ["ru", "de"]])
 def test_invalid_saved_language_reads_as_automatic(
     store: QSettings, settings: AppSettings, saved: object
 ) -> None:
@@ -178,7 +178,23 @@ def test_invalid_saved_language_reads_as_automatic(
 
 @pytest.mark.parametrize(
     ("given", "code"),
-    [("ru", "ru"), ("RU", "ru"), ("ru_RU.UTF-8", "ru"), ("zh-cn", "zh_CN"), ("zh_CN", "zh_CN")],
+    [
+        ("ru", "ru"),
+        ("RU", "ru"),
+        ("ru_RU.UTF-8", "ru"),
+        ("zh-cn", "zh_CN"),
+        ("zh_CN", "zh_CN"),
+        ("zh", "zh_CN"),
+        ("zh_Hans", "zh_CN"),
+        ("zh-Hans-CN", "zh_CN"),
+        ("zh_CN.UTF-8", "zh_CN"),
+        ("zh_TW", ""),
+        ("zh_HK", ""),
+        ("zh-Hant", ""),
+        ("zh_Hant_TW", ""),
+        ("en_US", "en"),
+        ("klingon", ""),
+    ],
 )
 def test_language_values_are_normalised(given: str, code: str) -> None:
     from anchorage.core.settings import normalize_language

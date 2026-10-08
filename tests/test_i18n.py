@@ -111,7 +111,7 @@ def test_missing_qt_translations_are_not_an_error(
     assert QCoreApplication.translate("Sidebar", "Containers") == "Контейнеры"
 
 
-@pytest.mark.parametrize("value", ["klingon", "xx_YY", "zh", None])
+@pytest.mark.parametrize("value", ["klingon", "xx_YY", "zh_TW", None])
 def test_unknown_language_follows_the_system(qtbot, app, value: str | None, monkeypatch) -> None:  # type: ignore[no-untyped-def]
     monkeypatch.setattr(i18n, "system_language", lambda ui_languages=None: "en")
     assert i18n.install(app, value or "") == "en"

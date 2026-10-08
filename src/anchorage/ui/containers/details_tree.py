@@ -7,6 +7,7 @@ import shlex
 from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem, QWidget
 
 from anchorage.docker.models import ContainerDetails
+from anchorage.ui.theme import state_text
 
 # Section keys stay English; the visible titles are translated in ``show_details``.
 _EXPANDED = {"General", "Ports", "Mounts", "Networks"}
@@ -30,7 +31,7 @@ class DetailsTree(QTreeWidget):
             (self.tr("Image"), details.image),
             (self.tr("Created"), created),
             (self.tr("Command"), shlex.join(details.command)),
-            (self.tr("State"), state.status),
+            (self.tr("State"), state_text(state.status)),
             (self.tr("Exit code"), str(state.exit_code)),
             (self.tr("Restart policy"), details.restart_policy),
             (self.tr("TTY"), self.tr("yes") if details.tty else self.tr("no")),

@@ -26,7 +26,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from anchorage.ui.theme import icon, state_color
+from anchorage.ui.theme import icon, state_color, state_text
 from anchorage.ui.widgets.empty_state import EmptyState
 from anchorage.ui.widgets.row_delegate import RowDelegate
 
@@ -169,7 +169,7 @@ class DetailsCard(QFrame):
             name.setToolTip(self.tr("Open container"))
             extra = QTableWidgetItem(member.extra)
             extra.setForeground(palette.color(palette.ColorRole.PlaceholderText))
-            state = QTableWidgetItem(member.state)
+            state = QTableWidgetItem(state_text(member.state))
             state.setForeground(QColor(state_color(member.state, palette)))
             for col, cell in enumerate((name, extra, state)):
                 self.members_table.setItem(row, col, cell)

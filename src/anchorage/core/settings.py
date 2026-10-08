@@ -30,7 +30,7 @@ class InvalidEnvironment(ValueError):
 
 
 def normalize_language(value: str | None) -> str:
-    """The supported code for ``value`` (``ru``, ``ru_RU``, ``zh-cn``, ...), else ``""``.
+    """The supported code for ``value`` (``ru``, ``ru_RU``, ``zh-cn``, ``zh``, ...), else ``""``.
 
     ``""`` means automatic, so an unknown or unsupported value never fails.
     """
@@ -40,8 +40,12 @@ def normalize_language(value: str | None) -> str:
     for code in LANGUAGE_CODES:
         if text.lower() == code.lower():
             return code
-    base = text.split("_")[0].lower()
-    return base if base in LANGUAGE_CODES and base != "zh" else DEFAULT_LANGUAGE
+    base, *rest = text.lower().split("_")
+    if base == "zh":
+        # Only Simplified Chinese is shipped: bare ``zh`` and ``zh_Hans`` mean it, while
+        # Traditional variants stay automatic.
+        return DEFAULT_LANGUAGE if set(rest) & {"hant", "tw", "hk", "mo"} else "zh_CN"
+    return base if base in LANGUAGE_CODES else DEFAULT_LANGUAGE
 
 
 class AppSettings:

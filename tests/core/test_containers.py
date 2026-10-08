@@ -6,7 +6,6 @@ from anchorage.core.containers import (
     GROUP_ROLE,
     ID_ROLE,
     KIND_ROLE,
-    STANDALONE_GROUP,
     ContainerStore,
 )
 from anchorage.core.workers import TaskRunner
@@ -51,7 +50,7 @@ def test_refresh_groups_by_compose_project() -> None:
     assert tree(store) == [
         ("acme", ["zed"]),
         ("pulse", ["pulse-db-1", "pulse-nginx-1"]),
-        (STANDALONE_GROUP, ["alpha", "solo"]),
+        ("Standalone", ["alpha", "solo"]),
     ]
     group = store.model.item(1)
     assert group.data(KIND_ROLE) == "group"
@@ -101,7 +100,7 @@ def test_removed_container_and_empty_group_disappear() -> None:
     store.refresh()
     del engine.containers[only.id]
     store.refresh()
-    assert tree(store) == [(STANDALONE_GROUP, ["solo"])]
+    assert tree(store) == [("Standalone", ["solo"])]
     assert store.container(only.id) is None
 
 
@@ -128,7 +127,7 @@ def test_new_group_inserted_in_sorted_position() -> None:
     store.refresh()
     engine.add(make_container("m", project="mike"))
     store.refresh()
-    assert [name for name, _ in tree(store)] == ["alpha", "mike", "zulu", STANDALONE_GROUP]
+    assert [name for name, _ in tree(store)] == ["alpha", "mike", "zulu", "Standalone"]
 
 
 def test_events_coalesce_into_one_refresh(qtbot) -> None:
@@ -279,7 +278,7 @@ def test_stale_refresh_result_is_dropped() -> None:
     engine.add(make_container("new"))
     store.refresh()
     runner.run_pending(reverse=True)
-    assert tree(store) == [(STANDALONE_GROUP, ["new"])]
+    assert tree(store) == [("Standalone", ["new"])]
 
 
 def test_steady_event_stream_does_not_postpone_refresh(qtbot) -> None:
