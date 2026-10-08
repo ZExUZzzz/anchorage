@@ -87,6 +87,9 @@ def open_shell(
             terminal = tuple(shlex.split(command))
         except ValueError as exc:
             return Launch(exec_argv, None, f"invalid terminal command ({exc})")
+        if not terminal or not terminal[0]:
+            return Launch(exec_argv, None, "empty terminal command")
+        terminal = (os.path.expanduser(terminal[0]), *terminal[1:])
         if not which(terminal[0]):
             return Launch(exec_argv, None, f"terminal command {terminal[0]!r} not found")
     else:

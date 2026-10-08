@@ -55,8 +55,10 @@ class MembersTable(QTableWidget):
     row_entered = Signal(int)
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
-        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and self.currentRow() >= 0:
-            self.row_entered.emit(self.currentRow())
+        row = self.currentRow()
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter) and row >= 0:
+            if not self.isRowHidden(row):
+                self.row_entered.emit(row)
             return
         super().keyPressEvent(event)
 

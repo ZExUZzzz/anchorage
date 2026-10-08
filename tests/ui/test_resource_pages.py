@@ -366,6 +366,18 @@ def test_members_table_enter_activates_current_row(qtbot) -> None:
     assert activated[-1] == "id2"
 
 
+def test_members_table_enter_ignores_a_row_hidden_by_the_filter(qtbot) -> None:
+    card = members_card(qtbot)
+    table = card.members_table
+    activated: list[str] = []
+    card.container_activated.connect(activated.append)
+    table.setFocus()
+    table.selectRow(1)
+    table.setRowHidden(1, True)
+    qtbot.keyClick(table, Qt.Key.Key_Return)
+    assert activated == []
+
+
 def test_members_table_is_reached_by_tab(qtbot) -> None:
     card = members_card(qtbot, MEMBERS_FILTER_THRESHOLD + 1)
     chain = []

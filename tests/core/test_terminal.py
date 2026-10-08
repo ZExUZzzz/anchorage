@@ -118,3 +118,26 @@ def test_detected_terminal_joins_the_auto_command_or_is_empty() -> None:
 
     assert detected_terminal({}, which_from("konsole")) == "konsole -e"
     assert detected_terminal({}, which_from()) == ""
+
+
+def test_open_shell_expands_home_in_the_executable(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    monkeypatch.setenv("HOME", "/home/u")
+    launched: list[list[str]] = []
+    seen: list[str] = []
+
+    def which(name: str) -> str | None:
+        seen.append(name)
+        return name if name in ("/usr/bin/docker", "/home/u/bin/term", "docker") else None
+
+    launch = open_shell(
+        "abc", command="~/bin/term -e", which=which, launcher=lambda a: launched.append(a) or True
+    )
+    assert launch.ok
+    assert launch.terminal == ("/home/u/bin/term", "-e")
+    assert "/home/u/bin/term" in seen
+
+
+def test_open_shell_quoted_empty_command_reports_reason() -> None:
+    launch = open_shell("abc", command='""', which=which_from("docker"), launcher=lambda argv: True)
+    assert not launch.ok
+    assert launch.reason == "empty terminal command"
