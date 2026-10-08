@@ -12,6 +12,8 @@ class Sparkline(QWidget):
         super().__init__(parent)
         self.series: list[float] = []
         self.ceiling: float | None = None
+        self.floor = 0.0
+        self.headroom = 1.0
         self.setMinimumHeight(110)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(10, 8, 10, 8)
@@ -27,11 +29,23 @@ class Sparkline(QWidget):
         layout.addStretch()
 
     def set_series(
-        self, values: list[float], value_text: str, ceiling: float | None = None
+        self,
+        values: list[float],
+        value_text: str,
+        ceiling: float | None = None,
+        *,
+        floor: float = 0.0,
+        headroom: float = 1.0,
     ) -> None:
-        """Plot ``values``; a ``ceiling`` fixes the top of the scale instead of the peak."""
+        """Plot ``values``.
+
+        A ``ceiling`` fixes the top of the scale. Otherwise the top is the peak times
+        ``headroom``, but never below ``floor``, so idle noise does not fill the chart.
+        """
         self.series = list(values)
         self.ceiling = ceiling if ceiling and ceiling > 0 else None
+        self.floor = max(floor, 0.0)
+        self.headroom = max(headroom, 1.0)
         self.value_label.setText(value_text)
         self.update()
 
@@ -47,7 +61,7 @@ class Sparkline(QWidget):
             painter.end()
             return
         area = QRectF(rect).adjusted(10, 30, -10, -8)
-        peak = self.ceiling or max(self.series) or 1.0
+        peak = self.ceiling or max(max(self.series) * self.headroom, self.floor) or 1.0
         count = len(self.series)
         points = [
             QPointF(

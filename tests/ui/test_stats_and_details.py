@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 
 from anchorage.core.sessions import StatsPoint
+from anchorage.core.units import format_bytes
 from anchorage.docker.models import (
     ContainerDetails,
     ContainerState,
@@ -67,13 +68,18 @@ def test_only_the_first_sample_is_skipped(qtbot) -> None:
     assert panel.cpu.series == []
 
 
-def test_memory_chart_scales_to_the_limit(qtbot) -> None:
+def test_charts_scale_to_usage_with_floors(qtbot) -> None:
     panel = StatsPanel()
     qtbot.addWidget(panel)
     panel.add_point(point(1.0, 50 * 1024**2, 0.0, 0.0))
     panel.add_point(point(1.0, 50 * 1024**2, 0.0, 0.0))
-    assert panel.memory.ceiling == float(16 * 1024**3)
-    assert panel.cpu.ceiling is None
+    # Memory follows the container's usage, not the (host-wide) limit; the limit is in the label.
+    assert panel.memory.ceiling is None
+    assert panel.memory.headroom == 1.5
+    assert panel.memory.value_label.text().endswith(format_bytes(16 * 1024**3))
+    # Tiny CPU and network values must not fill the chart.
+    assert panel.cpu.floor == 5.0
+    assert panel.network.floor == panel.block.floor == 64 * 1024.0
     panel.memory.resize(240, 100)
     panel.memory.grab()
     spark = Sparkline("X")

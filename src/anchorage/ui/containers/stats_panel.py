@@ -10,6 +10,10 @@ from anchorage.core.sessions import StatsPoint
 from anchorage.core.units import format_bytes, format_rate
 from anchorage.ui.widgets.sparkline import Sparkline
 
+CPU_FLOOR = 5.0  # percent: below this, CPU noise stays near the baseline
+MEMORY_HEADROOM = 1.5
+RATE_FLOOR = 64 * 1024.0  # bytes per second
+
 
 class StatsPanel(QWidget):
     MAX_POINTS = 120
@@ -37,19 +41,25 @@ class StatsPanel(QWidget):
             return
         self._points.append(point)
         points = list(self._points)
-        self.cpu.set_series([p.cpu_percent for p in points], f"{point.cpu_percent:.1f} %")
+        self.cpu.set_series(
+            [p.cpu_percent for p in points], f"{point.cpu_percent:.1f} %", floor=CPU_FLOOR
+        )
+        # The limit is usually the whole host memory, which would flatten the line; scale to
+        # the container's own usage and show the limit in the label.
         self.memory.set_series(
             [float(p.memory_usage) for p in points],
             f"{format_bytes(point.memory_usage)} / {format_bytes(point.memory_limit)}",
-            ceiling=float(point.memory_limit) if point.memory_limit > 0 else None,
+            headroom=MEMORY_HEADROOM,
         )
         self.network.set_series(
             [p.net_rx_rate + p.net_tx_rate for p in points],
             f"{format_rate(point.net_rx_rate)} / {format_rate(point.net_tx_rate)}",
+            floor=RATE_FLOOR,
         )
         self.block.set_series(
             [p.block_read_rate + p.block_write_rate for p in points],
             f"{format_rate(point.block_read_rate)} / {format_rate(point.block_write_rate)}",
+            floor=RATE_FLOOR,
         )
 
     def reset(self) -> None:
